@@ -1,0 +1,51 @@
+{
+  "report_metadata": {
+    "pdb_id": "7YGA",
+    "target_residue": 151,
+    "target_chain": "N",
+    "residue_identifier": "N-151"
+  },
+  "summary": {
+    "total_basepairs": 1,
+    "average_score": 90.0,
+    "quality_grade": "EXCELLENT"
+  },
+  "basepairs": [
+    {
+      "residue_1": "N-A-151-",
+      "residue_2": "N-A-248-",
+      "base_pair_type": "A-A",
+      "edge_notation": "tWW",
+      "score": 90.0,
+      "is_problematic": false,
+      "geometry": {
+        "shear": -1.357,
+        "stretch": -1.226,
+        "stagger": 0.332,
+        "buckle": 20.849,
+        "propeller": 1.665,
+        "opening": 179.583
+      },
+      "dssr_hbond_score": 1.9152,
+      "hydrogen_bonds": [],
+      "num_hbonds": 0,
+      "penalties": {
+        "geometry_penalty": 10.0,
+        "hbond_penalty": 0.0,
+        "total_penalty": 10.0
+      },
+      "issues": [
+        {
+          "category": "geometry",
+          "type": "improper_opening",
+          "description": "Opening angle (179.58\u00b0) is outside normal range"
+        },
+        {
+          "category": "hydrogen_bond",
+          "type": "low_dssr_score",
+          "description": "DSSR H-bond score (1.92) is below threshold (2.0) (not penalised)"
+        }
+      ]
+    }
+  ]
+}

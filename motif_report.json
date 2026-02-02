@@ -1,0 +1,68 @@
+{
+  "pdb_id": "3J6B",
+  "analysis_type": "motif",
+  "motif_range": "1075-1078",
+  "motif_chain": "A",
+  "motif_score": 85.0,
+  "full_structure_score": 80.6,
+  "full_structure_num_nucleotides": 0,
+  "motif_num_nucleotides": 4,
+  "num_paired_nucleotides": 2,
+  "score_difference": 4.4,
+  "total_base_pairs": 1,
+  "num_problematic_bps": 0,
+  "overall_score": 85.0,
+  "avg_basepair_score": 85.0,
+  "geometry_issues": {
+    "misaligned": 0,
+    "twisted": 1,
+    "non_coplanar": 0,
+    "zero_hbond": 0
+  },
+  "geometry_fractions": {
+    "misaligned": 0.0,
+    "twisted": 1.0,
+    "non_coplanar": 0.0,
+    "zero_hbond": 0.0
+  },
+  "hbond_issues": {
+    "poor_hbond": 1,
+    "bad_distance": 0,
+    "bad_angles": 0,
+    "bad_dihedral": 0,
+    "weak_quality": 0,
+    "incorrect_count": 0
+  },
+  "hbond_fractions": {
+    "poor_hbond": 1.0,
+    "bad_distance": 0.0,
+    "bad_angles": 0.0,
+    "bad_dihedral": 0.0,
+    "weak_quality": 0.0,
+    "incorrect_count": 0.0
+  },
+  "summary": "Overall Quality: 85.0/100 (EXCELLENT)\nBase Pairs Analyzed: 1\n\nGeometry Issues:\n  - 100.0% twisted\n\nH-bond Issues:\n  - 100.0% poor hbond",
+  "basepair_scores": [
+    {
+      "score": 85.0,
+      "geometry_penalty": 10.0,
+      "hbond_penalty": 5.0,
+      "geometry_issues": {
+        "twisted": true
+      },
+      "hbond_issues": {
+        "poor_hbond": true
+      },
+      "bp_info": {
+        "res_1": "A-A-1075-",
+        "res_2": "A-U-1078-",
+        "bp_type": "A-U",
+        "edge_type": "cWW",
+        "num_hbonds": 2,
+        "dssr_score": 1.9290194208
+      }
+    }
+  ],
+  "protein_binding_explanations": {},
+  "ligand_binding_explanations": {}
+}

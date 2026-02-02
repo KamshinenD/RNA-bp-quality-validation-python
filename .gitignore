@@ -1,0 +1,10 @@
+data/
+unique_motifs/
+__pycache__/
+full_structure_cache/
+motifs/
+.pytest_cache/
+motif_basepair/
+motif_basepairs.csv
+scores_summary.csv
+score_motifs_summary.csv

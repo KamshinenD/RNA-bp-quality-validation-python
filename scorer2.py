@@ -268,8 +268,8 @@ class Scorer:
             has_weak_quality = False
             
             # Get edge-specific H-bond thresholds
-            distance_min = hbond_thresh.get('DISTANCE_MIN', 2.3)  # Fallback to global
-            distance_max = hbond_thresh.get('DISTANCE_MAX', 3.7)
+            distance_min = hbond_thresh.get('DIST_MIN', self.config.HBOND_DISTANCE_MIN)
+            distance_max = hbond_thresh.get('DIST_MAX', self.config.HBOND_DISTANCE_MAX)
             angle_min = hbond_thresh.get('ANGLE_MIN', 80.0)
             quality_min = hbond_thresh.get('QUALITY_MIN', 0.70)
             

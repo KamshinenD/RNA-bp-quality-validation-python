@@ -1,24 +1,31 @@
 {
-  "report_metadata": {
-    "pdb_id": "7YGA",
-    "target_residue": 151,
-    "target_chain": "N",
-    "residue_identifier": "N-151"
-  },
-  "summary": {
-    "total_basepairs": 1,
-    "average_score": 90.0,
-    "quality_grade": "EXCELLENT"
-  },
-  "basepairs": [
+  "pdb_id": "7YGA",
+  "analysis_type": "single_residue",
+  "query_residue": 151,
+  "query_chain": "N",
+  "num_base_pairs": 1,
+  "average_score": 90.0,
+  "grade": "EXCELLENT",
+  "base_pairs": [
     {
-      "residue_1": "N-A-151-",
-      "residue_2": "N-A-248-",
-      "base_pair_type": "A-A",
-      "edge_notation": "tWW",
       "score": 90.0,
-      "is_problematic": false,
-      "geometry": {
+      "geometry_penalty": 10.0,
+      "hbond_penalty": 0.0,
+      "geometry_issues": {
+        "improper_opening": true
+      },
+      "hbond_issues": {
+        "low_dssr_score": true
+      },
+      "bp_info": {
+        "res_1": "N-A-151-",
+        "res_2": "N-A-248-",
+        "bp_type": "A-A",
+        "edge_type": "tWW",
+        "num_hbonds": 0,
+        "dssr_score": 1.915241643
+      },
+      "geometry_params": {
         "shear": -1.357,
         "stretch": -1.226,
         "stagger": 0.332,
@@ -26,26 +33,9 @@
         "propeller": 1.665,
         "opening": 179.583
       },
-      "dssr_hbond_score": 1.9152,
-      "hydrogen_bonds": [],
-      "num_hbonds": 0,
-      "penalties": {
-        "geometry_penalty": 10.0,
-        "hbond_penalty": 0.0,
-        "total_penalty": 10.0
-      },
-      "issues": [
-        {
-          "category": "geometry",
-          "type": "improper_opening",
-          "description": "Opening angle (179.58\u00b0) is outside normal range"
-        },
-        {
-          "category": "hydrogen_bond",
-          "type": "low_dssr_score",
-          "description": "DSSR H-bond score (1.92) is below threshold (2.0) (not penalised)"
-        }
-      ]
+      "hbond_details": []
     }
-  ]
+  ],
+  "protein_binding_explanations": {},
+  "ligand_binding_explanations": {}
 }

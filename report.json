@@ -1,48 +1,48 @@
 {
-  "overall_score": 85.2,
-  "grade": "EXCELLENT",
+  "overall_score": 84.8,
+  "grade": "GOOD",
   "total_base_pairs": 209,
-  "avg_basepair_score": 85.2,
+  "avg_basepair_score": 84.8,
   "geometry_issues": {
-    "misaligned": 47,
-    "twisted": 35,
-    "non_coplanar": 55,
+    "misaligned": 50,
+    "twisted": 0,
+    "non_coplanar": 38,
     "zero_hbond": 18
   },
   "geometry_fractions": {
-    "misaligned": 0.22488038277511962,
-    "twisted": 0.1674641148325359,
-    "non_coplanar": 0.2631578947368421,
+    "misaligned": 0.23923444976076555,
+    "twisted": 0.0,
+    "non_coplanar": 0.18181818181818182,
     "zero_hbond": 0.0861244019138756
   },
   "hbond_issues": {
-    "poor_hbond": 119,
-    "bad_distance": 1,
+    "poor_hbond": 0,
+    "bad_distance": 51,
     "bad_angles": 10,
     "bad_dihedral": 10,
     "weak_quality": 15,
     "incorrect_count": 12
   },
   "hbond_fractions": {
-    "poor_hbond": 0.569377990430622,
-    "bad_distance": 0.004784688995215311,
+    "poor_hbond": 0.0,
+    "bad_distance": 0.24401913875598086,
     "bad_angles": 0.04784688995215311,
     "bad_dihedral": 0.04784688995215311,
     "weak_quality": 0.07177033492822966,
     "incorrect_count": 0.05741626794258373
   },
-  "summary": "Overall Quality: 85.2/100 (EXCELLENT)\nBase Pairs Analyzed: 209\n\nGeometry Issues:\n  - 22.5% misaligned\n  - 16.7% twisted\n  - 26.3% non coplanar\n  - 8.6% zero hbond\n\nH-bond Issues:\n  - 56.9% poor hbond\n  - 4.8% bad angles\n  - 4.8% bad dihedral\n  - 7.2% weak quality\n  - 5.7% incorrect count",
-  "num_problematic_bps": 51,
+  "summary": "Overall Quality: 84.8/100 (GOOD)\nBase Pairs Analyzed: 209\n\nGeometry Issues:\n  - 23.9% misaligned\n  - 18.2% non coplanar\n  - 8.6% zero hbond\n\nH-bond Issues:\n  - 24.4% bad distance\n  - 4.8% bad angles\n  - 4.8% bad dihedral\n  - 7.2% weak quality\n  - 5.7% incorrect count",
+  "num_problematic_bps": 48,
   "basepair_scores": [
     {
-      "score": 80.0,
-      "geometry_penalty": 15.0,
-      "hbond_penalty": 5.0,
+      "score": 90.0,
+      "geometry_penalty": 10.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
         "non_coplanar": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-314-",
@@ -77,7 +77,7 @@
       "geometry_penalty": 30.0,
       "hbond_penalty": 0.0,
       "geometry_issues": {
-        "twisted": true,
+        "rotational_distortion": true,
         "zero_hbond": true
       },
       "hbond_issues": {},
@@ -93,12 +93,16 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
-      "geometry_issues": {},
+      "score": 65.0,
+      "geometry_penalty": 35.0,
+      "hbond_penalty": 0.0,
+      "geometry_issues": {
+        "misaligned": true,
+        "rotational_distortion": true,
+        "improper_opening": true
+      },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-C-311-",
@@ -112,15 +116,15 @@
       "ligand_bindings": []
     },
     {
-      "score": 65.0,
-      "geometry_penalty": 30.0,
-      "hbond_penalty": 5.0,
+      "score": 75.0,
+      "geometry_penalty": 25.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
         "misaligned": true,
-        "non_coplanar": true
+        "improper_opening": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "A-SSU-4-",
@@ -134,12 +138,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "A-A-5-",
@@ -153,12 +157,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "A-A-6-",
@@ -176,7 +180,7 @@
       "geometry_penalty": 10.0,
       "hbond_penalty": 5.0,
       "geometry_issues": {
-        "twisted": true
+        "rotational_distortion": true
       },
       "hbond_issues": {
         "weak_quality": true
@@ -261,12 +265,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-24-",
@@ -280,11 +284,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 100,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
-      "hbond_issues": {},
+      "hbond_issues": {
+        "bad_distance": true
+      },
       "bp_info": {
         "res_1": "B-C-5-",
         "res_2": "N-G-23-",
@@ -297,14 +303,15 @@
       "ligand_bindings": []
     },
     {
-      "score": 75.0,
+      "score": 65.0,
       "geometry_penalty": 15.0,
-      "hbond_penalty": 10.0,
+      "hbond_penalty": 20.0,
       "geometry_issues": {
         "misaligned": true
       },
       "hbond_issues": {
-        "poor_hbond": true,
+        "low_dssr_score": true,
+        "bad_distance": true,
         "bad_angles": true
       },
       "bp_info": {
@@ -319,16 +326,16 @@
       "ligand_bindings": []
     },
     {
-      "score": 55.0,
-      "geometry_penalty": 40.0,
-      "hbond_penalty": 5.0,
+      "score": 65.0,
+      "geometry_penalty": 35.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
         "misaligned": true,
-        "twisted": true,
-        "non_coplanar": true
+        "rotational_distortion": true,
+        "improper_opening": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-207-",
@@ -342,14 +349,15 @@
       "ligand_bindings": []
     },
     {
-      "score": 75.0,
-      "geometry_penalty": 15.0,
-      "hbond_penalty": 10.0,
+      "score": 70.0,
+      "geometry_penalty": 10.0,
+      "hbond_penalty": 20.0,
       "geometry_issues": {
         "non_coplanar": true
       },
       "hbond_issues": {
-        "poor_hbond": true,
+        "low_dssr_score": true,
+        "bad_distance": true,
         "bad_angles": true
       },
       "bp_info": {
@@ -383,14 +391,15 @@
       "ligand_bindings": []
     },
     {
-      "score": 85.0,
+      "score": 75.0,
       "geometry_penalty": 10.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {
-        "twisted": true
+        "rotational_distortion": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true,
+        "bad_distance": true
       },
       "bp_info": {
         "res_1": "N-A-31-",
@@ -404,11 +413,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 100,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
-      "hbond_issues": {},
+      "hbond_issues": {
+        "bad_distance": true
+      },
       "bp_info": {
         "res_1": "N-C-55-",
         "res_2": "N-G-32-",
@@ -421,14 +432,15 @@
       "ligand_bindings": []
     },
     {
-      "score": 80.0,
+      "score": 70.0,
       "geometry_penalty": 15.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {
         "misaligned": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true,
+        "bad_distance": true
       },
       "bp_info": {
         "res_1": "N-G-54-",
@@ -442,12 +454,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true,
+        "bad_distance": true
       },
       "bp_info": {
         "res_1": "N-A-53-",
@@ -461,12 +474,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-35-",
@@ -480,12 +493,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-G-51-",
@@ -516,12 +529,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true,
+        "bad_distance": true
       },
       "bp_info": {
         "res_1": "N-A-38-",
@@ -535,11 +549,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 100,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
-      "hbond_issues": {},
+      "hbond_issues": {
+        "bad_distance": true
+      },
       "bp_info": {
         "res_1": "N-C-48-",
         "res_2": "N-G-39-",
@@ -552,11 +568,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 100,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
-      "hbond_issues": {},
+      "hbond_issues": {
+        "bad_distance": true
+      },
       "bp_info": {
         "res_1": "N-C-47-",
         "res_2": "N-G-40-",
@@ -569,14 +587,14 @@
       "ligand_bindings": []
     },
     {
-      "score": 80.0,
-      "geometry_penalty": 15.0,
-      "hbond_penalty": 5.0,
+      "score": 90.0,
+      "geometry_penalty": 10.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
-        "non_coplanar": true
+        "improper_opening": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-46-",
@@ -590,12 +608,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-172-",
@@ -613,7 +631,7 @@
       "geometry_penalty": 10.0,
       "hbond_penalty": 5.0,
       "geometry_issues": {
-        "twisted": true
+        "rotational_distortion": true
       },
       "hbond_issues": {
         "weak_quality": true
@@ -630,11 +648,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 100,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
-      "hbond_issues": {},
+      "hbond_issues": {
+        "bad_distance": true
+      },
       "bp_info": {
         "res_1": "N-C-45-",
         "res_2": "N-G-169-",
@@ -647,12 +667,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-46-",
@@ -683,14 +703,14 @@
       "ligand_bindings": []
     },
     {
-      "score": 80.0,
+      "score": 85.0,
       "geometry_penalty": 15.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
         "misaligned": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-G-92-",
@@ -721,12 +741,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-90-",
@@ -740,12 +760,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-89-",
@@ -760,14 +780,15 @@
     },
     {
       "score": 60.0,
-      "geometry_penalty": 25.0,
-      "hbond_penalty": 15.0,
+      "geometry_penalty": 30.0,
+      "hbond_penalty": 10.0,
       "geometry_issues": {
-        "twisted": true,
-        "non_coplanar": true
+        "rotational_distortion": true,
+        "non_coplanar": true,
+        "improper_opening": true
       },
       "hbond_issues": {
-        "poor_hbond": true,
+        "low_dssr_score": true,
         "incorrect_count": true,
         "bad_dihedral": true
       },
@@ -783,14 +804,14 @@
       "ligand_bindings": []
     },
     {
-      "score": 55.0,
+      "score": 60.0,
       "geometry_penalty": 15.0,
-      "hbond_penalty": 30.0,
+      "hbond_penalty": 25.0,
       "geometry_issues": {
         "misaligned": true
       },
       "hbond_issues": {
-        "poor_hbond": true,
+        "low_dssr_score": true,
         "incorrect_count": true,
         "bad_distance": true,
         "weak_quality": true
@@ -807,12 +828,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-64-",
@@ -826,12 +847,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-65-",
@@ -845,14 +866,14 @@
       "ligand_bindings": []
     },
     {
-      "score": 85.0,
+      "score": 90.0,
       "geometry_penalty": 10.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
-        "twisted": true
+        "rotational_distortion": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-66-",
@@ -870,7 +891,7 @@
       "geometry_penalty": 10.0,
       "hbond_penalty": 5.0,
       "geometry_issues": {
-        "twisted": true
+        "rotational_distortion": true
       },
       "hbond_issues": {
         "weak_quality": true
@@ -887,11 +908,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 100,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
-      "hbond_issues": {},
+      "hbond_issues": {
+        "bad_distance": true
+      },
       "bp_info": {
         "res_1": "N-C-68-",
         "res_2": "N-G-82-",
@@ -904,8 +927,8 @@
       "ligand_bindings": []
     },
     {
-      "score": 85.0,
-      "geometry_penalty": 15.0,
+      "score": 90.0,
+      "geometry_penalty": 10.0,
       "hbond_penalty": 0.0,
       "geometry_issues": {
         "non_coplanar": true
@@ -923,12 +946,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-352-",
@@ -942,12 +965,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-351-",
@@ -995,12 +1018,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-79-",
@@ -1014,12 +1037,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-347-",
@@ -1033,13 +1056,14 @@
       "ligand_bindings": []
     },
     {
-      "score": 60.0,
-      "geometry_penalty": 40.0,
+      "score": 55.0,
+      "geometry_penalty": 45.0,
       "hbond_penalty": 0.0,
       "geometry_issues": {
         "misaligned": true,
-        "twisted": true,
-        "non_coplanar": true
+        "rotational_distortion": true,
+        "non_coplanar": true,
+        "improper_opening": true
       },
       "hbond_issues": {},
       "bp_info": {
@@ -1071,12 +1095,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-97-",
@@ -1090,12 +1114,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true,
+        "bad_distance": true
       },
       "bp_info": {
         "res_1": "N-A-97-",
@@ -1109,11 +1134,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 100,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
-      "hbond_issues": {},
+      "hbond_issues": {
+        "bad_distance": true
+      },
       "bp_info": {
         "res_1": "N-C-98-",
         "res_2": "N-G-276-",
@@ -1143,11 +1170,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 100,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
-      "hbond_issues": {},
+      "hbond_issues": {
+        "bad_distance": true
+      },
       "bp_info": {
         "res_1": "N-C-274-",
         "res_2": "N-G-100-",
@@ -1179,13 +1208,15 @@
       "ligand_bindings": []
     },
     {
-      "score": 90.0,
+      "score": 75.0,
       "geometry_penalty": 10.0,
-      "hbond_penalty": 0.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {
-        "twisted": true
+        "rotational_distortion": true
       },
-      "hbond_issues": {},
+      "hbond_issues": {
+        "bad_distance": true
+      },
       "bp_info": {
         "res_1": "N-C-102-",
         "res_2": "N-G-272-",
@@ -1217,12 +1248,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 50.0,
-      "geometry_penalty": 50.0,
+      "score": 55.0,
+      "geometry_penalty": 45.0,
       "hbond_penalty": 0.0,
       "geometry_issues": {
         "misaligned": true,
-        "non_coplanar": true,
+        "improper_opening": true,
         "zero_hbond": true
       },
       "hbond_issues": {},
@@ -1238,14 +1269,14 @@
       "ligand_bindings": []
     },
     {
-      "score": 75.0,
+      "score": 80.0,
       "geometry_penalty": 15.0,
-      "hbond_penalty": 10.0,
+      "hbond_penalty": 5.0,
       "geometry_issues": {
         "misaligned": true
       },
       "hbond_issues": {
-        "poor_hbond": true,
+        "low_dssr_score": true,
         "bad_angles": true
       },
       "bp_info": {
@@ -1260,15 +1291,15 @@
       "ligand_bindings": []
     },
     {
-      "score": 65.0,
-      "geometry_penalty": 30.0,
-      "hbond_penalty": 5.0,
+      "score": 75.0,
+      "geometry_penalty": 25.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
         "misaligned": true,
-        "non_coplanar": true
+        "improper_opening": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-105-",
@@ -1282,14 +1313,14 @@
       "ligand_bindings": []
     },
     {
-      "score": 85.0,
+      "score": 90.0,
       "geometry_penalty": 10.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
-        "twisted": true
+        "rotational_distortion": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-214-",
@@ -1303,11 +1334,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 100,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
-      "hbond_issues": {},
+      "hbond_issues": {
+        "bad_distance": true
+      },
       "bp_info": {
         "res_1": "N-C-213-",
         "res_2": "N-G-108-",
@@ -1320,15 +1353,15 @@
       "ligand_bindings": []
     },
     {
-      "score": 65.0,
-      "geometry_penalty": 30.0,
-      "hbond_penalty": 5.0,
+      "score": 75.0,
+      "geometry_penalty": 25.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
         "misaligned": true,
         "non_coplanar": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-G-108-",
@@ -1342,11 +1375,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 100,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
-      "hbond_issues": {},
+      "hbond_issues": {
+        "bad_distance": true
+      },
       "bp_info": {
         "res_1": "N-C-109-",
         "res_2": "N-G-212-",
@@ -1360,14 +1395,15 @@
     },
     {
       "score": 65.0,
-      "geometry_penalty": 30.0,
-      "hbond_penalty": 5.0,
+      "geometry_penalty": 35.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
         "misaligned": true,
-        "non_coplanar": true
+        "non_coplanar": true,
+        "improper_opening": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-C-109-",
@@ -1381,16 +1417,16 @@
       "ligand_bindings": []
     },
     {
-      "score": 55.0,
-      "geometry_penalty": 40.0,
-      "hbond_penalty": 5.0,
+      "score": 65.0,
+      "geometry_penalty": 35.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
         "misaligned": true,
-        "twisted": true,
-        "non_coplanar": true
+        "rotational_distortion": true,
+        "improper_opening": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-183-",
@@ -1438,11 +1474,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 100,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
-      "hbond_issues": {},
+      "hbond_issues": {
+        "bad_distance": true
+      },
       "bp_info": {
         "res_1": "N-C-208-",
         "res_2": "N-G-112-",
@@ -1455,12 +1493,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-113-",
@@ -1474,8 +1512,8 @@
       "ligand_bindings": []
     },
     {
-      "score": 65.0,
-      "geometry_penalty": 35.0,
+      "score": 70.0,
+      "geometry_penalty": 30.0,
       "hbond_penalty": 0.0,
       "geometry_issues": {
         "non_coplanar": true,
@@ -1494,12 +1532,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 50.0,
-      "geometry_penalty": 50.0,
+      "score": 45.0,
+      "geometry_penalty": 55.0,
       "hbond_penalty": 0.0,
       "geometry_issues": {
         "misaligned": true,
         "non_coplanar": true,
+        "improper_opening": true,
         "zero_hbond": true
       },
       "hbond_issues": {},
@@ -1515,14 +1554,14 @@
       "ligand_bindings": []
     },
     {
-      "score": 75.0,
-      "geometry_penalty": 15.0,
-      "hbond_penalty": 10.0,
+      "score": 85.0,
+      "geometry_penalty": 10.0,
+      "hbond_penalty": 5.0,
       "geometry_issues": {
         "non_coplanar": true
       },
       "hbond_issues": {
-        "poor_hbond": true,
+        "low_dssr_score": true,
         "weak_quality": true
       },
       "bp_info": {
@@ -1556,11 +1595,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 100,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
-      "hbond_issues": {},
+      "hbond_issues": {
+        "bad_distance": true
+      },
       "bp_info": {
         "res_1": "N-C-203-",
         "res_2": "N-G-118-",
@@ -1573,14 +1614,14 @@
       "ligand_bindings": []
     },
     {
-      "score": 85.0,
+      "score": 90.0,
       "geometry_penalty": 10.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
-        "twisted": true
+        "rotational_distortion": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-G-119-",
@@ -1594,14 +1635,14 @@
       "ligand_bindings": []
     },
     {
-      "score": 85.0,
+      "score": 90.0,
       "geometry_penalty": 10.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
-        "twisted": true
+        "rotational_distortion": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-324-",
@@ -1615,14 +1656,15 @@
       "ligand_bindings": []
     },
     {
-      "score": 80.0,
+      "score": 70.0,
       "geometry_penalty": 15.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {
         "misaligned": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true,
+        "bad_distance": true
       },
       "bp_info": {
         "res_1": "N-G-201-",
@@ -1653,11 +1695,11 @@
       "ligand_bindings": []
     },
     {
-      "score": 55.0,
-      "geometry_penalty": 45.0,
+      "score": 60.0,
+      "geometry_penalty": 40.0,
       "hbond_penalty": 0.0,
       "geometry_issues": {
-        "twisted": true,
+        "rotational_distortion": true,
         "non_coplanar": true,
         "zero_hbond": true
       },
@@ -1674,15 +1716,17 @@
       "ligand_bindings": []
     },
     {
-      "score": 70.0,
-      "geometry_penalty": 25.0,
-      "hbond_penalty": 5.0,
+      "score": 55.0,
+      "geometry_penalty": 45.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
-        "twisted": true,
-        "non_coplanar": true
+        "misaligned": true,
+        "rotational_distortion": true,
+        "non_coplanar": true,
+        "improper_opening": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-123-",
@@ -1696,15 +1740,15 @@
       "ligand_bindings": []
     },
     {
-      "score": 65.0,
-      "geometry_penalty": 30.0,
-      "hbond_penalty": 5.0,
+      "score": 75.0,
+      "geometry_penalty": 25.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
         "misaligned": true,
-        "non_coplanar": true
+        "improper_opening": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-C-124-",
@@ -1718,16 +1762,19 @@
       "ligand_bindings": []
     },
     {
-      "score": 60.0,
-      "geometry_penalty": 25.0,
-      "hbond_penalty": 15.0,
+      "score": 30.0,
+      "geometry_penalty": 45.0,
+      "hbond_penalty": 25.0,
       "geometry_issues": {
-        "twisted": true,
-        "non_coplanar": true
+        "misaligned": true,
+        "rotational_distortion": true,
+        "non_coplanar": true,
+        "improper_opening": true
       },
       "hbond_issues": {
-        "poor_hbond": true,
+        "low_dssr_score": true,
         "incorrect_count": true,
+        "bad_distance": true,
         "weak_quality": true
       },
       "bp_info": {
@@ -1742,12 +1789,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-196-",
@@ -1778,11 +1825,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 100,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
-      "hbond_issues": {},
+      "hbond_issues": {
+        "bad_distance": true
+      },
       "bp_info": {
         "res_1": "N-C-128-",
         "res_2": "N-G-194-",
@@ -1812,12 +1861,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-192-",
@@ -1848,12 +1897,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-133-",
@@ -1884,12 +1933,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-187-",
@@ -1903,12 +1952,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-136-",
@@ -1956,15 +2005,16 @@
       "ligand_bindings": []
     },
     {
-      "score": 70.0,
-      "geometry_penalty": 25.0,
-      "hbond_penalty": 5.0,
+      "score": 65.0,
+      "geometry_penalty": 20.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {
-        "twisted": true,
+        "rotational_distortion": true,
         "non_coplanar": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true,
+        "bad_distance": true
       },
       "bp_info": {
         "res_1": "N-A-139-",
@@ -1978,12 +2028,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true,
+        "bad_distance": true
       },
       "bp_info": {
         "res_1": "N-A-140-",
@@ -1997,14 +2048,15 @@
       "ligand_bindings": []
     },
     {
-      "score": 80.0,
+      "score": 70.0,
       "geometry_penalty": 15.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {
         "misaligned": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true,
+        "bad_distance": true
       },
       "bp_info": {
         "res_1": "N-G-141-",
@@ -2018,12 +2070,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-161-",
@@ -2037,11 +2089,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 100,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
-      "hbond_issues": {},
+      "hbond_issues": {
+        "bad_distance": true
+      },
       "bp_info": {
         "res_1": "N-C-143-",
         "res_2": "N-G-160-",
@@ -2054,12 +2108,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true,
+        "bad_distance": true
       },
       "bp_info": {
         "res_1": "N-A-159-",
@@ -2090,12 +2145,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true,
+        "bad_distance": true
       },
       "bp_info": {
         "res_1": "N-A-146-",
@@ -2109,12 +2165,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true,
+        "bad_distance": true
       },
       "bp_info": {
         "res_1": "N-G-147-",
@@ -2128,12 +2185,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-G-148-",
@@ -2151,7 +2208,7 @@
       "geometry_penalty": 10.0,
       "hbond_penalty": 5.0,
       "geometry_issues": {
-        "twisted": true
+        "rotational_distortion": true
       },
       "hbond_issues": {
         "weak_quality": true
@@ -2168,11 +2225,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 80.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 20.0,
       "geometry_issues": {},
       "hbond_issues": {
+        "bad_distance": true,
         "weak_quality": true
       },
       "bp_info": {
@@ -2187,14 +2245,14 @@
       "ligand_bindings": []
     },
     {
-      "score": 80.0,
-      "geometry_penalty": 15.0,
-      "hbond_penalty": 5.0,
+      "score": 90.0,
+      "geometry_penalty": 10.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
-        "non_coplanar": true
+        "improper_opening": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-151-",
@@ -2209,14 +2267,15 @@
     },
     {
       "score": 65.0,
-      "geometry_penalty": 30.0,
-      "hbond_penalty": 5.0,
+      "geometry_penalty": 35.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
         "misaligned": true,
-        "non_coplanar": true
+        "non_coplanar": true,
+        "improper_opening": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-153-",
@@ -2230,15 +2289,17 @@
       "ligand_bindings": []
     },
     {
-      "score": 65.0,
-      "geometry_penalty": 30.0,
-      "hbond_penalty": 5.0,
+      "score": 55.0,
+      "geometry_penalty": 45.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
         "misaligned": true,
-        "non_coplanar": true
+        "rotational_distortion": true,
+        "non_coplanar": true,
+        "improper_opening": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-178-",
@@ -2252,15 +2313,15 @@
       "ligand_bindings": []
     },
     {
-      "score": 65.0,
+      "score": 70.0,
       "geometry_penalty": 25.0,
-      "hbond_penalty": 10.0,
+      "hbond_penalty": 5.0,
       "geometry_issues": {
         "misaligned": true,
-        "twisted": true
+        "rotational_distortion": true
       },
       "hbond_issues": {
-        "poor_hbond": true,
+        "low_dssr_score": true,
         "bad_dihedral": true
       },
       "bp_info": {
@@ -2275,11 +2336,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 100,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
-      "hbond_issues": {},
+      "hbond_issues": {
+        "bad_distance": true
+      },
       "bp_info": {
         "res_1": "N-C-165-",
         "res_2": "N-G-175-",
@@ -2310,14 +2373,15 @@
     },
     {
       "score": 60.0,
-      "geometry_penalty": 30.0,
-      "hbond_penalty": 10.0,
+      "geometry_penalty": 35.0,
+      "hbond_penalty": 5.0,
       "geometry_issues": {
         "misaligned": true,
-        "non_coplanar": true
+        "non_coplanar": true,
+        "improper_opening": true
       },
       "hbond_issues": {
-        "poor_hbond": true,
+        "low_dssr_score": true,
         "incorrect_count": true
       },
       "bp_info": {
@@ -2332,14 +2396,14 @@
       "ligand_bindings": []
     },
     {
-      "score": 70.0,
-      "geometry_penalty": 15.0,
-      "hbond_penalty": 15.0,
+      "score": 80.0,
+      "geometry_penalty": 10.0,
+      "hbond_penalty": 10.0,
       "geometry_issues": {
-        "non_coplanar": true
+        "improper_opening": true
       },
       "hbond_issues": {
-        "poor_hbond": true,
+        "low_dssr_score": true,
         "incorrect_count": true,
         "bad_angles": true
       },
@@ -2355,15 +2419,15 @@
       "ligand_bindings": []
     },
     {
-      "score": 70.0,
-      "geometry_penalty": 25.0,
-      "hbond_penalty": 5.0,
+      "score": 80.0,
+      "geometry_penalty": 20.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
-        "twisted": true,
+        "rotational_distortion": true,
         "non_coplanar": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-186-",
@@ -2377,15 +2441,15 @@
       "ligand_bindings": []
     },
     {
-      "score": 65.0,
-      "geometry_penalty": 30.0,
-      "hbond_penalty": 5.0,
+      "score": 75.0,
+      "geometry_penalty": 25.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
         "misaligned": true,
-        "non_coplanar": true
+        "improper_opening": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-184-",
@@ -2399,14 +2463,14 @@
       "ligand_bindings": []
     },
     {
-      "score": 85.0,
+      "score": 90.0,
       "geometry_penalty": 10.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
-        "twisted": true
+        "rotational_distortion": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-325-",
@@ -2420,16 +2484,18 @@
       "ligand_bindings": []
     },
     {
-      "score": 55.0,
-      "geometry_penalty": 40.0,
-      "hbond_penalty": 5.0,
+      "score": 40.0,
+      "geometry_penalty": 45.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {
         "misaligned": true,
-        "twisted": true,
-        "non_coplanar": true
+        "rotational_distortion": true,
+        "non_coplanar": true,
+        "improper_opening": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true,
+        "bad_distance": true
       },
       "bp_info": {
         "res_1": "N-C-209-",
@@ -2443,15 +2509,15 @@
       "ligand_bindings": []
     },
     {
-      "score": 55.0,
-      "geometry_penalty": 30.0,
-      "hbond_penalty": 15.0,
+      "score": 65.0,
+      "geometry_penalty": 25.0,
+      "hbond_penalty": 10.0,
       "geometry_issues": {
         "misaligned": true,
-        "non_coplanar": true
+        "improper_opening": true
       },
       "hbond_issues": {
-        "poor_hbond": true,
+        "low_dssr_score": true,
         "incorrect_count": true,
         "bad_dihedral": true
       },
@@ -2467,14 +2533,15 @@
       "ligand_bindings": []
     },
     {
-      "score": 75.0,
-      "geometry_penalty": 15.0,
-      "hbond_penalty": 10.0,
+      "score": 70.0,
+      "geometry_penalty": 25.0,
+      "hbond_penalty": 5.0,
       "geometry_issues": {
-        "misaligned": true
+        "misaligned": true,
+        "non_coplanar": true
       },
       "hbond_issues": {
-        "poor_hbond": true,
+        "low_dssr_score": true,
         "bad_dihedral": true
       },
       "bp_info": {
@@ -2489,15 +2556,15 @@
       "ligand_bindings": []
     },
     {
-      "score": 65.0,
-      "geometry_penalty": 30.0,
-      "hbond_penalty": 5.0,
+      "score": 75.0,
+      "geometry_penalty": 25.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
         "misaligned": true,
         "non_coplanar": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-214-",
@@ -2511,14 +2578,14 @@
       "ligand_bindings": []
     },
     {
-      "score": 75.0,
+      "score": 80.0,
       "geometry_penalty": 15.0,
-      "hbond_penalty": 10.0,
+      "hbond_penalty": 5.0,
       "geometry_issues": {
         "misaligned": true
       },
       "hbond_issues": {
-        "poor_hbond": true,
+        "low_dssr_score": true,
         "incorrect_count": true
       },
       "bp_info": {
@@ -2550,12 +2617,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 50.0,
-      "geometry_penalty": 50.0,
+      "score": 55.0,
+      "geometry_penalty": 45.0,
       "hbond_penalty": 0.0,
       "geometry_issues": {
         "misaligned": true,
-        "non_coplanar": true,
+        "improper_opening": true,
         "zero_hbond": true
       },
       "hbond_issues": {},
@@ -2571,12 +2638,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-219-",
@@ -2590,14 +2657,14 @@
       "ligand_bindings": []
     },
     {
-      "score": 80.0,
+      "score": 85.0,
       "geometry_penalty": 15.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
         "misaligned": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-G-220-",
@@ -2611,12 +2678,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-252-",
@@ -2630,11 +2697,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 100,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
-      "hbond_issues": {},
+      "hbond_issues": {
+        "bad_distance": true
+      },
       "bp_info": {
         "res_1": "N-C-222-",
         "res_2": "N-G-251-",
@@ -2647,11 +2716,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 100,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
-      "hbond_issues": {},
+      "hbond_issues": {
+        "bad_distance": true
+      },
       "bp_info": {
         "res_1": "N-C-223-",
         "res_2": "N-G-250-",
@@ -2664,14 +2735,15 @@
       "ligand_bindings": []
     },
     {
-      "score": 80.0,
+      "score": 70.0,
       "geometry_penalty": 10.0,
-      "hbond_penalty": 10.0,
+      "hbond_penalty": 20.0,
       "geometry_issues": {
-        "twisted": true
+        "rotational_distortion": true
       },
       "hbond_issues": {
-        "poor_hbond": true,
+        "low_dssr_score": true,
+        "bad_distance": true,
         "bad_dihedral": true
       },
       "bp_info": {
@@ -2686,15 +2758,17 @@
       "ligand_bindings": []
     },
     {
-      "score": 55.0,
-      "geometry_penalty": 25.0,
-      "hbond_penalty": 20.0,
+      "score": 40.0,
+      "geometry_penalty": 30.0,
+      "hbond_penalty": 30.0,
       "geometry_issues": {
-        "twisted": true,
-        "non_coplanar": true
+        "rotational_distortion": true,
+        "non_coplanar": true,
+        "improper_opening": true
       },
       "hbond_issues": {
-        "poor_hbond": true,
+        "low_dssr_score": true,
+        "bad_distance": true,
         "bad_angles": true,
         "bad_dihedral": true,
         "weak_quality": true
@@ -2711,14 +2785,14 @@
       "ligand_bindings": []
     },
     {
-      "score": 75.0,
+      "score": 80.0,
       "geometry_penalty": 15.0,
-      "hbond_penalty": 10.0,
+      "hbond_penalty": 5.0,
       "geometry_issues": {
         "misaligned": true
       },
       "hbond_issues": {
-        "poor_hbond": true,
+        "low_dssr_score": true,
         "bad_angles": true
       },
       "bp_info": {
@@ -2733,16 +2807,16 @@
       "ligand_bindings": []
     },
     {
-      "score": 55.0,
-      "geometry_penalty": 40.0,
-      "hbond_penalty": 5.0,
+      "score": 65.0,
+      "geometry_penalty": 35.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
         "misaligned": true,
-        "twisted": true,
-        "non_coplanar": true
+        "rotational_distortion": true,
+        "improper_opening": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-G-227-",
@@ -2756,12 +2830,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-246-",
@@ -2775,11 +2849,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 100,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
-      "hbond_issues": {},
+      "hbond_issues": {
+        "bad_distance": true
+      },
       "bp_info": {
         "res_1": "N-C-229-",
         "res_2": "N-G-245-",
@@ -2792,12 +2868,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-230-",
@@ -2811,12 +2887,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-231-",
@@ -2847,14 +2923,14 @@
       "ligand_bindings": []
     },
     {
-      "score": 80.0,
-      "geometry_penalty": 15.0,
-      "hbond_penalty": 5.0,
+      "score": 90.0,
+      "geometry_penalty": 10.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
         "non_coplanar": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-233-",
@@ -2885,14 +2961,14 @@
       "ligand_bindings": []
     },
     {
-      "score": 80.0,
-      "geometry_penalty": 15.0,
-      "hbond_penalty": 5.0,
+      "score": 90.0,
+      "geometry_penalty": 10.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
         "non_coplanar": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-235-",
@@ -2910,7 +2986,7 @@
       "geometry_penalty": 30.0,
       "hbond_penalty": 0.0,
       "geometry_issues": {
-        "twisted": true,
+        "rotational_distortion": true,
         "zero_hbond": true
       },
       "hbond_issues": {},
@@ -2926,12 +3002,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 55.0,
-      "geometry_penalty": 45.0,
+      "score": 60.0,
+      "geometry_penalty": 40.0,
       "hbond_penalty": 0.0,
       "geometry_issues": {
-        "twisted": true,
-        "non_coplanar": true,
+        "rotational_distortion": true,
+        "improper_opening": true,
         "zero_hbond": true
       },
       "hbond_issues": {},
@@ -2947,11 +3023,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 100,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
-      "hbond_issues": {},
+      "hbond_issues": {
+        "bad_distance": true
+      },
       "bp_info": {
         "res_1": "N-C-262-",
         "res_2": "N-G-312-",
@@ -2964,12 +3042,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-263-",
@@ -2983,11 +3061,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 100,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
-      "hbond_issues": {},
+      "hbond_issues": {
+        "bad_distance": true
+      },
       "bp_info": {
         "res_1": "N-C-311-",
         "res_2": "N-G-264-",
@@ -3000,12 +3080,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true,
+        "bad_distance": true
       },
       "bp_info": {
         "res_1": "N-A-265-",
@@ -3019,15 +3100,15 @@
       "ligand_bindings": []
     },
     {
-      "score": 60.0,
-      "geometry_penalty": 30.0,
-      "hbond_penalty": 10.0,
+      "score": 70.0,
+      "geometry_penalty": 25.0,
+      "hbond_penalty": 5.0,
       "geometry_issues": {
         "misaligned": true,
         "non_coplanar": true
       },
       "hbond_issues": {
-        "poor_hbond": true,
+        "low_dssr_score": true,
         "bad_angles": true
       },
       "bp_info": {
@@ -3042,11 +3123,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 100,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
-      "hbond_issues": {},
+      "hbond_issues": {
+        "bad_distance": true
+      },
       "bp_info": {
         "res_1": "N-C-266-",
         "res_2": "N-G-309-",
@@ -3059,16 +3142,17 @@
       "ligand_bindings": []
     },
     {
-      "score": 60.0,
-      "geometry_penalty": 25.0,
-      "hbond_penalty": 15.0,
+      "score": 55.0,
+      "geometry_penalty": 20.0,
+      "hbond_penalty": 25.0,
       "geometry_issues": {
-        "twisted": true,
+        "rotational_distortion": true,
         "non_coplanar": true
       },
       "hbond_issues": {
-        "poor_hbond": true,
+        "low_dssr_score": true,
         "incorrect_count": true,
+        "bad_distance": true,
         "bad_dihedral": true
       },
       "bp_info": {
@@ -3083,12 +3167,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-308-",
@@ -3102,12 +3186,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-268-",
@@ -3121,12 +3205,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 50.0,
-      "geometry_penalty": 50.0,
+      "score": 55.0,
+      "geometry_penalty": 45.0,
       "hbond_penalty": 0.0,
       "geometry_issues": {
         "misaligned": true,
-        "non_coplanar": true,
+        "improper_opening": true,
         "zero_hbond": true
       },
       "hbond_issues": {},
@@ -3142,12 +3226,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-299-",
@@ -3178,12 +3262,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-G-281-",
@@ -3214,12 +3298,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-283-",
@@ -3233,12 +3317,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-284-",
@@ -3269,12 +3353,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-286-",
@@ -3288,12 +3372,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 50.0,
-      "geometry_penalty": 50.0,
+      "score": 55.0,
+      "geometry_penalty": 45.0,
       "hbond_penalty": 0.0,
       "geometry_issues": {
         "misaligned": true,
-        "non_coplanar": true,
+        "improper_opening": true,
         "zero_hbond": true
       },
       "hbond_issues": {},
@@ -3309,15 +3393,15 @@
       "ligand_bindings": []
     },
     {
-      "score": 60.0,
+      "score": 65.0,
       "geometry_penalty": 25.0,
-      "hbond_penalty": 15.0,
+      "hbond_penalty": 10.0,
       "geometry_issues": {
         "misaligned": true,
-        "twisted": true
+        "rotational_distortion": true
       },
       "hbond_issues": {
-        "poor_hbond": true,
+        "low_dssr_score": true,
         "incorrect_count": true,
         "bad_dihedral": true
       },
@@ -3333,15 +3417,15 @@
       "ligand_bindings": []
     },
     {
-      "score": 70.0,
+      "score": 75.0,
       "geometry_penalty": 25.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
         "misaligned": true,
-        "twisted": true
+        "rotational_distortion": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-G-313-",
@@ -3355,14 +3439,15 @@
       "ligand_bindings": []
     },
     {
-      "score": 70.0,
+      "score": 60.0,
       "geometry_penalty": 15.0,
-      "hbond_penalty": 15.0,
+      "hbond_penalty": 25.0,
       "geometry_issues": {
         "misaligned": true
       },
       "hbond_issues": {
-        "poor_hbond": true,
+        "low_dssr_score": true,
+        "bad_distance": true,
         "bad_angles": true,
         "weak_quality": true
       },
@@ -3378,12 +3463,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 90.0,
+      "score": 95.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 10.0,
+      "hbond_penalty": 5.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true,
+        "low_dssr_score": true,
         "bad_dihedral": true
       },
       "bp_info": {
@@ -3417,8 +3502,8 @@
       "ligand_bindings": []
     },
     {
-      "score": 85.0,
-      "geometry_penalty": 15.0,
+      "score": 90.0,
+      "geometry_penalty": 10.0,
       "hbond_penalty": 0.0,
       "geometry_issues": {
         "non_coplanar": true
@@ -3436,12 +3521,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-330-",
@@ -3472,11 +3557,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 100,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
-      "hbond_issues": {},
+      "hbond_issues": {
+        "bad_distance": true
+      },
       "bp_info": {
         "res_1": "N-C-321-",
         "res_2": "N-G-328-",
@@ -3489,14 +3576,14 @@
       "ligand_bindings": []
     },
     {
-      "score": 80.0,
+      "score": 85.0,
       "geometry_penalty": 15.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
         "misaligned": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-G-327-",
@@ -3547,12 +3634,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-G-366-",
@@ -3566,12 +3653,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-334-",
@@ -3619,11 +3706,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 100,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
-      "hbond_issues": {},
+      "hbond_issues": {
+        "bad_distance": true
+      },
       "bp_info": {
         "res_1": "N-C-362-",
         "res_2": "N-G-337-",
@@ -3653,12 +3742,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-339-",
@@ -3672,12 +3761,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 50.0,
-      "geometry_penalty": 50.0,
+      "score": 55.0,
+      "geometry_penalty": 45.0,
       "hbond_penalty": 0.0,
       "geometry_issues": {
         "misaligned": true,
-        "non_coplanar": true,
+        "improper_opening": true,
         "zero_hbond": true
       },
       "hbond_issues": {},
@@ -3693,15 +3782,15 @@
       "ligand_bindings": []
     },
     {
-      "score": 60.0,
-      "geometry_penalty": 30.0,
-      "hbond_penalty": 10.0,
+      "score": 70.0,
+      "geometry_penalty": 25.0,
+      "hbond_penalty": 5.0,
       "geometry_issues": {
         "misaligned": true,
-        "non_coplanar": true
+        "improper_opening": true
       },
       "hbond_issues": {
-        "poor_hbond": true,
+        "low_dssr_score": true,
         "weak_quality": true
       },
       "bp_info": {
@@ -3716,15 +3805,16 @@
       "ligand_bindings": []
     },
     {
-      "score": 65.0,
-      "geometry_penalty": 30.0,
-      "hbond_penalty": 5.0,
+      "score": 55.0,
+      "geometry_penalty": 25.0,
+      "hbond_penalty": 20.0,
       "geometry_issues": {
         "misaligned": true,
         "non_coplanar": true
       },
       "hbond_issues": {
-        "incorrect_count": true
+        "incorrect_count": true,
+        "bad_distance": true
       },
       "bp_info": {
         "res_1": "N-A-343-",
@@ -3755,12 +3845,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-354-",
@@ -3791,12 +3881,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-369-",
@@ -3810,12 +3900,13 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 85.0,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 15.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true,
+        "bad_distance": true
       },
       "bp_info": {
         "res_1": "N-A-370-",
@@ -3846,12 +3937,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 95.0,
+      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-399-",
@@ -3865,14 +3956,14 @@
       "ligand_bindings": []
     },
     {
-      "score": 85.0,
+      "score": 90.0,
       "geometry_penalty": 10.0,
-      "hbond_penalty": 5.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
-        "twisted": true
+        "rotational_distortion": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-373-",
@@ -3886,14 +3977,14 @@
       "ligand_bindings": []
     },
     {
-      "score": 80.0,
-      "geometry_penalty": 15.0,
-      "hbond_penalty": 5.0,
+      "score": 90.0,
+      "geometry_penalty": 10.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
         "non_coplanar": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-374-",
@@ -3907,14 +3998,14 @@
       "ligand_bindings": []
     },
     {
-      "score": 80.0,
-      "geometry_penalty": 15.0,
-      "hbond_penalty": 5.0,
+      "score": 90.0,
+      "geometry_penalty": 10.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
         "non_coplanar": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-396-",
@@ -3928,15 +4019,16 @@
       "ligand_bindings": []
     },
     {
-      "score": 70.0,
+      "score": 60.0,
       "geometry_penalty": 10.0,
-      "hbond_penalty": 20.0,
+      "hbond_penalty": 30.0,
       "geometry_issues": {
-        "twisted": true
+        "rotational_distortion": true
       },
       "hbond_issues": {
-        "poor_hbond": true,
+        "low_dssr_score": true,
         "incorrect_count": true,
+        "bad_distance": true,
         "bad_angles": true,
         "weak_quality": true
       },
@@ -3952,12 +4044,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 40.0,
-      "geometry_penalty": 60.0,
+      "score": 45.0,
+      "geometry_penalty": 55.0,
       "hbond_penalty": 0.0,
       "geometry_issues": {
         "misaligned": true,
-        "twisted": true,
+        "rotational_distortion": true,
         "non_coplanar": true,
         "zero_hbond": true
       },
@@ -3974,15 +4066,15 @@
       "ligand_bindings": []
     },
     {
-      "score": 65.0,
-      "geometry_penalty": 30.0,
-      "hbond_penalty": 5.0,
+      "score": 75.0,
+      "geometry_penalty": 25.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
         "misaligned": true,
         "non_coplanar": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-G-378-",
@@ -3996,15 +4088,15 @@
       "ligand_bindings": []
     },
     {
-      "score": 65.0,
-      "geometry_penalty": 30.0,
-      "hbond_penalty": 5.0,
+      "score": 75.0,
+      "geometry_penalty": 25.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
         "misaligned": true,
         "non_coplanar": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-392-",
@@ -4018,11 +4110,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 65.0,
-      "geometry_penalty": 35.0,
+      "score": 60.0,
+      "geometry_penalty": 40.0,
       "hbond_penalty": 0.0,
       "geometry_issues": {
         "non_coplanar": true,
+        "improper_opening": true,
         "zero_hbond": true
       },
       "hbond_issues": {},
@@ -4038,14 +4131,14 @@
       "ligand_bindings": []
     },
     {
-      "score": 80.0,
-      "geometry_penalty": 15.0,
-      "hbond_penalty": 5.0,
+      "score": 90.0,
+      "geometry_penalty": 10.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
         "non_coplanar": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-380-",
@@ -4059,14 +4152,14 @@
       "ligand_bindings": []
     },
     {
-      "score": 80.0,
-      "geometry_penalty": 15.0,
-      "hbond_penalty": 5.0,
+      "score": 90.0,
+      "geometry_penalty": 10.0,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
         "non_coplanar": true
       },
       "hbond_issues": {
-        "poor_hbond": true
+        "low_dssr_score": true
       },
       "bp_info": {
         "res_1": "N-A-390-",
@@ -4080,16 +4173,17 @@
       "ligand_bindings": []
     },
     {
-      "score": 45.0,
-      "geometry_penalty": 30.0,
-      "hbond_penalty": 25.0,
+      "score": 40.0,
+      "geometry_penalty": 25.0,
+      "hbond_penalty": 35.0,
       "geometry_issues": {
         "misaligned": true,
         "non_coplanar": true
       },
       "hbond_issues": {
-        "poor_hbond": true,
+        "low_dssr_score": true,
         "incorrect_count": true,
+        "bad_distance": true,
         "bad_angles": true,
         "bad_dihedral": true,
         "weak_quality": true
@@ -4106,12 +4200,12 @@
       "ligand_bindings": []
     },
     {
-      "score": 55.0,
-      "geometry_penalty": 40.0,
+      "score": 60.0,
+      "geometry_penalty": 35.0,
       "hbond_penalty": 5.0,
       "geometry_issues": {
         "misaligned": true,
-        "twisted": true,
+        "rotational_distortion": true,
         "non_coplanar": true
       },
       "hbond_issues": {

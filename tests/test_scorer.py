@@ -44,13 +44,13 @@ class TestScorer:
         assert bp_score['geometry_penalty'] > 0
         assert bp_score['score'] < 100
 
-    def test_score_twisted_base_pair(self, config, sample_twisted_base_pair, sample_hbond_data):
-        """Test that twisted base pair is penalized."""
+    def test_score_rotational_distortion_base_pair(self, config, sample_twisted_base_pair, sample_hbond_data):
+        """Test that rotationally distorted base pair is penalized."""
         scorer = Scorer(config)
         bp_score = scorer._score_base_pair(sample_twisted_base_pair, sample_hbond_data)
 
-        # Should have twist penalty
-        assert bp_score['geometry_issues']['twisted'] is True
+        # Should have rotational distortion penalty
+        assert bp_score['geometry_issues']['rotational_distortion'] is True
         assert bp_score['geometry_penalty'] > 0
         assert bp_score['score'] < 100
 

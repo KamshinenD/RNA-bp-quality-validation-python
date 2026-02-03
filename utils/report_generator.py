@@ -712,12 +712,13 @@ class ReportGenerator:
             
             # Geometry issues
             'Geom_Misaligned',
-            'Geom_Twisted',
+            'Geom_RotationalDistortion',
             'Geom_NonCoplanar',
-            'Geom_PoorHBond',
+            'Geom_ImproperOpening',
             'Geom_ZeroHBond',
-            
+
             # H-bond issues
+            'HBond_LowDSSRScore',
             'HBond_BadDistance',
             'HBond_BadAngles',
             'HBond_BadDihedral',
@@ -805,12 +806,13 @@ class ReportGenerator:
         basepair_scores = result_dict.get('basepair_scores', [])
         geom_counts = {
             'misaligned': 0,
-            'twisted': 0,
+            'rotational_distortion': 0,  # was 'twisted' - matches scorer2.py
             'non_coplanar': 0,
-            'poor_hbond': 0,   # poor DSSR H-bond quality stored under hbond_issues
+            'improper_opening': 0,       # added - matches scorer2.py
             'zero_hbond': 0
         }
         hbond_counts = {
+            'low_dssr_score': 0,  # was 'poor_hbond' - matches scorer2.py
             'bad_distance': 0,
             'bad_angles': 0,
             'bad_dihedral': 0,
@@ -828,13 +830,13 @@ class ReportGenerator:
                     geom_bp = bp_score.get('geometry_issues', {})
                     hbond_bp = bp_score.get('hbond_issues', {})
                     
-                    for issue in ['misaligned', 'twisted', 'non_coplanar', 'zero_hbond']:
+                    for issue in ['misaligned', 'rotational_distortion', 'non_coplanar', 'improper_opening', 'zero_hbond']:
                         if geom_bp.get(issue, False):
                             geom_counts[issue] += 1
-                    
-                    if hbond_bp.get('poor_hbond', False):
-                        geom_counts['poor_hbond'] += 1
-                    
+
+                    if hbond_bp.get('low_dssr_score', False):
+                        hbond_counts['low_dssr_score'] += 1
+
                     for issue in ['bad_distance', 'bad_angles', 'bad_dihedral', 'weak_quality', 'incorrect_count']:
                         if hbond_bp.get(issue, False):
                             hbond_counts[issue] += 1
@@ -893,10 +895,11 @@ class ReportGenerator:
             
             # Geometry issues
             'Geom_Misaligned': geom_counts.get('misaligned', 0),
-            'Geom_Twisted': geom_counts.get('twisted', 0),
+            'Geom_RotationalDistortion': geom_counts.get('rotational_distortion', 0),
             'Geom_NonCoplanar': geom_counts.get('non_coplanar', 0),
-            'Geom_PoorHBond': geom_counts.get('poor_hbond', 0),
+            'Geom_ImproperOpening': geom_counts.get('improper_opening', 0),
             'Geom_ZeroHBond': geom_counts.get('zero_hbond', 0),
+            'HBond_LowDSSRScore': hbond_counts.get('low_dssr_score', 0),
             
             # H-bond issues
             'HBond_BadDistance': hbond_counts.get('bad_distance', 0),
@@ -1084,9 +1087,9 @@ class ReportGenerator:
             'Motif_Length', 'Full_Structure_Length',
             'Total_Base_Pairs', 'Num_Problematic_BPs',
             'Num_Paired_Nucleotides', 'Pairing_Percentage',
-            'Geom_Misaligned', 'Geom_Twisted', 'Geom_NonCoplanar',
-            'Geom_PoorHBond', 'Geom_ZeroHBond',
-            'HBond_BadDistance', 'HBond_BadAngles', 'HBond_BadDihedral',
+            'Geom_Misaligned', 'Geom_RotationalDistortion', 'Geom_NonCoplanar',
+            'Geom_ImproperOpening', 'Geom_ZeroHBond',
+            'HBond_LowDSSRScore', 'HBond_BadDistance', 'HBond_BadAngles', 'HBond_BadDihedral',
             'HBond_WeakQuality', 'HBond_IncorrectCount',
             'Dominant_Issues',
             'Detailed_Issues',
@@ -1111,12 +1114,13 @@ class ReportGenerator:
         basepair_scores = motif_data.get('basepair_scores', [])
         geom_counts = {
             'misaligned': 0,
-            'twisted': 0,
+            'rotational_distortion': 0,  # was 'twisted' - matches scorer2.py
             'non_coplanar': 0,
-            'poor_hbond': 0,   # stored as geometry_issues in scorer for DSSR quality == poor
+            'improper_opening': 0,       # added - matches scorer2.py
             'zero_hbond': 0
         }
         hbond_counts = {
+            'low_dssr_score': 0,  # was 'poor_hbond' - matches scorer2.py
             'bad_distance': 0,
             'bad_angles': 0,
             'bad_dihedral': 0,
@@ -1145,16 +1149,16 @@ class ReportGenerator:
                     hbond_issues_bp = bp_score.get('hbond_issues', {})
                     
                     # Track geometry issues
-                    for issue in ['misaligned', 'twisted', 'non_coplanar', 'zero_hbond']:
+                    for issue in ['misaligned', 'rotational_distortion', 'non_coplanar', 'improper_opening', 'zero_hbond']:
                         if geom_issues_bp.get(issue, False):
                             geom_counts[issue] += 1
                             issues.append(f"geom_{issue}")
-                    
-                    # DSSR poor_hbond is stored under hbond_issues, but we want it counted in geom_* column per legacy naming
-                    if hbond_issues_bp.get('poor_hbond', False):
-                        geom_counts['poor_hbond'] += 1
-                        issues.append("hbond_poor_hbond")
-                    
+
+                    # Track low DSSR score (in hbond_issues)
+                    if hbond_issues_bp.get('low_dssr_score', False):
+                        hbond_counts['low_dssr_score'] += 1
+                        issues.append("hbond_low_dssr_score")
+
                     # Track H-bond issues
                     for issue in ['bad_distance', 'bad_angles', 'bad_dihedral', 'weak_quality', 'incorrect_count']:
                         if hbond_issues_bp.get(issue, False):
@@ -1219,10 +1223,11 @@ class ReportGenerator:
             'Num_Paired_Nucleotides': num_paired,
             'Pairing_Percentage': round(pairing_pct, 1),
             'Geom_Misaligned': geom_counts.get('misaligned', 0),
-            'Geom_Twisted': geom_counts.get('twisted', 0),
+            'Geom_RotationalDistortion': geom_counts.get('rotational_distortion', 0),
             'Geom_NonCoplanar': geom_counts.get('non_coplanar', 0),
-            'Geom_PoorHBond': geom_counts.get('poor_hbond', 0),
+            'Geom_ImproperOpening': geom_counts.get('improper_opening', 0),
             'Geom_ZeroHBond': geom_counts.get('zero_hbond', 0),
+            'HBond_LowDSSRScore': hbond_counts.get('low_dssr_score', 0),
             'HBond_BadDistance': hbond_counts.get('bad_distance', 0),
             'HBond_BadAngles': hbond_counts.get('bad_angles', 0),
             'HBond_BadDihedral': hbond_counts.get('bad_dihedral', 0),

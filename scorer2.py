@@ -71,11 +71,11 @@ class Scorer:
         # Score each base pair individually
         basepair_scores = []
         geometry_stats = {
-            'misaligned': 0, 'twisted': 0, 'non_coplanar': 0,
-            'zero_hbond': 0
+            'misaligned': 0, 'rotational_distortion': 0, 'non_coplanar': 0,
+            'improper_opening': 0, 'zero_hbond': 0
         }
         hbond_stats = {
-            'poor_hbond': 0, 'bad_distance': 0, 'bad_angles': 0, 'bad_dihedral': 0,
+            'low_dssr_score': 0, 'bad_distance': 0, 'bad_angles': 0, 'bad_dihedral': 0,
             'weak_quality': 0, 'incorrect_count': 0
         }
         

@@ -4,46 +4,37 @@ class Config:
     """RNA quality scoring configuration."""
     
     BASE_SCORE = 100.0
-    
-#     PENALTY_WEIGHTS = {
-#     'non_coplanar_pairs': 15.0,
-#     'low_hbond_score_pairs': 10.0,
-#     'zero_hbond_pairs': 10.0,
-#     'bad_hbond_distance': 15.0,
-#     'bad_hbond_angles': 10.0,
-    
-#     'incorrect_hbond_count': 9.0,
-    
-#     'misaligned_pairs': 6.0,
-#     'rotational_distortion_pairs': 7.0,
-#     'bad_hbond_dihedrals': 9.0,
-#     'weak_hbond_quality': 9.0,
-    
-#     'adjacent_pairing': 0.0,
-#     'self_pairing': 0.0,
 # }
     
     PENALTY_WEIGHTS = {
-    # CRITICAL FAILURES (rare in good structures)
-    'zero_hbond_pairs': 20.0,           # Almost never happens in good pairs
-    'non_coplanar_pairs': 10.0,         # Stagger (out-of-plane displacement)
-    
-    # MAJOR DEFECTS (uncommon in good structures)
-    'bad_hbond_distance': 15.0,         # Distance outside 2.3-3.7Å is serious
-    'misaligned_pairs': 15.0,           # Shear/stretch problems
-    'rotational_distortion_pairs': 10.0,  # Buckle/propeller issues
-    'improper_pair_opening': 10.0,       # Opening angle outside normal range
-    
-    # MODERATE ISSUES (common, especially in non-WC)
-    'bad_hbond_dihedrals': 5.0,         # Dihedral problems
-    # 'low_hbond_score_pairs': 5.0,     # DSSR hbond_score < 2.0
-    'weak_hbond_quality': 5.0,          # Individual H-bond quality < 0.70
-    
-    # MINOR ISSUES (common even in good structures)
-    'bad_hbond_angles': 5.0,            # One angle < 80° is very common
-    'incorrect_hbond_count': 5.0,       # With tolerant ranges, less critical
-}
-# Total: 100.0 points
+        # CRITICAL - No hydrogen bonds detected (DSSR + CSV both report 0)
+        'zero_hbond_pairs': 20.0,
+
+        # SEVERE - H-bond distance outside edge-specific range (DIST_MIN to DIST_MAX)
+        'bad_hbond_distance': 18.0,
+
+        # MAJOR - In-plane translational displacement (shear or stretch outside thresholds)
+        'misaligned_pairs': 14.0,
+
+        # MAJOR - Out-of-plane issues (buckle rotation or stagger displacement)
+        'non_coplanar_pairs': 12.0,
+
+        # MODERATE - H-bond quality score below edge-specific QUALITY_MIN threshold
+        'weak_hbond_quality': 10.0,
+
+        # MODERATE - H-bond dihedral in forbidden zone (not cis: -50 to 50, not trans: |angle| >= 140)
+        'bad_hbond_dihedrals': 8.0,
+
+        # MODERATE - H-bond count outside expected range for base pair type (or != ideal for cWW)
+        'incorrect_hbond_count': 8.0,
+
+        # MINOR - H-bond donor/acceptor angle below edge-specific ANGLE_MIN threshold
+        'bad_hbond_angles': 5.0,
+
+        # MINOR - Rotational distortion (propeller or opening outside thresholds)
+        'rotational_distortion_pairs': 5.0,
+    }
+    # Total: 100.0
     
     # ===== EXPECTED H-BOND COUNTS BY BASE PAIR TYPE =====
     # Format: (min_expected, max_expected, ideal_count)
@@ -73,35 +64,6 @@ class Config:
         'U-C': (1, 2, 1),
         'C-U': (1, 2, 1),
     }
-    
-    # ===== GEOMETRY THRESHOLDS =====
-    # OLD VALUES (commented out):
-    # SHEAR_MAX = 1.2              # Very relaxed
-    # STRETCH_MIN = -0.7           # Very tolerant
-    # STRETCH_MAX = 0.3            # Very tolerant
-    # STAGGER_MAX = 1.0            # Very relaxed
-    # BUCKLE_MAX = 30.0            # Very relaxed
-    # PROPELLER_MIN = -30.0        # Very relaxed
-    # PROPELLER_MAX = 10.0         # Very relaxed
-    # OPENING_MIN = -20.0          # Very relaxed
-    # OPENING_MAX = 20.0           # Very relaxed
-    # HBOND_SCORE_MIN = 2.2        # Higher threshold = more sensitive
-    
-    # NEW VALUES - DATA-DRIVEN (MIXED: 0.5 SD for translation, 1 SD for rotation)
-    # Based on analysis of 3,794,390 base pairs
-    # Translation properties (shear, stretch, stagger): 0.5 SD from ideal 0 (~38% coverage)
-    # Rotation properties (buckle, propeller, opening): 1 SD from ideal 0 (~68% coverage)
-    
-    # OLD GLOBAL THRESHOLDS (COMMENTED OUT - NOW USING EDGE-BASED THRESHOLDS)
-    # SHEAR_MAX = 1.5              # 0.5*std = 0.5*3.002 = 1.501 (translation property)
-    # STRETCH_MIN = -1.3           # -0.5*std = -0.5*2.663 = -1.332 (translation property)
-    # STRETCH_MAX = 1.3            # +0.5*std = 0.5*2.663 = 1.332 (translation property)
-    # STAGGER_MAX = 0.4            # 0.5*std = 0.5*0.779 = 0.390 (translation property)
-    # BUCKLE_MAX = 16.1            # 1*std = 16.058 (rotation property)
-    # PROPELLER_MIN = -14.7        # -1*std = -14.680 (rotation property)
-    # PROPELLER_MAX = 14.7         # +1*std = 14.680 (rotation property)
-    # OPENING_MIN = -30.8          # -0.5*std = -0.5*61.517 = -30.759 (rotation property, stricter)
-    # OPENING_MAX = 30.8           # +0.5*std = 0.5*61.517 = 30.759 (rotation property, stricter)
     
     HBOND_SCORE_MIN = 2.0        # Mean = 2.007 (flags pairs below average H-bond quality)
 

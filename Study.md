@@ -46,7 +46,7 @@ Classification rules:
 
     To do the above locally
     python3 cache_all_unique_rnas.py
-    python3 export_motif_basepairs.py --motifs-dir motifs --shard-by-pdb --shard-dir motif_base_pair
+    python3 export_motif_basepairs.py --motifs-dir unique_motifs --shard-by-pdb --shard-dir motif_base_pair
     python3 export_motif_basepairs.py --merge-shards --shard-dir motif_base_pair --output motif_basepairs.csv
 
 

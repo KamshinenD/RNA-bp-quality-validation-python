@@ -71,8 +71,8 @@ class Scorer:
         # Score each base pair individually
         basepair_scores = []
         geometry_stats = {
-            'misaligned': 0, 'rotational_distortion': 0, 'non_coplanar': 0,
-            'improper_opening': 0, 'zero_hbond': 0
+            'misaligned': 0, 'non_coplanar': 0, 'rotational_distortion': 0,
+            'zero_hbond': 0
         }
         hbond_stats = {
             'low_dssr_score': 0, 'bad_distance': 0, 'bad_angles': 0, 'bad_dihedral': 0,
@@ -189,33 +189,27 @@ class Scorer:
             geometry_issues['misaligned'] = True
             geometry_penalty += self.config.PENALTY_WEIGHTS['misaligned_pairs']
         
-        # Check rotational distortion (buckle and propeller)
+        # Check coplanarity (buckle and stagger)
         buckle = abs(bp.get('buckle', 0))
-        propeller = bp.get('propeller', 0)
-        buckle_max = geo_thresh.get('BUCKLE_MAX', 16.1)
-        propeller_min = geo_thresh.get('PROPELLER_MIN', -14.7)
-        propeller_max = geo_thresh.get('PROPELLER_MAX', 14.7)
-
-        if buckle > buckle_max or propeller < propeller_min or propeller > propeller_max:
-            geometry_issues['rotational_distortion'] = True
-            geometry_penalty += self.config.PENALTY_WEIGHTS['rotational_distortion_pairs']
-
-        # Check coplanarity (stagger only)
         stagger = abs(bp.get('stagger', 0))
+        buckle_max = geo_thresh.get('BUCKLE_MAX', 16.1)
         stagger_max = geo_thresh.get('STAGGER_MAX', 0.4)
 
-        if stagger > stagger_max:
+        if buckle > buckle_max or stagger > stagger_max:
             geometry_issues['non_coplanar'] = True
             geometry_penalty += self.config.PENALTY_WEIGHTS['non_coplanar_pairs']
 
-        # Check opening angle separately
+        # Check rotational distortion (propeller and opening)
+        propeller = bp.get('propeller', 0)
         opening = bp.get('opening', 0)
+        propeller_min = geo_thresh.get('PROPELLER_MIN', -14.7)
+        propeller_max = geo_thresh.get('PROPELLER_MAX', 14.7)
         opening_min = geo_thresh.get('OPENING_MIN', -30.8)
         opening_max = geo_thresh.get('OPENING_MAX', 30.8)
 
-        if opening < opening_min or opening > opening_max:
-            geometry_issues['improper_opening'] = True
-            geometry_penalty += self.config.PENALTY_WEIGHTS['improper_pair_opening']
+        if propeller < propeller_min or propeller > propeller_max or opening < opening_min or opening > opening_max:
+            geometry_issues['rotational_distortion'] = True
+            geometry_penalty += self.config.PENALTY_WEIGHTS['rotational_distortion_pairs']
         
         # Check DSSR quality score (hbond_score in the JSON)
         dssr_quality = bp.get('hbond_score', 0.0)

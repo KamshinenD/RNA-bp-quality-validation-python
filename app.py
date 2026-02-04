@@ -334,7 +334,7 @@ Scoring:
         '--motif-dir',
         type=str,
         default='unique_motifs',
-        help='Directory containing motif CIF files (default: motifs)'
+        help='Directory containing motif CIF files (default: unique_motifs)'
     )
     
     args = parser.parse_args()
@@ -792,7 +792,6 @@ Scoring:
 
                 # Summary
                 'num_base_pairs': len(bp_results),
-                'average_score': round(avg_score, 1),
                 'grade': grade,
 
                 # Individual base pair scores

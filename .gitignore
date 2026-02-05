@@ -8,4 +8,5 @@ motif_base_pair/
 motif_basepairs.csv
 scores_summary.csv
 score_motifs_summary.csv
+torsion_scores.csv
 *old*

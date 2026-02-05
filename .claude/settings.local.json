@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(python3:*)",
-      "Bash(python app.py:*)"
+      "Bash(python app.py:*)",
+      "Bash(python torsion_scores_analysis.py:*)"
     ]
   }
 }

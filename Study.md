@@ -57,4 +57,17 @@ Classification rules:
 # Use custom folder = python app.py --pdb_id 6V3A --motif-name HAIRPIN-2-CGAG-7O7Y-1 --motif-dir /path/to/my/motifs
 
 # Use relative custom folder = python app.py --pdb_id 6V3A --motif-name HAIRPIN-2-CGAG-7O7Y-1 --motif-dir custom_motifs
+
+
+Usage:                                                                                                                                       
+                                                                                                                                               
+  # Default: 500 EM + 500 X-ray                                                                                                               
+  python torsion_scores_analysis.py                                                                                                            
+                                                                                                                                               
+  #Custom sampling                                                                                                                    python torsion_scores_analysis.py --em 1000 --xray 1000                                                                                      
+                                                                                                   
+  # Process all base-pairs                                                                                                                  python torsion_scores_analysis.py --all                                                                                                      
+                                                                                                                                               
+  # Specify output file                                                                                                                      
+  python torsion_scores_analysis.py -o my_analysis.csv
       

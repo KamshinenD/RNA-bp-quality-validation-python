@@ -280,3 +280,8 @@ The following files are NOT tested because they're not used in the main executio
 - `config_bc_thresholds.py` - Alternative config, not used by app.py
 
 The main entry points ([app.py](app.py) and [scorer2.py](scorer2.py)) use the files listed in "Key Files Tested" above.
+
+
+can you take a look at the data folder and the torsions folder in it. it contains torsion angles of the backbone... an you look at the distribution and tell me what to do. My PI wants me to kind of look at the torsions when I am scoring my base-pairs and see if there is any relationship between the backbone geometry and scores of the base-pairs. let's discuss when you check the distribution  
+
+  go ahead... pls look at my scoring algorithm for base-pair and look at the torsions             

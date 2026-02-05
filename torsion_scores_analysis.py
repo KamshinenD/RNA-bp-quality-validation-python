@@ -125,23 +125,11 @@ def analyze_basepairs(input_csv: str, n_em: int, n_xray: int,
 
     print(f"Total base-pairs in file: {len(df):,}")
 
-    # Restrict to unique RNAs (from data/uniqueRNAS.csv); exclude PDB IDs in g_quads.py
-    unique_csv = Path(__file__).resolve().parent / "data" / "uniqueRNAS.csv"
+    # Use only data in motif_basepairs.csv; exclude PDB IDs in g_quads.py; torsion from data/torsions
     g_quad_pdb_ids = {p.upper() for p in g_quads}
-    if unique_csv.exists():
-        unique_df = pd.read_csv(unique_csv)
-        if "unique_pdb_id" in unique_df.columns:
-            unique_pdb_ids = set(unique_df["unique_pdb_id"].astype(str).str.strip().str.upper().dropna().unique())
-            allowed_pdb_ids = unique_pdb_ids - g_quad_pdb_ids
-            before = len(df)
-            df = df[df["pdb_id"].astype(str).str.strip().str.upper().isin(allowed_pdb_ids)]
-            print(f"Filtered to unique RNAs (excluding PDB IDs in g_quads.py): {len(df):,} base-pairs ({before - len(df):,} removed)")
-        else:
-            df = df[~df["pdb_id"].astype(str).str.strip().str.upper().isin(g_quad_pdb_ids)]
-            print(f"Excluded PDB IDs in g_quads.py: {len(df):,} base-pairs remaining")
-    else:
-        df = df[~df["pdb_id"].astype(str).str.strip().str.upper().isin(g_quad_pdb_ids)]
-        print(f"Excluded PDB IDs in g_quads.py (no uniqueRNAS.csv): {len(df):,} base-pairs remaining")
+    before = len(df)
+    df = df[~df["pdb_id"].astype(str).str.strip().str.upper().isin(g_quad_pdb_ids)]
+    print(f"Excluded PDB IDs in g_quads.py: {len(df):,} base-pairs ({before - len(df):,} removed)")
 
     # Get available torsion files
     available_pdb_ids = set(
@@ -268,19 +256,30 @@ def analyze_basepairs(input_csv: str, n_em: int, n_xray: int,
         record['chi_conf_match'] = record['chi_conf_1'] == record['chi_conf_2']
 
         # Torsion outlier flags: check each angle against (edge, bp_type) thresholds
+        # Thresholds: (min, max) for unimodal, or [(m1,M1),(m2,M2)] for bimodal
         thresholds = get_torsion_thresholds(row['lw_notation'], row['bp_type'])
+
+        def _is_in_ranges(val, ranges):
+            if val is None or not np.isfinite(val) or not ranges:
+                return True
+            if isinstance(ranges, tuple) and len(ranges) == 2:
+                return ranges[0] <= val <= ranges[1]
+            for lo, hi in ranges:
+                if lo <= val <= hi:
+                    return True
+            return False
+
         for angle in TORSION_ANGLES:
             v1 = t1.get(angle)
             v2 = t2.get(angle)
-            tup = thresholds.get(angle)
-            if not tup or len(tup) != 2:
-                record[f'is_{angle}_outlier'] = False  # no threshold -> not outlier
+            ranges = thresholds.get(angle)
+            if not ranges:
+                record[f'is_{angle}_outlier'] = False
                 continue
-            lo, hi = tup
             outlier = False
-            if v1 is not None and np.isfinite(v1) and (v1 < lo or v1 > hi):
+            if v1 is not None and np.isfinite(v1) and not _is_in_ranges(v1, ranges):
                 outlier = True
-            if v2 is not None and np.isfinite(v2) and (v2 < lo or v2 > hi):
+            if v2 is not None and np.isfinite(v2) and not _is_in_ranges(v2, ranges):
                 outlier = True
             record[f'is_{angle}_outlier'] = outlier
 
@@ -405,5 +404,4 @@ if __name__ == "__main__":
     main()
     
     
-    
-
+# python3 torsion_scores_analysis.py --all

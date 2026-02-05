@@ -3,7 +3,7 @@
 Generate torsion thresholds for config from torsion_thresholds_analysis.json.
 
 Rules:
-- Threshold = mean ± 1SD (outside range = outlier)
+- Unimodal: 2.5th-97.5th percentile. Bimodal: GMM clusters, 2.5th-97.5th per cluster.
 - Only edge types with >1k total data
 - Only base-pair types with >1k data (within each edge)
 - Exclude edge types containing a dot (.)
@@ -51,38 +51,52 @@ def edge_qualifies(edge_name: str, edge_data: dict) -> bool:
     return total >= MIN_COUNT
 
 
+def _ranges_to_config_val(ranges: list) -> tuple:
+    """Convert ranges list to config value: (min,max) if single, [(m1,M1),(m2,M2)] if multi."""
+    if not ranges:
+        return None
+    if len(ranges) == 1:
+        return tuple(ranges[0])
+    return [tuple(r) for r in ranges]
+
+
+def _extract_ranges(stats: dict, angle: str) -> list:
+    """Get ranges from stats. Handles old format (mean_minus_2sd) and new (ranges)."""
+    if "ranges" in stats and stats["ranges"]:
+        return stats["ranges"]
+    mn = stats.get("mean_minus_2sd")
+    mx = stats.get("mean_plus_2sd")
+    if mn is not None and mx is not None:
+        return [(mn, mx)]
+    return []
+
+
 def build_thresholds(data: dict) -> dict:
     """
     Build TORSION_THRESHOLDS_BY_EDGE_BY_BASE_PAIR.
-    Structure: edge -> bp_type -> {angle: (min, max)} where min/max = mean ± 1SD
+    Structure: edge -> bp_type -> {angle: (min, max) or [(m1,M1),(m2,M2)]}
     """
     result = {}
-    global_other_bucket = defaultdict(lambda: defaultdict(dict))  # angle -> agg values for stats
+    global_other_bucket = defaultdict(lambda: defaultdict(lambda: {"mins": [], "maxs": []}))
 
     for edge_name, edge_data in data.items():
         if edge_name == "total_base_pairs":
             continue
 
         if not edge_qualifies(edge_name, edge_data):
-            # Add all bp_types from this edge to global _OTHER
             for bp_type, bp_data in edge_data.items():
                 if not isinstance(bp_data, dict):
                     continue
                 for angle, stats in bp_data.items():
                     if angle not in TORSION_ANGLES or not isinstance(stats, dict):
                         continue
-                    mn = stats.get("mean_minus_1sd")
-                    mx = stats.get("mean_plus_1sd")
-                    if mn is not None and mx is not None:
-                        if angle not in global_other_bucket[bp_type]:
-                            global_other_bucket[bp_type][angle] = {"mins": [], "maxs": []}
-                        global_other_bucket[bp_type][angle]["mins"].append(mn)
-                        global_other_bucket[bp_type][angle]["maxs"].append(mx)
+                    for lo, hi in _extract_ranges(stats, angle):
+                        global_other_bucket[bp_type][angle]["mins"].append(lo)
+                        global_other_bucket[bp_type][angle]["maxs"].append(hi)
             continue
 
-        # Edge qualifies - build edge entry with _OTHER for rare bp_types
         edge_result = {}
-        other_bucket = defaultdict(lambda: {"mins": [], "maxs": [], "counts": []})
+        other_bucket = defaultdict(lambda: {"mins": [], "maxs": []})
 
         for bp_type, bp_data in edge_data.items():
             if not isinstance(bp_data, dict):
@@ -92,48 +106,42 @@ def build_thresholds(data: dict) -> dict:
                 for angle, stats in bp_data.items():
                     if angle not in TORSION_ANGLES or not isinstance(stats, dict):
                         continue
-                    mn = stats.get("mean_minus_1sd")
-                    mx = stats.get("mean_plus_1sd")
-                    if mn is not None and mx is not None:
-                        other_bucket[angle]["mins"].append(mn)
-                        other_bucket[angle]["maxs"].append(mx)
-                        other_bucket[angle]["counts"].append(stats.get("count", 0))
+                    for lo, hi in _extract_ranges(stats, angle):
+                        other_bucket[angle]["mins"].append(lo)
+                        other_bucket[angle]["maxs"].append(hi)
             else:
                 bp_thresholds = {}
                 for angle, stats in bp_data.items():
                     if angle not in TORSION_ANGLES or not isinstance(stats, dict):
                         continue
-                    mn = stats.get("mean_minus_1sd")
-                    mx = stats.get("mean_plus_1sd")
-                    if mn is not None and mx is not None:
-                        bp_thresholds[angle] = (round(mn, 2), round(mx, 2))
+                    ranges = _extract_ranges(stats, angle)
+                    if ranges:
+                        val = _ranges_to_config_val(ranges)
+                        if val is not None:
+                            bp_thresholds[angle] = val
                 if bp_thresholds:
                     edge_result[bp_type] = bp_thresholds
 
         if other_bucket:
             other_thresholds = {}
             for angle, agg in other_bucket.items():
-                if not agg["mins"]:
-                    continue
-                # Use weighted average of ranges, or min of mins and max of maxs
-                min_val = min(agg["mins"])
-                max_val = max(agg["maxs"])
-                other_thresholds[angle] = (round(min_val, 2), round(max_val, 2))
+                if agg["mins"]:
+                    min_val = min(agg["mins"])
+                    max_val = max(agg["maxs"])
+                    other_thresholds[angle] = (round(min_val, 2), round(max_val, 2))
             if other_thresholds:
                 edge_result["_OTHER"] = other_thresholds
 
         if edge_result:
             result[edge_name] = edge_result
 
-    # Build global _OTHER: just angles, no bp_type breakdown (aggregate across all "other" bp_types)
     if global_other_bucket:
         angle_aggs = defaultdict(lambda: {"mins": [], "maxs": []})
         for bp_type, angles in global_other_bucket.items():
             for angle, agg in angles.items():
-                if not agg.get("mins"):
-                    continue
-                angle_aggs[angle]["mins"].extend(agg["mins"])
-                angle_aggs[angle]["maxs"].extend(agg["maxs"])
+                if agg.get("mins"):
+                    angle_aggs[angle]["mins"].extend(agg["mins"])
+                    angle_aggs[angle]["maxs"].extend(agg["maxs"])
         other_thresholds = {}
         for angle, agg in angle_aggs.items():
             if agg["mins"]:
@@ -161,24 +169,28 @@ def main():
     # Generate Python config block
     block_lines = [
         "",
-        "    # ===== BACKBONE TORSION THRESHOLDS (mean ± 1SD, outside = outlier) =====",
-        "    # Structure: edge -> bp_type -> angle -> (min, max)",
+        "    # ===== BACKBONE TORSION THRESHOLDS (2.5-97.5 pct; unimodal or bimodal GMM) =====",
+        "    # angle -> (min, max) or [(m1,M1),(m2,M2)] for bimodal",
         "    # Only edge/bp_type with >=1000 data; edges with '.', '--', or <1k go to _OTHER",
         f"    # Generated from torsion_thresholds_analysis.json",
         "    TORSION_THRESHOLDS_BY_EDGE_BY_BASE_PAIR = {",
     ]
 
+    def _fmt_val(v):
+        if isinstance(v, tuple):
+            return f"({v[0]}, {v[1]})"
+        return "[" + ", ".join(f"({a}, {b})" for a, b in v) + "]"
+
     for edge in sorted(thresholds.keys(), key=lambda x: (x == "_OTHER", x)):
         bps = thresholds[edge]
         block_lines.append(f'        "{edge}": {{')
         if edge == "_OTHER":
-            # _OTHER: just angles, no bp_type breakdown
-            ang_str = ", ".join(f'"{a}": ({lo}, {hi})' for a, (lo, hi) in sorted(bps.items()))
+            ang_str = ", ".join(f'"{a}": {_fmt_val(val)}' for a, val in sorted(bps.items()))
             block_lines.append(f'            {ang_str},')
         else:
             for bp_type in sorted(bps.keys(), key=lambda x: (x == "_OTHER", x)):
                 angles = bps[bp_type]
-                ang_str = ", ".join(f'"{a}": ({lo}, {hi})' for a, (lo, hi) in sorted(angles.items()))
+                ang_str = ", ".join(f'"{a}": {_fmt_val(val)}' for a, val in sorted(angles.items()))
                 block_lines.append(f'            "{bp_type}": {{{ang_str}}},')
         block_lines.append("        },")
     block_lines.append("    }")

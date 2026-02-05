@@ -7,13 +7,19 @@ Uses data from:
   - data/basepairs/ (base pair geometry + bp_type, lw)
   - data/torsions/ (per-residue torsion angles: alpha, beta, gamma, delta, epsilon, zeta, eta, chi, v1-v4)
 
-Outputs: torsion_thresholds_analysis.json with mean, SD, mean±1SD, mean±2SD per (bp_type, edge)
-for each torsion angle, following the same structure as base-pair geometry thresholds.
+Outputs: torsion_thresholds_analysis.json with allowed ranges per (bp_type, edge) per angle.
+Unimodal: 2.5th-97.5th percentile. Bimodal: GMM clustering, 2.5th-97.5th within each cluster.
 """
 
 import json
 import numpy as np
 import pandas as pd
+
+try:
+    from sklearn.mixture import GaussianMixture
+    HAS_SKLEARN = True
+except ImportError:
+    HAS_SKLEARN = False
 from pathlib import Path
 from typing import Dict, List, Optional
 from collections import defaultdict
@@ -148,22 +154,79 @@ def collect_torsions_by_bp_and_edge(
     return dict(grouped), dict(counts), dict(totals)
 
 
+MIN_SAMPLE_FOR_BIMODAL = 50
+PERCENTILE_LO = 2.5
+PERCENTILE_HI = 97.5
+
+
+def _is_bimodal(arr: np.ndarray) -> bool:
+    """Use GMM to test if distribution is bimodal. Returns True if bimodal."""
+    if not HAS_SKLEARN or len(arr) < MIN_SAMPLE_FOR_BIMODAL:
+        return False
+    try:
+        X = arr.reshape(-1, 1)
+        gmm1 = GaussianMixture(n_components=1, random_state=42, max_iter=100)
+        gmm2 = GaussianMixture(n_components=2, random_state=42, max_iter=100)
+        gmm1.fit(X)
+        gmm2.fit(X)
+        # BIC: lower is better. If 2-component improves fit enough, treat as bimodal
+        bic1 = gmm1.bic(X)
+        bic2 = gmm2.bic(X)
+        if bic2 >= bic1:
+            return False
+        # Check separation: means should be > 60° apart for angular data
+        means = np.sort(gmm2.means_.ravel())
+        sep = abs(means[1] - means[0])
+        if sep > 180:
+            sep = 360 - sep
+        if sep < 60:
+            return False
+        # Both components should have non-negligible weight
+        weights = gmm2.weights_
+        if min(weights) < 0.05:
+            return False
+        return True
+    except Exception:
+        return False
+
+
 def compute_stats(values: List[float]) -> Optional[Dict]:
-    """Compute mean, std, mean±1SD, mean±2SD. Returns None if insufficient data."""
+    """
+    Compute allowed ranges: unimodal -> 2.5th-97.5th percentile;
+    bimodal -> GMM clustering, 2.5th-97.5th within each cluster.
+    Returns dict with "ranges" (list of (min, max) tuples), "count", "modality".
+    """
     arr = np.array([float(x) for x in values if x is not None], dtype=float)
     arr = arr[np.isfinite(arr)]
     if len(arr) < 2:
         return None
-    mean_val = float(np.mean(arr))
-    std_val = float(np.std(arr))
+    count = int(len(arr))
+    bimodal = _is_bimodal(arr)
+    ranges = []
+    if bimodal and HAS_SKLEARN:
+        try:
+            X = arr.reshape(-1, 1)
+            gmm = GaussianMixture(n_components=2, random_state=42, max_iter=100)
+            labels = gmm.fit_predict(X)
+            for c in range(2):
+                sub = arr[labels == c]
+                if len(sub) >= 5:
+                    lo = float(np.percentile(sub, PERCENTILE_LO))
+                    hi = float(np.percentile(sub, PERCENTILE_HI))
+                    ranges.append((round(lo, 2), round(hi, 2)))
+            if len(ranges) < 2:
+                bimodal = False
+        except Exception:
+            bimodal = False
+    if not bimodal or not ranges:
+        lo = float(np.percentile(arr, PERCENTILE_LO))
+        hi = float(np.percentile(arr, PERCENTILE_HI))
+        ranges = [(round(lo, 2), round(hi, 2))]
+        bimodal = False
     return {
-        "mean": round(mean_val, 2),
-        "std": round(std_val, 2),
-        "mean_minus_1sd": round(mean_val - std_val, 2),
-        "mean_plus_1sd": round(mean_val + std_val, 2),
-        "mean_minus_2sd": round(mean_val - 2 * std_val, 2),
-        "mean_plus_2sd": round(mean_val + 2 * std_val, 2),
-        "count": int(len(arr)),
+        "ranges": ranges,
+        "count": count,
+        "modality": "bimodal" if bimodal else "unimodal",
     }
 
 
@@ -236,7 +299,7 @@ def main():
     print("\nCollecting torsion angles by base-pair type and edge...")
     grouped, counts, totals = collect_torsions_by_bp_and_edge(unique_pdb_ids, exclude)
 
-    print("\nComputing statistics (mean, SD, mean±1SD, mean±2SD)...")
+    print("\nComputing allowed ranges (unimodal: 2.5-97.5%%; bimodal: GMM clusters)...")
     results = build_results(grouped, counts, totals)
 
     total_base_pairs = sum(totals.values())

@@ -31,6 +31,27 @@ def normalize_bp_type(bp_type: str) -> str:
     return "-".join(sorted(parts))
 
 
+def is_adjacent_pair(res_1: str, res_2: str) -> bool:
+    """
+    Return True if the two residues are adjacent in sequence (same chain, residue numbers differ by 1).
+    Excludes base pairs between consecutive residues (e.g. 74-75) which are often stacking/artifacts.
+    """
+    if not res_1 or not res_2:
+        return False
+    parts1 = res_1.split('-')
+    parts2 = res_2.split('-')
+    if len(parts1) < 3 or len(parts2) < 3:
+        return False
+    try:
+        chain1, num1 = parts1[0], int(parts1[2])
+        chain2, num2 = parts2[0], int(parts2[2])
+    except (ValueError, IndexError):
+        return False
+    if chain1 != chain2:
+        return False
+    return abs(num1 - num2) == 1
+
+
 def load_basepair_sample(basepair_dir: Path, max_files: int = None, sample_fraction: float = None,
                          include_pdb_ids: Optional[set] = None) -> List[Dict]:
     """
@@ -372,11 +393,13 @@ def calculate_statistics_by_group(values: List[float], group_name: str, ideal_va
         "median": float(np.median(values_array)),
         "min": float(np.min(values_array)),
         "max": float(np.max(values_array)),
+        "p2.5": float(np.percentile(values_array, 2.5)),
         "p5": float(np.percentile(values_array, 5)),
         "p25": float(np.percentile(values_array, 25)),
         "p50": float(np.percentile(values_array, 50)),
         "p75": float(np.percentile(values_array, 75)),
         "p95": float(np.percentile(values_array, 95)),
+        "p97.5": float(np.percentile(values_array, 97.5)),
         # Mean-based deviations
         "mean_minus_05sd": float(mean_val - 0.5 * std_val),
         "mean_plus_05sd": float(mean_val + 0.5 * std_val),
@@ -543,7 +566,14 @@ def main():
     # Load base pairs (process all files for complete analysis)
     print("\nProcessing ALL base pair files (this may take a few minutes)...")
     basepairs = load_basepair_sample(basepair_dir, max_files=None, include_pdb_ids=allowed_pdb_ids)
-    
+
+    # Exclude adjacent base pairs (same chain, residue numbers differ by 1)
+    before_adj = len(basepairs)
+    basepairs = [bp for bp in basepairs if not is_adjacent_pair(bp.get('res_1', ''), bp.get('res_2', ''))]
+    excluded_adj = before_adj - len(basepairs)
+    if excluded_adj > 0:
+        print(f"✓ Excluded {excluded_adj:,} adjacent base pairs (residue diff=1), {len(basepairs):,} remaining")
+
     if len(basepairs) == 0:
         print("Error: No base pair data loaded")
         sys.exit(1)

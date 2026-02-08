@@ -1,3454 +1,52 @@
 {
-  "overall_score": 84.8,
-  "grade": "GOOD",
-  "total_base_pairs": 209,
-  "avg_basepair_score": 84.8,
+  "overall_score": 90.8,
+  "grade": "EXCELLENT",
+  "total_base_pairs": 41,
+  "avg_basepair_score": 90.8,
   "geometry_issues": {
-    "misaligned": 50,
-    "non_coplanar": 49,
-    "rotational_distortion": 48,
-    "zero_hbond": 18
+    "misaligned": 8,
+    "non_coplanar": 4,
+    "rotational_distortion": 9,
+    "zero_hbond": 3
   },
   "geometry_fractions": {
-    "misaligned": 0.23923444976076555,
-    "non_coplanar": 0.23444976076555024,
-    "rotational_distortion": 0.22966507177033493,
-    "zero_hbond": 0.0861244019138756
+    "misaligned": 0.1951219512195122,
+    "non_coplanar": 0.0975609756097561,
+    "rotational_distortion": 0.21951219512195122,
+    "zero_hbond": 0.07317073170731707
   },
   "hbond_issues": {
-    "low_dssr_score": 119,
-    "bad_distance": 51,
-    "bad_angles": 10,
-    "bad_dihedral": 10,
-    "weak_quality": 15,
-    "incorrect_count": 12
+    "poor_hbond_score": 1,
+    "bad_distance": 3,
+    "bad_angles": 2,
+    "bad_dihedral": 2,
+    "incorrect_count": 3
   },
   "hbond_fractions": {
-    "low_dssr_score": 0.569377990430622,
-    "bad_distance": 0.24401913875598086,
-    "bad_angles": 0.04784688995215311,
-    "bad_dihedral": 0.04784688995215311,
-    "weak_quality": 0.07177033492822966,
-    "incorrect_count": 0.05741626794258373
+    "poor_hbond_score": 0.024390243902439025,
+    "bad_distance": 0.07317073170731707,
+    "bad_angles": 0.04878048780487805,
+    "bad_dihedral": 0.04878048780487805,
+    "incorrect_count": 0.07317073170731707
   },
-  "summary": "Overall Quality: 84.8/100 (GOOD)\nBase Pairs Analyzed: 209\n\nGeometry Issues:\n  - 23.9% misaligned\n  - 23.4% non coplanar\n  - 23.0% rotational distortion\n  - 8.6% zero hbond\n\nH-bond Issues:\n  - 56.9% low dssr score\n  - 24.4% bad distance\n  - 4.8% bad angles\n  - 4.8% bad dihedral\n  - 7.2% weak quality\n  - 5.7% incorrect count",
-  "num_problematic_bps": 52,
+  "summary": "Overall Quality: 90.8/100 (EXCELLENT)\nBase Pairs Analyzed: 41\n\nGeometry Issues:\n  - 19.5% misaligned\n  - 9.8% non coplanar\n  - 22.0% rotational distortion\n  - 7.3% zero hbond\n\nH-bond Issues:\n  - 2.4% poor hbond score\n  - 7.3% bad distance\n  - 4.9% bad angles\n  - 4.9% bad dihedral\n  - 7.3% incorrect count",
+  "num_problematic_bps": 4,
   "basepair_scores": [
     {
-      "score": 88.0,
-      "geometry_penalty": 12.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "non_coplanar": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-314-",
-        "res_2": "A-U-1-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.8922200802
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "A-C-2-",
-        "res_2": "N-G-313-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8528977461
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 75.0,
-      "geometry_penalty": 25.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "rotational_distortion": true,
-        "zero_hbond": true
-      },
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "A-G-3-",
-        "res_2": "N-G-264-",
-        "bp_type": "G-G",
-        "edge_type": "cWH",
-        "num_hbonds": 0,
-        "dssr_score": 0.0
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 81.0,
-      "geometry_penalty": 19.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-C-311-",
-        "res_2": "A-G-3-",
-        "bp_type": "C-G",
-        "edge_type": "--",
-        "num_hbonds": 0,
-        "dssr_score": 0.7252832839
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 81.0,
-      "geometry_penalty": 19.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "A-SSU-4-",
-        "res_2": "N-U-21-",
-        "bp_type": "SSU-U",
-        "edge_type": "cHW",
-        "num_hbonds": 0,
-        "dssr_score": 0.9575131812
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "A-A-5-",
-        "res_2": "N-U-20-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9810380281
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "A-A-6-",
-        "res_2": "N-U-19-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9754728401
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 85.0,
-      "geometry_penalty": 5.0,
-      "hbond_penalty": 10.0,
-      "geometry_issues": {
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "weak_quality": true
-      },
-      "bp_info": {
-        "res_1": "A-C-7-",
-        "res_2": "N-G-18-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.5987364868
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "A-C-8-",
-        "res_2": "N-G-17-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.9157364868
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "B-C-1-",
-        "res_2": "N-G-27-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.900997779
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "B-C-2-",
-        "res_2": "N-G-26-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8858404414
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "B-C-3-",
-        "res_2": "N-G-25-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8971353604
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-24-",
-        "res_2": "B-U-4-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9081709137
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "B-C-5-",
-        "res_2": "N-G-23-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.841399651
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 63.0,
-      "geometry_penalty": 14.0,
-      "hbond_penalty": 23.0,
-      "geometry_issues": {
-        "misaligned": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "bad_distance": true,
-        "bad_angles": true
-      },
-      "bp_info": {
-        "res_1": "N-G-22-",
-        "res_2": "B-U-6-",
-        "bp_type": "G-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.7607593739
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 81.0,
-      "geometry_penalty": 19.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-207-",
-        "res_2": "N-G-22-",
-        "bp_type": "A-G",
-        "edge_type": "tSS",
-        "num_hbonds": 1,
-        "dssr_score": 0.7503772943
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 65.0,
-      "geometry_penalty": 12.0,
-      "hbond_penalty": 23.0,
-      "geometry_issues": {
-        "non_coplanar": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "bad_distance": true,
-        "bad_angles": true
-      },
-      "bp_info": {
-        "res_1": "N-A-301-",
-        "res_2": "N-G-25-",
-        "bp_type": "A-G",
-        "edge_type": "cSW",
-        "num_hbonds": 1,
-        "dssr_score": 1.9229881536
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 80.0,
-      "geometry_penalty": 20.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "zero_hbond": true
-      },
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-A-29-",
-        "res_2": "N-A-57-",
-        "bp_type": "A-A",
-        "edge_type": "tWH",
-        "num_hbonds": 0,
-        "dssr_score": 0.0
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 70.0,
-      "geometry_penalty": 12.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {
-        "non_coplanar": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-A-31-",
-        "res_2": "N-U-56-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9501675351
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-C-55-",
-        "res_2": "N-G-32-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8780427016
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 68.0,
-      "geometry_penalty": 14.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {
-        "misaligned": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-G-54-",
-        "res_2": "N-U-33-",
-        "bp_type": "G-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.8698413799
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-A-53-",
-        "res_2": "N-U-34-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9042130654
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-35-",
-        "res_2": "N-U-52-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.8908900856
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-G-51-",
-        "res_2": "N-U-36-",
-        "bp_type": "G-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9072788075
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-37-",
-        "res_2": "N-G-50-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8702713926
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-A-38-",
-        "res_2": "N-U-49-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9037822572
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-C-48-",
-        "res_2": "N-G-39-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8603216403
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-C-47-",
-        "res_2": "N-G-40-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.820772015
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
       "score": 95.0,
-      "geometry_penalty": 5.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-46-",
-        "res_2": "N-C-41-",
-        "bp_type": "A-C",
-        "edge_type": "tWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.903323454
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
       "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-172-",
-        "res_2": "N-U-43-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9308938694
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 73.0,
-      "geometry_penalty": 17.0,
-      "hbond_penalty": 10.0,
-      "geometry_issues": {
-        "non_coplanar": true,
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "weak_quality": true
-      },
-      "bp_info": {
-        "res_1": "N-C-170-",
-        "res_2": "N-G-44-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.6323074278
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-C-45-",
-        "res_2": "N-G-169-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8674816203
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-46-",
-        "res_2": "N-A-210-",
-        "bp_type": "A-A",
-        "edge_type": "cSW",
-        "num_hbonds": 0,
-        "dssr_score": 1.83025997
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-93-",
-        "res_2": "N-G-58-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.896955754
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 86.0,
-      "geometry_penalty": 14.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "misaligned": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-G-92-",
-        "res_2": "N-U-59-",
-        "bp_type": "G-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9265894429
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-60-",
-        "res_2": "N-G-91-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8946199683
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-90-",
-        "res_2": "N-U-61-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.931157181
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-89-",
-        "res_2": "N-U-62-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.8974338174
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 67.0,
-      "geometry_penalty": 17.0,
-      "hbond_penalty": 16.0,
-      "geometry_issues": {
-        "non_coplanar": true,
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "incorrect_count": true,
-        "bad_dihedral": true
-      },
-      "bp_info": {
-        "res_1": "N-A-87-",
-        "res_2": "N-U-63-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 1,
-        "dssr_score": 1.8304711161
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 50.0,
-      "geometry_penalty": 14.0,
-      "hbond_penalty": 36.0,
-      "geometry_issues": {
-        "misaligned": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "incorrect_count": true,
-        "bad_distance": true,
-        "weak_quality": true
-      },
-      "bp_info": {
-        "res_1": "N-A-88-",
-        "res_2": "N-U-63-",
-        "bp_type": "A-U",
-        "edge_type": "tWW",
-        "num_hbonds": 1,
-        "dssr_score": 0.3306468997
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-64-",
-        "res_2": "N-U-86-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9734708069
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-65-",
-        "res_2": "N-U-85-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9221019243
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 95.0,
-      "geometry_penalty": 5.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-66-",
-        "res_2": "N-U-84-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9268366975
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 85.0,
-      "geometry_penalty": 5.0,
-      "hbond_penalty": 10.0,
-      "geometry_issues": {
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "weak_quality": true
-      },
-      "bp_info": {
-        "res_1": "N-C-67-",
-        "res_2": "N-G-83-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.6089018357
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-C-68-",
-        "res_2": "N-G-82-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8948081418
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 88.0,
-      "geometry_penalty": 12.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "non_coplanar": true
-      },
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-81-",
-        "res_2": "N-G-73-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.858215431
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-352-",
-        "res_2": "N-U-75-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.948230316
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-351-",
-        "res_2": "N-U-76-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9615014068
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-350-",
-        "res_2": "N-G-77-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.9461092012
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-78-",
-        "res_2": "N-G-349-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.9401620255
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-79-",
-        "res_2": "N-U-348-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9592506179
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-347-",
-        "res_2": "N-U-80-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9847686319
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 69.0,
-      "geometry_penalty": 31.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "non_coplanar": true,
-        "rotational_distortion": true
-      },
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-A-95-",
-        "res_2": "N-G-279-",
-        "bp_type": "A-G",
-        "edge_type": "t.S",
-        "num_hbonds": 1,
-        "dssr_score": 2.2145638389
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-278-",
-        "res_2": "N-G-96-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8823090226
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-97-",
-        "res_2": "N-U-277-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9870166807
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-A-97-",
-        "res_2": "N-U-300-",
-        "bp_type": "A-U",
-        "edge_type": "cHW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9077270424
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-C-98-",
-        "res_2": "N-G-276-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8724597627
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-99-",
-        "res_2": "N-G-275-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.9100421004
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-C-274-",
-        "res_2": "N-G-100-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.815706077
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 80.0,
-      "geometry_penalty": 20.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "zero_hbond": true
-      },
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-U-101-",
-        "res_2": "N-U-273-",
-        "bp_type": "U-U",
-        "edge_type": "cWW",
-        "num_hbonds": 0,
-        "dssr_score": 0.0
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 70.0,
-      "geometry_penalty": 12.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {
-        "non_coplanar": true
-      },
-      "hbond_issues": {
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-C-102-",
-        "res_2": "N-G-272-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8451054069
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 80.0,
-      "geometry_penalty": 20.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "zero_hbond": true
-      },
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-A-103-",
-        "res_2": "N-A-270-",
-        "bp_type": "A-A",
-        "edge_type": "tWH",
-        "num_hbonds": 0,
-        "dssr_score": 0.0
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 61.0,
-      "geometry_penalty": 39.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "rotational_distortion": true,
-        "zero_hbond": true
-      },
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-A-104-",
-        "res_2": "N-C-217-",
-        "bp_type": "A-C",
-        "edge_type": "cWS",
-        "num_hbonds": 0,
-        "dssr_score": 0.0
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 81.0,
-      "geometry_penalty": 14.0,
       "hbond_penalty": 5.0,
-      "geometry_issues": {
-        "misaligned": true
-      },
+      "geometry_issues": {},
       "hbond_issues": {
-        "low_dssr_score": true,
         "bad_angles": true
       },
       "bp_info": {
-        "res_1": "N-A-104-",
-        "res_2": "N-C-255-",
-        "bp_type": "A-C",
-        "edge_type": "tWW",
-        "num_hbonds": 1,
-        "dssr_score": 0.8946692843
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 81.0,
-      "geometry_penalty": 19.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-105-",
-        "res_2": "N-G-257-",
-        "bp_type": "A-G",
-        "edge_type": "tSS",
-        "num_hbonds": 1,
-        "dssr_score": 1.8033454974
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 95.0,
-      "geometry_penalty": 5.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-214-",
-        "res_2": "N-U-107-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.8949062902
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-C-213-",
-        "res_2": "N-G-108-",
+        "res_1": "X-C-13-",
+        "res_2": "X-G-83-",
         "bp_type": "C-G",
         "edge_type": "cWW",
         "num_hbonds": 3,
-        "dssr_score": 2.7915169957
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 74.0,
-      "geometry_penalty": 26.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "non_coplanar": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-G-108-",
-        "res_2": "N-U-259-",
-        "bp_type": "G-U",
-        "edge_type": "cHS",
-        "num_hbonds": 0,
-        "dssr_score": 0.7879319965
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-C-109-",
-        "res_2": "N-G-212-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.7897184943
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 69.0,
-      "geometry_penalty": 31.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "non_coplanar": true,
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-C-109-",
-        "res_2": "N-C-260-",
-        "bp_type": "C-C",
-        "edge_type": "tHH",
-        "num_hbonds": 0,
-        "dssr_score": 0.8898215589
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 69.0,
-      "geometry_penalty": 31.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "non_coplanar": true,
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-183-",
-        "res_2": "N-G-110-",
-        "bp_type": "A-G",
-        "edge_type": "cSW",
-        "num_hbonds": 0,
-        "dssr_score": 0.9410555556
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-211-",
-        "res_2": "N-G-110-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8877697794
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-209-",
-        "res_2": "N-G-111-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8933761211
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-C-208-",
-        "res_2": "N-G-112-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8057187613
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-113-",
-        "res_2": "N-A-207-",
-        "bp_type": "A-A",
-        "edge_type": "tSH",
-        "num_hbonds": 0,
-        "dssr_score": 1.827800571
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 68.0,
-      "geometry_penalty": 32.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "non_coplanar": true,
-        "zero_hbond": true
-      },
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-A-114-",
-        "res_2": "N-A-206-",
-        "bp_type": "A-A",
-        "edge_type": "tHS",
-        "num_hbonds": 0,
-        "dssr_score": 0.0
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 49.0,
-      "geometry_penalty": 51.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "non_coplanar": true,
-        "rotational_distortion": true,
-        "zero_hbond": true
-      },
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-A-115-",
-        "res_2": "N-A-206-",
-        "bp_type": "A-A",
-        "edge_type": "cWS",
-        "num_hbonds": 0,
-        "dssr_score": 0.0
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 78.0,
-      "geometry_penalty": 12.0,
-      "hbond_penalty": 10.0,
-      "geometry_issues": {
-        "non_coplanar": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "weak_quality": true
-      },
-      "bp_info": {
-        "res_1": "N-G-116-",
-        "res_2": "N-U-205-",
-        "bp_type": "G-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.6829986666
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 90.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 10.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "weak_quality": true
-      },
-      "bp_info": {
-        "res_1": "N-C-204-",
-        "res_2": "N-G-117-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.6403704694
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-C-203-",
-        "res_2": "N-G-118-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8246281944
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 88.0,
-      "geometry_penalty": 12.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "non_coplanar": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-G-119-",
-        "res_2": "N-U-202-",
-        "bp_type": "G-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.8492698753
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 88.0,
-      "geometry_penalty": 12.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "non_coplanar": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-324-",
-        "res_2": "N-G-119-",
-        "bp_type": "A-G",
-        "edge_type": "cSW",
-        "num_hbonds": 1,
-        "dssr_score": 0.7926267089
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 68.0,
-      "geometry_penalty": 14.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {
-        "misaligned": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-G-201-",
-        "res_2": "N-U-120-",
-        "bp_type": "G-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.8554767466
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-121-",
-        "res_2": "N-G-200-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.9269957195
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 63.0,
-      "geometry_penalty": 37.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "non_coplanar": true,
-        "rotational_distortion": true,
-        "zero_hbond": true
-      },
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-A-123-",
-        "res_2": "N-A-198-",
-        "bp_type": "A-A",
-        "edge_type": "tWH",
-        "num_hbonds": 0,
-        "dssr_score": 0.0
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 69.0,
-      "geometry_penalty": 31.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "non_coplanar": true,
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-123-",
-        "res_2": "N-G-200-",
-        "bp_type": "A-G",
-        "edge_type": "tWW",
-        "num_hbonds": 1,
-        "dssr_score": 0.7892933756
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 81.0,
-      "geometry_penalty": 19.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-C-124-",
-        "res_2": "N-C-197-",
-        "bp_type": "C-C",
-        "edge_type": "tHW",
-        "num_hbonds": 0,
-        "dssr_score": 0.92889933
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 33.0,
-      "geometry_penalty": 31.0,
-      "hbond_penalty": 36.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "non_coplanar": true,
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "incorrect_count": true,
-        "bad_distance": true,
-        "weak_quality": true
-      },
-      "bp_info": {
-        "res_1": "N-C-124-",
-        "res_2": "N-G-201-",
-        "bp_type": "C-G",
-        "edge_type": "tWS",
-        "num_hbonds": 2,
-        "dssr_score": 1.5603474765
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-196-",
-        "res_2": "N-G-126-",
-        "bp_type": "A-G",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9451377828
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-127-",
-        "res_2": "N-G-195-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8633746509
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-C-128-",
-        "res_2": "N-G-194-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8079084796
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-193-",
-        "res_2": "N-G-129-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8851755239
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-192-",
-        "res_2": "N-U-131-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9446538689
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-132-",
-        "res_2": "N-G-191-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8944533017
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-133-",
-        "res_2": "N-U-190-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9190199222
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-189-",
-        "res_2": "N-G-134-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8884012602
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-187-",
-        "res_2": "N-U-135-",
-        "bp_type": "A-U",
-        "edge_type": "cWH",
-        "num_hbonds": 2,
-        "dssr_score": 1.8221885864
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-136-",
-        "res_2": "N-U-182-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.937542522
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-137-",
-        "res_2": "N-G-181-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8202028195
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-138-",
-        "res_2": "N-G-180-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.9456779762
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 65.0,
-      "geometry_penalty": 17.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {
-        "non_coplanar": true,
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-A-139-",
-        "res_2": "N-G-164-",
-        "bp_type": "A-G",
-        "edge_type": "tHS",
-        "num_hbonds": 2,
-        "dssr_score": 0.9128320742
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-A-140-",
-        "res_2": "N-G-163-",
-        "bp_type": "A-G",
-        "edge_type": "tHS",
-        "num_hbonds": 2,
-        "dssr_score": 1.7693043805
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 68.0,
-      "geometry_penalty": 14.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {
-        "misaligned": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-G-141-",
-        "res_2": "N-U-162-",
-        "bp_type": "G-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.8428652354
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-161-",
-        "res_2": "N-U-142-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9208532556
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-C-143-",
-        "res_2": "N-G-160-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8648205168
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-A-159-",
-        "res_2": "N-U-144-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9028629833
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-145-",
-        "res_2": "N-G-158-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8864401639
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-A-146-",
-        "res_2": "N-U-157-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.8962528689
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-G-147-",
-        "res_2": "N-U-156-",
-        "bp_type": "G-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.8014689136
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-G-148-",
-        "res_2": "N-U-155-",
-        "bp_type": "G-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9579969427
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 85.0,
-      "geometry_penalty": 5.0,
-      "hbond_penalty": 10.0,
-      "geometry_issues": {
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "weak_quality": true
-      },
-      "bp_info": {
-        "res_1": "N-C-154-",
-        "res_2": "N-G-149-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.6269953588
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 72.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 28.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "bad_distance": true,
-        "weak_quality": true
-      },
-      "bp_info": {
-        "res_1": "N-A-153-",
-        "res_2": "N-G-150-",
-        "bp_type": "A-G",
-        "edge_type": "tSH",
-        "num_hbonds": 2,
-        "dssr_score": 2.0688729351
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 95.0,
-      "geometry_penalty": 5.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-151-",
-        "res_2": "N-A-248-",
-        "bp_type": "A-A",
-        "edge_type": "tWW",
-        "num_hbonds": 0,
-        "dssr_score": 1.915241643
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 69.0,
-      "geometry_penalty": 31.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "non_coplanar": true,
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-153-",
-        "res_2": "N-G-250-",
-        "bp_type": "A-G",
-        "edge_type": "tSS",
-        "num_hbonds": 1,
-        "dssr_score": 1.6391088437
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 69.0,
-      "geometry_penalty": 31.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "non_coplanar": true,
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-178-",
-        "res_2": "N-G-163-",
-        "bp_type": "A-G",
-        "edge_type": "cHH",
-        "num_hbonds": 0,
-        "dssr_score": 0.2906120861
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 66.0,
-      "geometry_penalty": 26.0,
-      "hbond_penalty": 8.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "non_coplanar": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "bad_dihedral": true
-      },
-      "bp_info": {
-        "res_1": "N-A-178-",
-        "res_2": "N-G-164-",
-        "bp_type": "A-G",
-        "edge_type": "cWH",
-        "num_hbonds": 1,
-        "dssr_score": 0.7964865016
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-C-165-",
-        "res_2": "N-G-175-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8766990538
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-166-",
-        "res_2": "N-G-174-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.9284343102
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 61.0,
-      "geometry_penalty": 31.0,
-      "hbond_penalty": 8.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "non_coplanar": true,
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "incorrect_count": true
-      },
-      "bp_info": {
-        "res_1": "N-A-173-",
-        "res_2": "N-U-167-",
-        "bp_type": "A-U",
-        "edge_type": "c.H",
-        "num_hbonds": 1,
-        "dssr_score": 0.9298215589
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 5.0,
-      "hbond_penalty": 13.0,
-      "geometry_issues": {
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "incorrect_count": true,
-        "bad_angles": true
-      },
-      "bp_info": {
-        "res_1": "N-G-188-",
-        "res_2": "N-U-168-",
-        "bp_type": "G-U",
-        "edge_type": "tWW",
-        "num_hbonds": 1,
-        "dssr_score": 0.9240687368
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 88.0,
-      "geometry_penalty": 12.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "non_coplanar": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-186-",
-        "res_2": "N-G-181-",
-        "bp_type": "A-G",
-        "edge_type": "tSS",
-        "num_hbonds": 1,
-        "dssr_score": 1.7194993511
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 81.0,
-      "geometry_penalty": 19.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-184-",
-        "res_2": "N-G-212-",
-        "bp_type": "A-G",
-        "edge_type": "tSS",
-        "num_hbonds": 1,
-        "dssr_score": 1.7224251217
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 95.0,
-      "geometry_penalty": 5.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-325-",
-        "res_2": "N-C-203-",
-        "bp_type": "A-C",
-        "edge_type": "tSW",
-        "num_hbonds": 0,
-        "dssr_score": 1.6178668631
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 51.0,
-      "geometry_penalty": 31.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "non_coplanar": true,
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-C-209-",
-        "res_2": "N-U-305-",
-        "bp_type": "C-U",
-        "edge_type": "cHH",
-        "num_hbonds": 1,
-        "dssr_score": 0.8131420232
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 65.0,
-      "geometry_penalty": 19.0,
-      "hbond_penalty": 16.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "incorrect_count": true,
-        "bad_dihedral": true
-      },
-      "bp_info": {
-        "res_1": "N-C-260-",
-        "res_2": "N-G-212-",
-        "bp_type": "C-G",
-        "edge_type": "tHH",
-        "num_hbonds": 2,
-        "dssr_score": 0.7217789252
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 66.0,
-      "geometry_penalty": 26.0,
-      "hbond_penalty": 8.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "non_coplanar": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "bad_dihedral": true
-      },
-      "bp_info": {
-        "res_1": "N-C-213-",
-        "res_2": "N-U-259-",
-        "bp_type": "C-U",
-        "edge_type": "tHW",
-        "num_hbonds": 1,
-        "dssr_score": 0.7998888889
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 74.0,
-      "geometry_penalty": 26.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "non_coplanar": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-214-",
-        "res_2": "N-U-259-",
-        "bp_type": "A-U",
-        "edge_type": "cW.",
-        "num_hbonds": 0,
-        "dssr_score": 0.5474884054
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 78.0,
-      "geometry_penalty": 14.0,
-      "hbond_penalty": 8.0,
-      "geometry_issues": {
-        "misaligned": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "incorrect_count": true
-      },
-      "bp_info": {
-        "res_1": "N-G-215-",
-        "res_2": "N-U-258-",
-        "bp_type": "G-U",
-        "edge_type": "cWW",
-        "num_hbonds": 1,
-        "dssr_score": 1.5809143029
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-216-",
-        "res_2": "N-G-257-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8719894348
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 61.0,
-      "geometry_penalty": 39.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "rotational_distortion": true,
-        "zero_hbond": true
-      },
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-217-",
-        "res_2": "N-C-255-",
-        "bp_type": "C-C",
-        "edge_type": "tWH",
-        "num_hbonds": 0,
-        "dssr_score": 0.0
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-219-",
-        "res_2": "N-G-254-",
-        "bp_type": "A-G",
-        "edge_type": "tHS",
-        "num_hbonds": 2,
-        "dssr_score": 1.9016270583
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 86.0,
-      "geometry_penalty": 14.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "misaligned": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-G-220-",
-        "res_2": "N-U-253-",
-        "bp_type": "G-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.8904069525
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-252-",
-        "res_2": "N-U-221-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9038999011
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-C-222-",
-        "res_2": "N-G-251-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8345726388
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-C-223-",
-        "res_2": "N-G-250-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8839819858
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 62.0,
-      "geometry_penalty": 12.0,
-      "hbond_penalty": 26.0,
-      "geometry_issues": {
-        "non_coplanar": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "bad_distance": true,
-        "bad_dihedral": true
-      },
-      "bp_info": {
-        "res_1": "N-A-248-",
-        "res_2": "N-U-224-",
-        "bp_type": "A-U",
-        "edge_type": "tWH",
-        "num_hbonds": 2,
-        "dssr_score": 1.7463545611
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 42.0,
-      "geometry_penalty": 17.0,
-      "hbond_penalty": 41.0,
-      "geometry_issues": {
-        "non_coplanar": true,
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "bad_distance": true,
-        "bad_angles": true,
-        "bad_dihedral": true,
-        "weak_quality": true
-      },
-      "bp_info": {
-        "res_1": "N-A-226-",
-        "res_2": "N-U-249-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.6014354375
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 81.0,
-      "geometry_penalty": 14.0,
-      "hbond_penalty": 5.0,
-      "geometry_issues": {
-        "misaligned": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "bad_angles": true
-      },
-      "bp_info": {
-        "res_1": "N-G-227-",
-        "res_2": "N-U-247-",
-        "bp_type": "G-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.8634338174
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 81.0,
-      "geometry_penalty": 19.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-G-227-",
-        "res_2": "N-U-249-",
-        "bp_type": "G-U",
-        "edge_type": "cSW",
-        "num_hbonds": 0,
-        "dssr_score": 1.1863788351
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-246-",
-        "res_2": "N-U-228-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9356821367
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-C-229-",
-        "res_2": "N-G-245-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.882829563
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-230-",
-        "res_2": "N-U-244-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.941157181
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-231-",
-        "res_2": "N-U-243-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9018521142
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-232-",
-        "res_2": "N-G-242-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8917374835
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 88.0,
-      "geometry_penalty": 12.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "non_coplanar": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-233-",
-        "res_2": "N-U-241-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9522630203
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-240-",
-        "res_2": "N-G-234-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.9377249777
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 88.0,
-      "geometry_penalty": 12.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "non_coplanar": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-235-",
-        "res_2": "N-U-239-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.8956463779
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 75.0,
-      "geometry_penalty": 25.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "rotational_distortion": true,
-        "zero_hbond": true
-      },
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-A-256-",
-        "res_2": "N-G-303-",
-        "bp_type": "A-G",
-        "edge_type": "cWS",
-        "num_hbonds": 0,
-        "dssr_score": 0.0
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 63.0,
-      "geometry_penalty": 37.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "non_coplanar": true,
-        "rotational_distortion": true,
-        "zero_hbond": true
-      },
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-A-261-",
-        "res_2": "N-A-265-",
-        "bp_type": "A-A",
-        "edge_type": "tWH",
-        "num_hbonds": 0,
-        "dssr_score": 0.0
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-C-262-",
-        "res_2": "N-G-312-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.7834125663
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-263-",
-        "res_2": "N-G-312-",
-        "bp_type": "A-G",
-        "edge_type": "tHS",
-        "num_hbonds": 2,
-        "dssr_score": 1.8480375413
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-C-311-",
-        "res_2": "N-G-264-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8573376008
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-A-265-",
-        "res_2": "N-U-310-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.905737217
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 69.0,
-      "geometry_penalty": 26.0,
-      "hbond_penalty": 5.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "non_coplanar": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "bad_angles": true
-      },
-      "bp_info": {
-        "res_1": "N-A-306-",
-        "res_2": "N-C-266-",
-        "bp_type": "A-C",
-        "edge_type": "tHW",
-        "num_hbonds": 1,
-        "dssr_score": 0.8731868723
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-C-266-",
-        "res_2": "N-G-309-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8036157894
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 49.0,
-      "geometry_penalty": 17.0,
-      "hbond_penalty": 34.0,
-      "geometry_issues": {
-        "non_coplanar": true,
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "incorrect_count": true,
-        "bad_distance": true,
-        "bad_dihedral": true
-      },
-      "bp_info": {
-        "res_1": "N-C-266-",
-        "res_2": "N-G-358-",
-        "bp_type": "C-G",
-        "edge_type": "cSS",
-        "num_hbonds": 1,
-        "dssr_score": 1.737454482
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-308-",
-        "res_2": "N-U-267-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9077235508
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-268-",
-        "res_2": "N-U-307-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9122530369
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 61.0,
-      "geometry_penalty": 39.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "rotational_distortion": true,
-        "zero_hbond": true
-      },
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-A-269-",
-        "res_2": "N-A-304-",
-        "bp_type": "A-A",
-        "edge_type": "t.W",
-        "num_hbonds": 0,
-        "dssr_score": 0.0
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-299-",
-        "res_2": "N-G-279-",
-        "bp_type": "A-G",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9664977958
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-298-",
-        "res_2": "N-G-280-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.9298136385
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-G-281-",
-        "res_2": "N-U-297-",
-        "bp_type": "G-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.912171872
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-296-",
-        "res_2": "N-G-282-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8806005459
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-283-",
-        "res_2": "N-U-295-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9616700308
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-284-",
-        "res_2": "N-U-294-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9586868877
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-293-",
-        "res_2": "N-G-285-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8475840603
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-286-",
-        "res_2": "N-U-292-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9761689147
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 61.0,
-      "geometry_penalty": 39.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "rotational_distortion": true,
-        "zero_hbond": true
-      },
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-U-287-",
-        "res_2": "N-U-291-",
-        "bp_type": "U-U",
-        "edge_type": "cWW",
-        "num_hbonds": 0,
-        "dssr_score": 0.0
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 65.0,
-      "geometry_penalty": 19.0,
-      "hbond_penalty": 16.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "incorrect_count": true,
-        "bad_dihedral": true
-      },
-      "bp_info": {
-        "res_1": "N-G-358-",
-        "res_2": "N-U-310-",
-        "bp_type": "G-U",
-        "edge_type": "tSW",
-        "num_hbonds": 1,
-        "dssr_score": 1.6987650734
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 69.0,
-      "geometry_penalty": 31.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "non_coplanar": true,
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-G-313-",
-        "res_2": "N-G-408-",
-        "bp_type": "G-G",
-        "edge_type": "tHW",
-        "num_hbonds": 0,
-        "dssr_score": 0.5592423105
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 53.0,
-      "geometry_penalty": 14.0,
-      "hbond_penalty": 33.0,
-      "geometry_issues": {
-        "misaligned": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "bad_distance": true,
-        "bad_angles": true,
-        "weak_quality": true
-      },
-      "bp_info": {
-        "res_1": "N-C-315-",
-        "res_2": "N-G-405-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 1.9363223677
+        "dssr_score": 2.5926993515
       },
       "protein_bindings": [],
       "ligand_bindings": []
@@ -3459,54 +57,15 @@
       "hbond_penalty": 8.0,
       "geometry_issues": {},
       "hbond_issues": {
-        "low_dssr_score": true,
-        "bad_dihedral": true
+        "incorrect_count": true
       },
       "bp_info": {
-        "res_1": "N-C-316-",
-        "res_2": "N-U-404-",
-        "bp_type": "C-U",
+        "res_1": "X-G-14-",
+        "res_2": "X-U-82-",
+        "bp_type": "G-U",
         "edge_type": "cWW",
         "num_hbonds": 1,
-        "dssr_score": 0.86339933
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 80.0,
-      "geometry_penalty": 20.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "zero_hbond": true
-      },
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-U-317-",
-        "res_2": "N-U-403-",
-        "bp_type": "U-U",
-        "edge_type": "cWW",
-        "num_hbonds": 0,
-        "dssr_score": 0.0
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 88.0,
-      "geometry_penalty": 12.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "non_coplanar": true
-      },
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-318-",
-        "res_2": "N-G-331-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8795848449
+        "dssr_score": 1.7278581096
       },
       "protein_bindings": [],
       "ligand_bindings": []
@@ -3516,16 +75,31 @@
       "geometry_penalty": 0.0,
       "hbond_penalty": 0.0,
       "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
+      "hbond_issues": {},
       "bp_info": {
-        "res_1": "N-A-330-",
-        "res_2": "N-U-319-",
+        "res_1": "X-C-15-",
+        "res_2": "X-G-81-",
+        "bp_type": "C-G",
+        "edge_type": "cWW",
+        "num_hbonds": 3,
+        "dssr_score": 2.8702187469
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 100,
+      "geometry_penalty": 0.0,
+      "hbond_penalty": 0.0,
+      "geometry_issues": {},
+      "hbond_issues": {},
+      "bp_info": {
+        "res_1": "X-A-80-",
+        "res_2": "X-U-16-",
         "bp_type": "A-U",
         "edge_type": "cWW",
         "num_hbonds": 2,
-        "dssr_score": 1.9083185758
+        "dssr_score": 1.9066754939
       },
       "protein_bindings": [],
       "ligand_bindings": []
@@ -3537,12 +111,12 @@
       "geometry_issues": {},
       "hbond_issues": {},
       "bp_info": {
-        "res_1": "N-C-320-",
-        "res_2": "N-G-329-",
-        "bp_type": "C-G",
+        "res_1": "X-A-79-",
+        "res_2": "X-U-17-",
+        "bp_type": "A-U",
         "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.88676501
+        "num_hbonds": 2,
+        "dssr_score": 1.8654419263
       },
       "protein_bindings": [],
       "ligand_bindings": []
@@ -3556,53 +130,12 @@
         "bad_distance": true
       },
       "bp_info": {
-        "res_1": "N-C-321-",
-        "res_2": "N-G-328-",
+        "res_1": "X-C-18-",
+        "res_2": "X-G-78-",
         "bp_type": "C-G",
         "edge_type": "cWW",
         "num_hbonds": 3,
-        "dssr_score": 2.8716503689
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 86.0,
-      "geometry_penalty": 14.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "misaligned": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-G-327-",
-        "res_2": "N-U-322-",
-        "bp_type": "G-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9347094544
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 66.0,
-      "geometry_penalty": 34.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "zero_hbond": true
-      },
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-U-323-",
-        "res_2": "N-U-326-",
-        "bp_type": "U-U",
-        "edge_type": "tWW",
-        "num_hbonds": 0,
-        "dssr_score": 0.0
+        "dssr_score": 2.3960629022
       },
       "protein_bindings": [],
       "ligand_bindings": []
@@ -3614,422 +147,12 @@
       "geometry_issues": {},
       "hbond_issues": {},
       "bp_info": {
-        "res_1": "N-C-332-",
-        "res_2": "N-G-367-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8948732095
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-G-366-",
-        "res_2": "N-U-333-",
-        "bp_type": "G-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.96843267
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-334-",
-        "res_2": "N-U-365-",
+        "res_1": "X-A-19-",
+        "res_2": "X-U-77-",
         "bp_type": "A-U",
         "edge_type": "cWW",
         "num_hbonds": 2,
-        "dssr_score": 1.9454478086
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-364-",
-        "res_2": "N-G-335-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8954401639
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-336-",
-        "res_2": "N-G-363-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8888702196
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-C-362-",
-        "res_2": "N-G-337-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8541709342
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-361-",
-        "res_2": "N-G-338-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.8733999487
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-339-",
-        "res_2": "N-G-360-",
-        "bp_type": "A-G",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9536782552
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 61.0,
-      "geometry_penalty": 39.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "rotational_distortion": true,
-        "zero_hbond": true
-      },
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-G-341-",
-        "res_2": "N-G-358-",
-        "bp_type": "G-G",
-        "edge_type": "tHH",
-        "num_hbonds": 0,
-        "dssr_score": 0.0
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 71.0,
-      "geometry_penalty": 19.0,
-      "hbond_penalty": 10.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "weak_quality": true
-      },
-      "bp_info": {
-        "res_1": "N-A-342-",
-        "res_2": "N-G-357-",
-        "bp_type": "A-G",
-        "edge_type": "tHS",
-        "num_hbonds": 1,
-        "dssr_score": 0.4178474849
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 48.0,
-      "geometry_penalty": 26.0,
-      "hbond_penalty": 26.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "non_coplanar": true
-      },
-      "hbond_issues": {
-        "incorrect_count": true,
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-A-343-",
-        "res_2": "N-U-356-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 1,
-        "dssr_score": 0.0
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-355-",
-        "res_2": "N-G-344-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.9188225904
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-354-",
-        "res_2": "N-U-345-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9326196395
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-353-",
-        "res_2": "N-G-346-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.9113423284
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-369-",
-        "res_2": "N-U-402-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9742755736
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 82.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 18.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "bad_distance": true
-      },
-      "bp_info": {
-        "res_1": "N-A-370-",
-        "res_2": "N-U-401-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9162966493
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {},
-      "bp_info": {
-        "res_1": "N-C-371-",
-        "res_2": "N-G-400-",
-        "bp_type": "C-G",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 2.9307690995
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 100,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-399-",
-        "res_2": "N-U-372-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9496603983
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 95.0,
-      "geometry_penalty": 5.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "rotational_distortion": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-373-",
-        "res_2": "N-U-398-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9003966838
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 88.0,
-      "geometry_penalty": 12.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "non_coplanar": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-374-",
-        "res_2": "N-U-397-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9173330161
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 88.0,
-      "geometry_penalty": 12.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "non_coplanar": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-396-",
-        "res_2": "N-U-375-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9035552383
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 47.0,
-      "geometry_penalty": 12.0,
-      "hbond_penalty": 41.0,
-      "geometry_issues": {
-        "non_coplanar": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "incorrect_count": true,
-        "bad_distance": true,
-        "bad_angles": true,
-        "weak_quality": true
-      },
-      "bp_info": {
-        "res_1": "N-G-395-",
-        "res_2": "N-U-376-",
-        "bp_type": "G-U",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 1.8907065818
+        "dssr_score": 1.7641128355
       },
       "protein_bindings": [],
       "ligand_bindings": []
@@ -4046,8 +169,201 @@
       },
       "hbond_issues": {},
       "bp_info": {
-        "res_1": "N-U-377-",
-        "res_2": "N-U-394-",
+        "res_1": "X-U-20-",
+        "res_2": "X-U-49-",
+        "bp_type": "U-U",
+        "edge_type": "tW.",
+        "num_hbonds": 0,
+        "dssr_score": 0.0
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 100,
+      "geometry_penalty": 0.0,
+      "hbond_penalty": 0.0,
+      "geometry_issues": {},
+      "hbond_issues": {},
+      "bp_info": {
+        "res_1": "X-A-76-",
+        "res_2": "X-U-20-",
+        "bp_type": "A-U",
+        "edge_type": "cWW",
+        "num_hbonds": 2,
+        "dssr_score": 1.7658216803
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 82.0,
+      "geometry_penalty": 0.0,
+      "hbond_penalty": 18.0,
+      "geometry_issues": {},
+      "hbond_issues": {
+        "bad_distance": true
+      },
+      "bp_info": {
+        "res_1": "X-A-21-",
+        "res_2": "X-U-75-",
+        "bp_type": "A-U",
+        "edge_type": "cWW",
+        "num_hbonds": 2,
+        "dssr_score": 1.8014635821
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 100,
+      "geometry_penalty": 0.0,
+      "hbond_penalty": 0.0,
+      "geometry_issues": {},
+      "hbond_issues": {},
+      "bp_info": {
+        "res_1": "X-A-52-",
+        "res_2": "X-U-22-",
+        "bp_type": "A-U",
+        "edge_type": "cWW",
+        "num_hbonds": 2,
+        "dssr_score": 1.9132546909
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 100,
+      "geometry_penalty": 0.0,
+      "hbond_penalty": 0.0,
+      "geometry_issues": {},
+      "hbond_issues": {},
+      "bp_info": {
+        "res_1": "X-A-23-",
+        "res_2": "X-G-46-",
+        "bp_type": "A-G",
+        "edge_type": "tWS",
+        "num_hbonds": 1,
+        "dssr_score": 2.5408978849
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 100,
+      "geometry_penalty": 0.0,
+      "hbond_penalty": 0.0,
+      "geometry_issues": {},
+      "hbond_issues": {},
+      "bp_info": {
+        "res_1": "X-A-45-",
+        "res_2": "X-U-25-",
+        "bp_type": "A-U",
+        "edge_type": "cWW",
+        "num_hbonds": 2,
+        "dssr_score": 1.9375115885
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 100,
+      "geometry_penalty": 0.0,
+      "hbond_penalty": 0.0,
+      "geometry_issues": {},
+      "hbond_issues": {},
+      "bp_info": {
+        "res_1": "X-C-26-",
+        "res_2": "X-G-44-",
+        "bp_type": "C-G",
+        "edge_type": "cWW",
+        "num_hbonds": 3,
+        "dssr_score": 2.8891207149
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 100,
+      "geometry_penalty": 0.0,
+      "hbond_penalty": 0.0,
+      "geometry_issues": {},
+      "hbond_issues": {},
+      "bp_info": {
+        "res_1": "X-C-27-",
+        "res_2": "X-G-43-",
+        "bp_type": "C-G",
+        "edge_type": "cWW",
+        "num_hbonds": 3,
+        "dssr_score": 2.8447914174
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 100,
+      "geometry_penalty": 0.0,
+      "hbond_penalty": 0.0,
+      "geometry_issues": {},
+      "hbond_issues": {},
+      "bp_info": {
+        "res_1": "X-G-42-",
+        "res_2": "X-U-28-",
+        "bp_type": "G-U",
+        "edge_type": "cWW",
+        "num_hbonds": 2,
+        "dssr_score": 1.7201638277
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 100,
+      "geometry_penalty": 0.0,
+      "hbond_penalty": 0.0,
+      "geometry_issues": {},
+      "hbond_issues": {},
+      "bp_info": {
+        "res_1": "X-A-29-",
+        "res_2": "X-U-41-",
+        "bp_type": "A-U",
+        "edge_type": "cWW",
+        "num_hbonds": 2,
+        "dssr_score": 1.9222788075
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 82.0,
+      "geometry_penalty": 0.0,
+      "hbond_penalty": 18.0,
+      "geometry_issues": {},
+      "hbond_issues": {
+        "bad_distance": true
+      },
+      "bp_info": {
+        "res_1": "X-A-30-",
+        "res_2": "X-U-40-",
+        "bp_type": "A-U",
+        "edge_type": "cWW",
+        "num_hbonds": 2,
+        "dssr_score": 1.7523798735
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 80.0,
+      "geometry_penalty": 20.0,
+      "hbond_penalty": 0.0,
+      "geometry_issues": {
+        "zero_hbond": true
+      },
+      "hbond_issues": {},
+      "bp_info": {
+        "res_1": "X-U-31-",
+        "res_2": "X-U-39-",
         "bp_type": "U-U",
         "edge_type": "cWW",
         "num_hbonds": 0,
@@ -4057,138 +373,196 @@
       "ligand_bindings": []
     },
     {
-      "score": 74.0,
-      "geometry_penalty": 26.0,
+      "score": 100,
+      "geometry_penalty": 0.0,
       "hbond_penalty": 0.0,
+      "geometry_issues": {},
+      "hbond_issues": {},
+      "bp_info": {
+        "res_1": "X-A-33-",
+        "res_2": "X-A-66-",
+        "bp_type": "A-A",
+        "edge_type": "tWH",
+        "num_hbonds": 0,
+        "dssr_score": 0.0
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 73.0,
+      "geometry_penalty": 19.0,
+      "hbond_penalty": 8.0,
       "geometry_issues": {
         "misaligned": true,
-        "non_coplanar": true
+        "rotational_distortion": true
       },
       "hbond_issues": {
-        "low_dssr_score": true
+        "incorrect_count": true
       },
       "bp_info": {
-        "res_1": "N-G-378-",
-        "res_2": "N-U-393-",
+        "res_1": "X-G-37-",
+        "res_2": "X-U-34-",
         "bp_type": "G-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.8741375563
+        "edge_type": "cSS",
+        "num_hbonds": 1,
+        "dssr_score": 0.0
       },
       "protein_bindings": [],
       "ligand_bindings": []
     },
     {
-      "score": 74.0,
-      "geometry_penalty": 26.0,
+      "score": 100,
+      "geometry_penalty": 0.0,
+      "hbond_penalty": 0.0,
+      "geometry_issues": {},
+      "hbond_issues": {},
+      "bp_info": {
+        "res_1": "X-A-65-",
+        "res_2": "X-U-34-",
+        "bp_type": "A-U",
+        "edge_type": "tWH",
+        "num_hbonds": 2,
+        "dssr_score": 1.8240835068
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 86.0,
+      "geometry_penalty": 14.0,
+      "hbond_penalty": 0.0,
+      "geometry_issues": {
+        "misaligned": true
+      },
+      "hbond_issues": {},
+      "bp_info": {
+        "res_1": "X-A-35-",
+        "res_2": "X-A-64-",
+        "bp_type": "A-A",
+        "edge_type": "tHH",
+        "num_hbonds": 0,
+        "dssr_score": 0.5024478702
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 100,
+      "geometry_penalty": 0.0,
+      "hbond_penalty": 0.0,
+      "geometry_issues": {},
+      "hbond_issues": {},
+      "bp_info": {
+        "res_1": "X-C-61-",
+        "res_2": "X-G-37-",
+        "bp_type": "C-G",
+        "edge_type": "cWW",
+        "num_hbonds": 3,
+        "dssr_score": 2.7900755445
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 81.0,
+      "geometry_penalty": 19.0,
       "hbond_penalty": 0.0,
       "geometry_issues": {
         "misaligned": true,
-        "non_coplanar": true
+        "rotational_distortion": true
       },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
+      "hbond_issues": {},
       "bp_info": {
-        "res_1": "N-A-392-",
-        "res_2": "N-U-379-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9024950557
+        "res_1": "X-A-65-",
+        "res_2": "X-G-37-",
+        "bp_type": "A-G",
+        "edge_type": "c.H",
+        "num_hbonds": 0,
+        "dssr_score": 0.631607298
       },
       "protein_bindings": [],
       "ligand_bindings": []
     },
     {
-      "score": 63.0,
-      "geometry_penalty": 37.0,
+      "score": 100,
+      "geometry_penalty": 0.0,
+      "hbond_penalty": 0.0,
+      "geometry_issues": {},
+      "hbond_issues": {},
+      "bp_info": {
+        "res_1": "X-C-60-",
+        "res_2": "X-G-38-",
+        "bp_type": "C-G",
+        "edge_type": "cWW",
+        "num_hbonds": 3,
+        "dssr_score": 2.8186940611
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 87.0,
+      "geometry_penalty": 5.0,
+      "hbond_penalty": 8.0,
+      "geometry_issues": {
+        "rotational_distortion": true
+      },
+      "hbond_issues": {
+        "bad_dihedral": true
+      },
+      "bp_info": {
+        "res_1": "X-A-66-",
+        "res_2": "X-G-38-",
+        "bp_type": "A-G",
+        "edge_type": "tSW",
+        "num_hbonds": 2,
+        "dssr_score": 1.469664001
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 100,
+      "geometry_penalty": 0.0,
+      "hbond_penalty": 0.0,
+      "geometry_issues": {},
+      "hbond_issues": {},
+      "bp_info": {
+        "res_1": "X-C-53-",
+        "res_2": "X-G-46-",
+        "bp_type": "C-G",
+        "edge_type": "cWW",
+        "num_hbonds": 3,
+        "dssr_score": 2.5505807901
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 49.0,
+      "geometry_penalty": 51.0,
       "hbond_penalty": 0.0,
       "geometry_issues": {
+        "misaligned": true,
         "non_coplanar": true,
         "rotational_distortion": true,
         "zero_hbond": true
       },
       "hbond_issues": {},
       "bp_info": {
-        "res_1": "N-U-379-",
-        "res_2": "N-U-393-",
+        "res_1": "X-U-47-",
+        "res_2": "X-U-51-",
         "bp_type": "U-U",
-        "edge_type": "cWW",
+        "edge_type": "tWH",
         "num_hbonds": 0,
         "dssr_score": 0.0
       },
       "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 88.0,
-      "geometry_penalty": 12.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "non_coplanar": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-380-",
-        "res_2": "N-U-391-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9080399151
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 88.0,
-      "geometry_penalty": 12.0,
-      "hbond_penalty": 0.0,
-      "geometry_issues": {
-        "non_coplanar": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true
-      },
-      "bp_info": {
-        "res_1": "N-A-390-",
-        "res_2": "N-U-381-",
-        "bp_type": "A-U",
-        "edge_type": "cWW",
-        "num_hbonds": 2,
-        "dssr_score": 1.9443330161
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
-    },
-    {
-      "score": 25.0,
-      "geometry_penalty": 26.0,
-      "hbond_penalty": 49.0,
-      "geometry_issues": {
-        "misaligned": true,
-        "non_coplanar": true
-      },
-      "hbond_issues": {
-        "low_dssr_score": true,
-        "incorrect_count": true,
-        "bad_distance": true,
-        "bad_angles": true,
-        "bad_dihedral": true,
-        "weak_quality": true
-      },
-      "bp_info": {
-        "res_1": "N-G-382-",
-        "res_2": "N-U-389-",
-        "bp_type": "G-U",
-        "edge_type": "cWW",
-        "num_hbonds": 3,
-        "dssr_score": 1.5233044728
-      },
-      "protein_bindings": [],
-      "ligand_bindings": []
+      "ligand_bindings": [
+        "X-U-51-:ADE:X-ADE-90-(O4-N9, 2.93\u00c5)",
+        "X-U-51-:ADE:X-ADE-90-(N3-N3, 2.77\u00c5)"
+      ]
     },
     {
       "score": 59.0,
@@ -4200,39 +574,255 @@
         "rotational_distortion": true
       },
       "hbond_issues": {
-        "weak_quality": true
+        "poor_hbond_score": true
       },
       "bp_info": {
-        "res_1": "N-C-383-",
-        "res_2": "N-G-388-",
+        "res_1": "X-ADE-90-",
+        "res_2": "X-U-47-",
+        "bp_type": "ADE-U",
+        "edge_type": ".WS",
+        "num_hbonds": 0,
+        "dssr_score": 0.7210995165
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 92.0,
+      "geometry_penalty": 0.0,
+      "hbond_penalty": 8.0,
+      "geometry_issues": {},
+      "hbond_issues": {
+        "incorrect_count": true
+      },
+      "bp_info": {
+        "res_1": "X-A-76-",
+        "res_2": "X-U-49-",
+        "bp_type": "A-U",
+        "edge_type": "cWS",
+        "num_hbonds": 1,
+        "dssr_score": 0.0
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 81.0,
+      "geometry_penalty": 19.0,
+      "hbond_penalty": 0.0,
+      "geometry_issues": {
+        "misaligned": true,
+        "rotational_distortion": true
+      },
+      "hbond_issues": {},
+      "bp_info": {
+        "res_1": "X-C-50-",
+        "res_2": "X-U-75-",
+        "bp_type": "C-U",
+        "edge_type": "cWS",
+        "num_hbonds": 1,
+        "dssr_score": 2.4061744243
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 81.0,
+      "geometry_penalty": 19.0,
+      "hbond_penalty": 0.0,
+      "geometry_issues": {
+        "misaligned": true,
+        "rotational_distortion": true
+      },
+      "hbond_issues": {},
+      "bp_info": {
+        "res_1": "X-ADE-90-",
+        "res_2": "X-U-51-",
+        "bp_type": "ADE-U",
+        "edge_type": ".WS",
+        "num_hbonds": 0,
+        "dssr_score": 1.9242079842
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 100,
+      "geometry_penalty": 0.0,
+      "hbond_penalty": 0.0,
+      "geometry_issues": {},
+      "hbond_issues": {},
+      "bp_info": {
+        "res_1": "X-C-54-",
+        "res_2": "X-G-72-",
         "bp_type": "C-G",
         "edge_type": "cWW",
         "num_hbonds": 3,
-        "dssr_score": 2.5465128931
+        "dssr_score": 2.805118934
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 100,
+      "geometry_penalty": 0.0,
+      "hbond_penalty": 0.0,
+      "geometry_issues": {},
+      "hbond_issues": {},
+      "bp_info": {
+        "res_1": "X-A-55-",
+        "res_2": "X-U-71-",
+        "bp_type": "A-U",
+        "edge_type": "cWW",
+        "num_hbonds": 2,
+        "dssr_score": 1.901786635
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 100,
+      "geometry_penalty": 0.0,
+      "hbond_penalty": 0.0,
+      "geometry_issues": {},
+      "hbond_issues": {},
+      "bp_info": {
+        "res_1": "X-A-56-",
+        "res_2": "X-U-70-",
+        "bp_type": "A-U",
+        "edge_type": "cWW",
+        "num_hbonds": 2,
+        "dssr_score": 1.894989373
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 100,
+      "geometry_penalty": 0.0,
+      "hbond_penalty": 0.0,
+      "geometry_issues": {},
+      "hbond_issues": {},
+      "bp_info": {
+        "res_1": "X-C-69-",
+        "res_2": "X-G-57-",
+        "bp_type": "C-G",
+        "edge_type": "cWW",
+        "num_hbonds": 3,
+        "dssr_score": 2.8406109367
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 95.0,
+      "geometry_penalty": 0.0,
+      "hbond_penalty": 5.0,
+      "geometry_issues": {},
+      "hbond_issues": {
+        "bad_angles": true
+      },
+      "bp_info": {
+        "res_1": "X-A-58-",
+        "res_2": "X-U-68-",
+        "bp_type": "A-U",
+        "edge_type": "cWW",
+        "num_hbonds": 2,
+        "dssr_score": 1.739132215
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 100,
+      "geometry_penalty": 0.0,
+      "hbond_penalty": 0.0,
+      "geometry_issues": {},
+      "hbond_issues": {},
+      "bp_info": {
+        "res_1": "X-C-67-",
+        "res_2": "X-G-59-",
+        "bp_type": "C-G",
+        "edge_type": "cWW",
+        "num_hbonds": 3,
+        "dssr_score": 2.6701786421
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 92.0,
+      "geometry_penalty": 0.0,
+      "hbond_penalty": 8.0,
+      "geometry_issues": {},
+      "hbond_issues": {
+        "bad_dihedral": true
+      },
+      "bp_info": {
+        "res_1": "X-A-65-",
+        "res_2": "X-C-61-",
+        "bp_type": "A-C",
+        "edge_type": "cSW",
+        "num_hbonds": 1,
+        "dssr_score": 1.5513846049
+      },
+      "protein_bindings": [],
+      "ligand_bindings": []
+    },
+    {
+      "score": 83.0,
+      "geometry_penalty": 17.0,
+      "hbond_penalty": 0.0,
+      "geometry_issues": {
+        "non_coplanar": true,
+        "rotational_distortion": true
+      },
+      "hbond_issues": {},
+      "bp_info": {
+        "res_1": "X-ADE-90-",
+        "res_2": "X-U-74-",
+        "bp_type": "ADE-U",
+        "edge_type": ".WW",
+        "num_hbonds": 0,
+        "dssr_score": 1.8249400624
       },
       "protein_bindings": [],
       "ligand_bindings": []
     }
   ],
-  "pdb_id": "7YGA",
+  "pdb_id": "1y26",
   "analysis_type": "baseline",
-  "num_nucleotides": 302,
+  "num_nucleotides": 46,
   "protein_binding_explanations": {},
-  "ligand_binding_explanations": {},
-  "clashscore": 10.8,
-  "angles_rmsz": 0.32,
-  "bonds_rmsz": 0.37,
+  "ligand_binding_explanations": {
+    "X-U-47--X-U-51-": [
+      "X-U-51-:ADE:X-ADE-90-(O4-N9, 2.93\u00c5)",
+      "X-U-51-:ADE:X-ADE-90-(N3-N3, 2.77\u00c5)"
+    ]
+  },
+  "clashscore": 4.39,
+  "angles_rmsz": 1.63,
+  "bonds_rmsz": 1.74,
   "percent_ramachandran_outliers": null,
   "percent_rotamer_outliers": null,
-  "rnasuiteness": 0.55,
-  "Experimental_method": "EM",
-  "EM Resolution (\u00c5)": 2.35,
-  "EM Diffraction Resolution (\u00c5)": null,
-  "Deposition_Date": "2022-07-11",
-  "Structure Determination Method": "ELECTRON MICROSCOPY",
-  "RNA_structural_features": "a-form double helix, bulge loop, double helix, four-way junction, hairpin loop, internal loop, mismatched base pair, quadruple helix, three-way junction, triple helix",
-  "Publication_Year": 2023,
-  "Revision_Date": "2025-07-02",
+  "rnasuiteness": 0.56,
+  "Experimental_method": "X-ray",
+  "EM Resolution (\u00c5)": null,
+  "EM Diffraction Resolution (\u00c5)": 2.1,
+  "Deposition_Date": "2004-11-20",
+  "R_free": 0.29733,
+  "R_work": 0.23145,
+  "Refinement_resolution": 2.1,
+  "Average_B_factor": 56.777,
+  "Structure Determination Method": "X-RAY DIFFRACTION",
+  "data_completeness": 97.67,
+  "iover_sigma": "2.61(2.09A)",
+  "data_anisotropy": 0.113,
+  "fo_fc_correlation": 0.931,
+  "RNA_structural_features": "a-form double helix, double helix, internal loop, mismatched base pair, three-way junction, triple helix",
+  "Publication_Year": 2004,
+  "Software_used": "REFMAC 5.2.0005, CrystalClear (MSC/RIGAKU), HKL-2000, SHARP",
+  "Revision_Date": "2024-02-14",
   "Major_Revision": 1,
-  "Minor_Revision": 2
+  "Minor_Revision": 3
 }

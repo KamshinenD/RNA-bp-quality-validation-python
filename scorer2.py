@@ -159,17 +159,22 @@ class Scorer:
         nt1_id = bp.get('res_1', '')
         nt2_id = bp.get('res_2', '')
         
-        # Resolve edge and base-pair type
-        edge_type = bp.get('lw', '') or 'uncommon_edges'
+        # Resolve edge and base-pair type (empty/unknown edge -> _OTHER)
+        edge_type = bp.get('lw', '') or '_OTHER'
         bp_type = bp.get('bp_type', '')
 
-        # Get base-pair + edge thresholds for geometry (fallback to empty -> globals below)
+        # Get base-pair + edge thresholds; fallback chain: (bp, edge) -> (bp, _OTHER) -> (_OTHERS, edge) -> (_OTHERS, _OTHER)
         geo_by_bp = getattr(self.config, 'GEOMETRY_THRESHOLDS_BY_BASE_PAIR_BY_EDGE', {})
-        geo_thresh = geo_by_bp.get(bp_type, {}).get(edge_type, {})
+        geo_thresh = (geo_by_bp.get(bp_type, {}).get(edge_type) or
+                      geo_by_bp.get(bp_type, {}).get('_OTHER') or
+                      geo_by_bp.get('_OTHERS', {}).get(edge_type) or
+                      geo_by_bp.get('_OTHERS', {}).get('_OTHER') or {})
 
-        # Get base-pair + edge thresholds for H-bonds (fallback to _OTHER within bp_type, else empty)
         hb_by_bp = getattr(self.config, 'HBOND_THRESHOLDS_BY_BASE_PAIR_BY_EDGE', {})
-        hbond_thresh = hb_by_bp.get(bp_type, {}).get(edge_type) or hb_by_bp.get(bp_type, {}).get('_OTHER', {})
+        hbond_thresh = (hb_by_bp.get(bp_type, {}).get(edge_type) or
+                        hb_by_bp.get(bp_type, {}).get('_OTHER') or
+                        hb_by_bp.get('_OTHERS', {}).get(edge_type) or
+                        hb_by_bp.get('_OTHERS', {}).get('_OTHER') or {})
         
         # Get H-bonds for this base pair
         bp_hbonds = self._get_basepair_hbonds(nt1_id, nt2_id, hbond_data)
@@ -178,36 +183,56 @@ class Scorer:
         geometry_issues = {}
         geometry_penalty = 0.0
         
-        # Check alignment (shear and stretch)
-        shear = abs(bp.get('shear', 0))
+        # Check alignment (shear and stretch) - use SHEAR_MIN/MAX range, no abs()
+        shear = bp.get('shear', 0)
         stretch = bp.get('stretch', 0)
-        shear_max = geo_thresh.get('SHEAR_MAX', 1.5)  # Fallback to old global if missing
-        stretch_min = geo_thresh.get('STRETCH_MIN', -1.3)
-        stretch_max = geo_thresh.get('STRETCH_MAX', 1.3)
-        
-        if shear > shear_max or stretch < stretch_min or stretch > stretch_max:
+        shear_min = geo_thresh.get('SHEAR_MIN')
+        shear_max = geo_thresh.get('SHEAR_MAX')
+        stretch_min = geo_thresh.get('STRETCH_MIN')
+        stretch_max = geo_thresh.get('STRETCH_MAX')
+
+        misaligned = False
+        if shear_min is not None and shear_max is not None and (shear < shear_min or shear > shear_max):
+            misaligned = True
+        if stretch_min is not None and stretch_max is not None and (stretch < stretch_min or stretch > stretch_max):
+            misaligned = True
+        if misaligned:
             geometry_issues['misaligned'] = True
             geometry_penalty += self.config.PENALTY_WEIGHTS['misaligned_pairs']
-        
-        # Check coplanarity (buckle and stagger)
-        buckle = abs(bp.get('buckle', 0))
-        stagger = abs(bp.get('stagger', 0))
-        buckle_max = geo_thresh.get('BUCKLE_MAX', 16.1)
-        stagger_max = geo_thresh.get('STAGGER_MAX', 0.4)
 
-        if buckle > buckle_max or stagger > stagger_max:
+        # Check coplanarity (buckle and stagger) - use BUCKLE_MIN/MAX, STAGGER_MIN/MAX ranges
+        buckle = bp.get('buckle', 0)
+        stagger = bp.get('stagger', 0)
+        buckle_min = geo_thresh.get('BUCKLE_MIN')
+        buckle_max = geo_thresh.get('BUCKLE_MAX')
+        stagger_min = geo_thresh.get('STAGGER_MIN')
+        stagger_max = geo_thresh.get('STAGGER_MAX')
+
+        non_coplanar = False
+        if buckle_min is not None and buckle_max is not None and (buckle < buckle_min or buckle > buckle_max):
+            non_coplanar = True
+        if stagger_min is not None and stagger_max is not None and (stagger < stagger_min or stagger > stagger_max):
+            non_coplanar = True
+        if non_coplanar:
             geometry_issues['non_coplanar'] = True
             geometry_penalty += self.config.PENALTY_WEIGHTS['non_coplanar_pairs']
 
         # Check rotational distortion (propeller and opening)
         propeller = bp.get('propeller', 0)
         opening = bp.get('opening', 0)
-        propeller_min = geo_thresh.get('PROPELLER_MIN', -14.7)
-        propeller_max = geo_thresh.get('PROPELLER_MAX', 14.7)
-        opening_min = geo_thresh.get('OPENING_MIN', -30.8)
-        opening_max = geo_thresh.get('OPENING_MAX', 30.8)
+        propeller_min = geo_thresh.get('PROPELLER_MIN')
+        propeller_max = geo_thresh.get('PROPELLER_MAX')
+        opening_min = geo_thresh.get('OPENING_MIN')
+        opening_max = geo_thresh.get('OPENING_MAX')
 
-        if propeller < propeller_min or propeller > propeller_max or opening < opening_min or opening > opening_max:
+        rot_distorted = False
+        if (propeller_min is not None and propeller_max is not None and
+                (propeller < propeller_min or propeller > propeller_max)):
+            rot_distorted = True
+        if (opening_min is not None and opening_max is not None and
+                (opening < opening_min or opening > opening_max)):
+            rot_distorted = True
+        if rot_distorted:
             geometry_issues['rotational_distortion'] = True
             geometry_penalty += self.config.PENALTY_WEIGHTS['rotational_distortion_pairs']
         
@@ -219,26 +244,25 @@ class Scorer:
         hbond_issues = {}
         hbond_penalty = 0.0
 
-        # Check DSSR hbond_score using edge-aware thresholds
+        # Check DSSR hbond_score: penalize only when below HBOND_SCORE_MIN (not above max)
         # hbond_score is the average quality of all H-bonds in this base pair
         if dssr_quality > 0.0:
             hbond_score_min = geo_thresh.get('HBOND_SCORE_MIN')
-            hbond_score_max = geo_thresh.get('HBOND_SCORE_MAX')
 
-            # Only check if thresholds are defined for this bp_type/edge combination
-            if hbond_score_min is not None or hbond_score_max is not None:
-                is_below_min = hbond_score_min is not None and dssr_quality < hbond_score_min
-                is_above_max = hbond_score_max is not None and dssr_quality > hbond_score_max
-
-                if is_below_min or is_above_max:
-                    hbond_issues['poor_hbond_score'] = True
-                    hbond_penalty += self.config.PENALTY_WEIGHTS['poor_hbond_score']
+            if hbond_score_min is not None and dssr_quality < hbond_score_min:
+                hbond_issues['poor_hbond_score'] = True
+                hbond_penalty += self.config.PENALTY_WEIGHTS['poor_hbond_score']
         
         # Reconcile DSSR hbond_score with CSV H-bond data
         # Only flag "zero_hbond" if BOTH sources agree there are no H-bonds
         if len(bp_hbonds) == 0:
             # If DSSR says no H-bonds (score == 0.0), then flag zero_hbond
-            if not has_dssr_hbonds:
+            # Exception: when HBOND_SCORE_MIN and HBOND_SCORE_MAX are both 0, this edge type
+            # typically does not form H-bonds (empirical data is all zeros) - do not penalize.
+            geo_hb_min = geo_thresh.get('HBOND_SCORE_MIN')
+            geo_hb_max = geo_thresh.get('HBOND_SCORE_MAX')
+            expects_hbonds = not (geo_hb_min == 0 and geo_hb_max == 0)
+            if not has_dssr_hbonds and expects_hbonds:
                 geometry_issues['zero_hbond'] = True
                 geometry_penalty += self.config.PENALTY_WEIGHTS['zero_hbond_pairs']
             # If DSSR says H-bonds exist but CSV doesn't, it's a data mismatch
@@ -270,27 +294,29 @@ class Scorer:
             has_bad_angles = False
             has_bad_dihedral = False
 
-            # Get edge-specific H-bond thresholds
-            distance_min = hbond_thresh.get('DIST_MIN', self.config.HBOND_DISTANCE_MIN)
-            distance_max = hbond_thresh.get('DIST_MAX', self.config.HBOND_DISTANCE_MAX)
-            angle_min = hbond_thresh.get('ANGLE_MIN', 80.0)
-            
-            # Dihedral uses GLOBAL thresholds (only flag forbidden zone)
+            # Get edge-specific H-bond thresholds (from _OTHER fallback; no hardcoded defaults)
+            distance_min = hbond_thresh.get('DIST_MIN')
+            distance_max = hbond_thresh.get('DIST_MAX')
+            angle_min = hbond_thresh.get('ANGLE_MIN')
+
+            # Dihedral uses config thresholds (structural cis/trans constraint)
             dihedral_cis_min = self.config.HBOND_DIHEDRAL_CIS_MIN
             dihedral_cis_max = self.config.HBOND_DIHEDRAL_CIS_MAX
             dihedral_trans_min = self.config.HBOND_DIHEDRAL_TRANS_MIN
             
             for _, hb in bp_hbonds.iterrows():
-                # Distance check using edge-specific threshold
-                distance = hb.get('distance', 0)
-                if distance < distance_min or distance > distance_max:
-                    has_bad_distance = True
-                
-                # Angle checks using edge-specific threshold
-                angle_1 = hb.get('angle_1', 0)
-                angle_2 = hb.get('angle_2', 0)
-                if angle_1 < angle_min or angle_2 < angle_min:
-                    has_bad_angles = True
+                # Distance check (only if thresholds from _OTHER are defined)
+                if distance_min is not None and distance_max is not None:
+                    distance = hb.get('distance', 0)
+                    if distance < distance_min or distance > distance_max:
+                        has_bad_distance = True
+
+                # Angle checks (only if threshold from _OTHER is defined)
+                if angle_min is not None:
+                    angle_1 = hb.get('angle_1', 0)
+                    angle_2 = hb.get('angle_2', 0)
+                    if angle_1 < angle_min or angle_2 < angle_min:
+                        has_bad_angles = True
                 
                 # Dihedral check - use GLOBAL thresholds (only flag forbidden zone)
                 dihedral = hb.get('dihedral_angle', 0)

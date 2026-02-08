@@ -18,6 +18,7 @@ from config import Config
 from utils.data_loader import DataLoader
 from scorer2 import Scorer
 from app import filter_motif_data  # reuse existing motif filtering logic
+from analyze_by_edge_type import is_adjacent_pair  # exclude adjacent base pairs (res diff=1)
 
 
 def load_metadata_cache(cache_file: str = "metadata_cache.json") -> dict:
@@ -235,6 +236,9 @@ def export_motif_basepairs(
                 end_res=end_res,
                 chain=chain,
             )
+
+            # Exclude adjacent base pairs (same chain, residue numbers differ by 1)
+            motif_bps = [bp for bp in motif_bps if not is_adjacent_pair(bp.get('res_1', ''), bp.get('res_2', ''))]
 
             pdb_meta = get_pdb_metadata(pdb_id, cache)
 

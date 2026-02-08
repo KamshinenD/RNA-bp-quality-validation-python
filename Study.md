@@ -70,4 +70,9 @@ Usage:
                                                                                                                                                
   # Specify output file                                                                                                                      
   python torsion_scores_analysis.py -o my_analysis.csv
+
+
+//for config geom and hbon thresholds generation
+  python analyze_by_edge_type.py
+  python generate_threshold_config.py 
       

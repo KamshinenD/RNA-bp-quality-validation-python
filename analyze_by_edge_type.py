@@ -32,28 +32,26 @@ def normalize_bp_type(bp_type: str) -> str:
 
 
 def load_basepair_sample(basepair_dir: Path, max_files: int = None, sample_fraction: float = None,
-                         exclude_pdb_ids: Optional[set] = None) -> List[Dict]:
+                         include_pdb_ids: Optional[set] = None) -> List[Dict]:
     """
     Load base pair data efficiently.
-    
+
     Args:
         basepair_dir: Directory containing base pair JSON files
         max_files: Maximum number of files to process (None = process all)
         sample_fraction: Fraction of files to sample (None = use max_files)
-    
-    Args:
-        exclude_pdb_ids: Set of PDB IDs (uppercase) to skip (e.g., known G-quad structures)
+        include_pdb_ids: Set of PDB IDs (uppercase) to include. If provided, only these are processed.
 
     Returns:
         List of base pair dictionaries
     """
     json_files = list(basepair_dir.glob("*.json"))
 
-    # Exclude PDBs if provided
-    if exclude_pdb_ids:
+    # Filter to only allowed PDB IDs if provided
+    if include_pdb_ids:
         before = len(json_files)
-        json_files = [p for p in json_files if p.stem.upper() not in exclude_pdb_ids]
-        print(f"Excluding {before - len(json_files)} base pair files due to exclusion list")
+        json_files = [p for p in json_files if p.stem.upper() in include_pdb_ids]
+        print(f"Filtered to {len(json_files)} base pair files from allowlist ({before} total available)")
     
     if sample_fraction:
         n_files = max(100, int(len(json_files) * sample_fraction))
@@ -116,36 +114,37 @@ def create_basepair_lookup(basepairs: List[Dict]) -> Dict:
                 'stagger': bp.get('stagger'),
                 'buckle': bp.get('buckle'),
                 'propeller': bp.get('propeller'),
-                'opening': bp.get('opening')
+                'opening': bp.get('opening'),
+                'hbond_score': bp.get('hbond_score')
             }
     return lookup
 
 
-def load_hbond_sample_with_lw(hbond_dir: Path, bp_lookup: Dict, max_files: int = None, 
+def load_hbond_sample_with_lw(hbond_dir: Path, bp_lookup: Dict, max_files: int = None,
                                 sample_fraction: float = None, max_hbonds_per_file: int = None,
-                                exclude_pdb_ids: Optional[set] = None) -> pd.DataFrame:
+                                include_pdb_ids: Optional[set] = None) -> pd.DataFrame:
     """
     Load H-bond data and link with base pair edge types.
     Only loads H-bonds that belong to known base pairs.
-    
+
     Args:
         hbond_dir: Directory containing H-bond CSV files
         bp_lookup: Base pair lookup dictionary
         max_files: Maximum number of files to process (None = process all)
         sample_fraction: Fraction of files to sample
         max_hbonds_per_file: Maximum H-bonds to load per file (for memory efficiency)
-        exclude_pdb_ids: Set of PDB IDs (uppercase) to skip (e.g., known G-quad structures)
-    
+        include_pdb_ids: Set of PDB IDs (uppercase) to include. If provided, only these are processed.
+
     Returns:
         DataFrame with H-bond data and edge type information
     """
     csv_files = list(hbond_dir.glob("*.csv"))
 
-    # Exclude PDBs if provided
-    if exclude_pdb_ids:
+    # Filter to only allowed PDB IDs if provided
+    if include_pdb_ids:
         before = len(csv_files)
-        csv_files = [p for p in csv_files if p.stem.upper() not in exclude_pdb_ids]
-        print(f"Excluding {before - len(csv_files)} H-bond files due to exclusion list")
+        csv_files = [p for p in csv_files if p.stem.upper() in include_pdb_ids]
+        print(f"Filtered to {len(csv_files)} H-bond files from allowlist ({before} total available)")
     
     if sample_fraction:
         n_files = max(100, int(len(csv_files) * sample_fraction))
@@ -231,7 +230,7 @@ def group_geometry_by_bp_and_edge(basepairs: List[Dict], min_edge_count: int = 1
             continue
         totals[bp_type] += 1
         counts[bp_type][lw] += 1
-        for param in ['shear', 'stretch', 'stagger', 'buckle', 'propeller', 'opening']:
+        for param in ['shear', 'stretch', 'stagger', 'buckle', 'propeller', 'opening', 'hbond_score']:
             value = bp.get(param)
             if value is not None:
                 try:
@@ -250,7 +249,9 @@ def group_geometry_by_bp_and_edge(basepairs: List[Dict], min_edge_count: int = 1
             target_params = {}
             for param, values in params.items():
                 if len(values) > 0:
-                    target_params[param] = calculate_statistics_by_group(values, f"{bp_type}_{lw}_{param}", ideal_value=0.0)
+                    # Only use ideal_value=0.0 for geometry params, not hbond_score
+                    ideal = 0.0 if param != 'hbond_score' else None
+                    target_params[param] = calculate_statistics_by_group(values, f"{bp_type}_{lw}_{param}", ideal_value=ideal)
             if target is params:
                 results[bp_type][lw] = target_params
         # add other if populated
@@ -258,7 +259,8 @@ def group_geometry_by_bp_and_edge(basepairs: List[Dict], min_edge_count: int = 1
             other_stats = {}
             for param, values in other_bucket.items():
                 if len(values) > 0:
-                    other_stats[param] = calculate_statistics_by_group(values, f"{bp_type}_OTHER_{param}", ideal_value=0.0)
+                    ideal = 0.0 if param != 'hbond_score' else None
+                    other_stats[param] = calculate_statistics_by_group(values, f"{bp_type}_OTHER_{param}", ideal_value=ideal)
             if other_stats:
                 results[bp_type]['_OTHER'] = other_stats
     return results
@@ -401,29 +403,6 @@ def calculate_statistics_by_group(values: List[float], group_name: str, ideal_va
     return result
 
 
-def load_excluded_pdb_ids(exclude_csv_path: Path = Path("g_quads_detected.csv")) -> set:
-    """
-    Load PDB IDs to exclude (e.g., known G-quad structures).
-    Expects CSV with PDB_ID as first column.
-    """
-    excluded = set()
-    if exclude_csv_path.exists():
-        try:
-            import csv
-            with open(exclude_csv_path, newline='') as f:
-                reader = csv.reader(f)
-                for row in reader:
-                    if not row:
-                        continue
-                    pdb_id = row[0].strip().upper()
-                    if pdb_id and pdb_id != "PDB_ID":
-                        excluded.add(pdb_id)
-            print(f"Loaded {len(excluded)} excluded PDB IDs from {exclude_csv_path}")
-        except Exception as e:
-            print(f"Warning: Could not read exclusion list {exclude_csv_path}: {e}")
-    else:
-        print(f"No exclusion list found at {exclude_csv_path}, proceeding without exclusions")
-    return excluded
 
 def analyze_geometry_by_edge_type(basepairs: List[Dict]) -> Dict:
     """Analyze geometry parameters grouped by bp_type and edge type."""
@@ -461,7 +440,7 @@ def print_summary(geometry_results: Dict, hbond_results: Dict):
         print("CANONICAL vs NON-CANONICAL COMPARISON (Geometry)")
         print("-"*80)
         
-        for param in ['shear', 'stretch', 'stagger', 'buckle', 'propeller', 'opening']:
+        for param in ['shear', 'stretch', 'stagger', 'buckle', 'propeller', 'opening', 'hbond_score']:
             if param in geometry_results['_CANONICAL'] and param in geometry_results['_NONCANONICAL']:
                 can = geometry_results['_CANONICAL'][param]
                 non = geometry_results['_NONCANONICAL'][param]
@@ -508,19 +487,45 @@ def print_summary(geometry_results: Dict, hbond_results: Dict):
                     print(f"  Difference:    std_diff={abs(can['std'] - non['std']):7.3f}")
 
 
+def load_allowed_pdb_ids(csv_path: Path, exclude_pdb_ids: set) -> set:
+    """
+    Load allowed PDB IDs from uniqueRNAs.csv and remove excluded ones (e.g., G-quads).
+
+    Args:
+        csv_path: Path to uniqueRNAs.csv (must have 'unique_pdb_id' column)
+        exclude_pdb_ids: Set of PDB IDs (uppercase) to exclude
+
+    Returns:
+        Set of allowed PDB IDs (uppercase)
+    """
+    if not csv_path.exists():
+        print(f"Error: Unique RNAs file not found: {csv_path}")
+        sys.exit(1)
+
+    df = pd.read_csv(csv_path)
+    all_ids = {pdb_id.strip().upper() for pdb_id in df['unique_pdb_id'].dropna()}
+    allowed = all_ids - exclude_pdb_ids
+    print(f"Loaded {len(all_ids)} unique PDB IDs from {csv_path}")
+    print(f"Excluded {len(all_ids) - len(allowed)} G-quad PDB IDs, {len(allowed)} remaining")
+    return allowed
+
+
 def main():
     """Main analysis function."""
     config = Config()
     basepair_dir = Path(config.BASEPAIR_DIR)
     hbond_dir = Path(config.HBOND_DIR)
     output_file = Path('edge_type_analysis.json')
-    # Use g_quads.py list instead of CSV
+
+    # Build allowlist: only PDB IDs in uniqueRNAs.csv, minus G-quads
     exclude_pdb_ids = {p.upper() for p in g_quads}
-    
+    unique_rnas_path = Path("data/uniqueRNAs.csv")
+    allowed_pdb_ids = load_allowed_pdb_ids(unique_rnas_path, exclude_pdb_ids)
+
     if not basepair_dir.exists():
         print(f"Error: Base pair directory not found: {basepair_dir}")
         sys.exit(1)
-    
+
     if not hbond_dir.exists():
         print(f"Error: H-bond directory not found: {hbond_dir}")
         sys.exit(1)
@@ -537,7 +542,7 @@ def main():
     
     # Load base pairs (process all files for complete analysis)
     print("\nProcessing ALL base pair files (this may take a few minutes)...")
-    basepairs = load_basepair_sample(basepair_dir, max_files=None, exclude_pdb_ids=exclude_pdb_ids)  # None = process all
+    basepairs = load_basepair_sample(basepair_dir, max_files=None, include_pdb_ids=allowed_pdb_ids)
     
     if len(basepairs) == 0:
         print("Error: No base pair data loaded")
@@ -556,7 +561,7 @@ def main():
         bp_lookup,
         max_files=None,
         max_hbonds_per_file=None,
-        exclude_pdb_ids=exclude_pdb_ids
+        include_pdb_ids=allowed_pdb_ids
     )
     
     # Analyze geometry by edge type

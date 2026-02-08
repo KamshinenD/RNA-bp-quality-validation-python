@@ -1,96 +1,38 @@
 {
   "pdb_id": "7YGA",
   "analysis_type": "single_residue",
-  "query_residue": 153,
+  "query_residue": 151,
   "query_chain": "N",
-  "num_base_pairs": 2,
-  "grade": "GOOD",
+  "num_base_pairs": 1,
+  "grade": "EXCELLENT",
   "base_pairs": [
     {
-      "score": 72.0,
-      "geometry_penalty": 0.0,
-      "hbond_penalty": 28.0,
-      "geometry_issues": {},
-      "hbond_issues": {
-        "bad_distance": true,
-        "weak_quality": true
-      },
-      "bp_info": {
-        "res_1": "N-A-153-",
-        "res_2": "N-G-150-",
-        "bp_type": "A-G",
-        "edge_type": "tSH",
-        "num_hbonds": 2,
-        "dssr_score": 2.0688729351
-      },
-      "geometry_params": {
-        "shear": 6.747,
-        "stretch": -5.037,
-        "stagger": 0.815,
-        "buckle": 15.257,
-        "propeller": -0.564,
-        "opening": -12.796
-      },
-      "hbond_details": [
-        {
-          "atom_1": "N7",
-          "atom_2": "N2",
-          "distance": 2.71,
-          "angle_1": 105.5,
-          "angle_2": 124.0,
-          "dihedral_angle": -170.5,
-          "quality_score": 0.652
-        },
-        {
-          "atom_1": "N3",
-          "atom_2": "N6",
-          "distance": 3.61,
-          "angle_1": 123.4,
-          "angle_2": 119.9,
-          "dihedral_angle": 36.6,
-          "quality_score": 0.539
-        }
-      ]
-    },
-    {
-      "score": 69.0,
-      "geometry_penalty": 31.0,
+      "score": 95.0,
+      "geometry_penalty": 5.0,
       "hbond_penalty": 0.0,
       "geometry_issues": {
-        "misaligned": true,
-        "non_coplanar": true,
         "rotational_distortion": true
       },
       "hbond_issues": {
         "low_dssr_score": true
       },
       "bp_info": {
-        "res_1": "N-A-153-",
-        "res_2": "N-G-250-",
-        "bp_type": "A-G",
-        "edge_type": "tSS",
-        "num_hbonds": 1,
-        "dssr_score": 1.6391088437
+        "res_1": "N-A-151-",
+        "res_2": "N-A-248-",
+        "bp_type": "A-A",
+        "edge_type": "tWW",
+        "num_hbonds": 0,
+        "dssr_score": 1.915241643
       },
       "geometry_params": {
-        "shear": 3.282,
-        "stretch": 7.649,
-        "stagger": 1.593,
-        "buckle": -7.442,
-        "propeller": -21.775,
-        "opening": 158.329
+        "shear": -1.357,
+        "stretch": -1.226,
+        "stagger": 0.332,
+        "buckle": 20.849,
+        "propeller": 1.665,
+        "opening": 179.583
       },
-      "hbond_details": [
-        {
-          "atom_1": "N3",
-          "atom_2": "N2",
-          "distance": 3.2,
-          "angle_1": 118.2,
-          "angle_2": 108.5,
-          "dihedral_angle": -9.1,
-          "quality_score": 0.857
-        }
-      ]
+      "hbond_details": []
     }
   ],
   "protein_binding_explanations": {},

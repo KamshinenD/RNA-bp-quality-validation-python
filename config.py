@@ -19,8 +19,8 @@ class Config:
         # MAJOR - Out-of-plane issues (buckle rotation or stagger displacement)
         'non_coplanar_pairs': 12.0,
 
-        # MODERATE - H-bond quality score below edge-specific QUALITY_MIN threshold
-        'weak_hbond_quality': 10.0,
+        # MODERATE - DSSR hbond_score outside edge-specific HBOND_SCORE_MIN/MAX threshold
+        'poor_hbond_score': 10.0,
 
         # MODERATE - H-bond dihedral in forbidden zone (not cis: -50 to 50, not trans: |angle| >= 140)
         'bad_hbond_dihedrals': 8.0,

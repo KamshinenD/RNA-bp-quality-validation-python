@@ -75,8 +75,8 @@ class Scorer:
             'zero_hbond': 0
         }
         hbond_stats = {
-            'low_dssr_score': 0, 'bad_distance': 0, 'bad_angles': 0, 'bad_dihedral': 0,
-            'weak_quality': 0, 'incorrect_count': 0
+            'poor_hbond_score': 0, 'bad_distance': 0, 'bad_angles': 0, 'bad_dihedral': 0,
+            'incorrect_count': 0
         }
         
         for bp in basepair_data:
@@ -219,10 +219,20 @@ class Scorer:
         hbond_issues = {}
         hbond_penalty = 0.0
 
-        # Flag low DSSR hbond_score for reporting (not penalised)
-        # If score == 0.0, zero_hbond penalty will be applied instead
-        if dssr_quality > 0.0 and dssr_quality < self.config.HBOND_SCORE_MIN:
-            hbond_issues['low_dssr_score'] = True  # (not penalised)
+        # Check DSSR hbond_score using edge-aware thresholds
+        # hbond_score is the average quality of all H-bonds in this base pair
+        if dssr_quality > 0.0:
+            hbond_score_min = geo_thresh.get('HBOND_SCORE_MIN')
+            hbond_score_max = geo_thresh.get('HBOND_SCORE_MAX')
+
+            # Only check if thresholds are defined for this bp_type/edge combination
+            if hbond_score_min is not None or hbond_score_max is not None:
+                is_below_min = hbond_score_min is not None and dssr_quality < hbond_score_min
+                is_above_max = hbond_score_max is not None and dssr_quality > hbond_score_max
+
+                if is_below_min or is_above_max:
+                    hbond_issues['poor_hbond_score'] = True
+                    hbond_penalty += self.config.PENALTY_WEIGHTS['poor_hbond_score']
         
         # Reconcile DSSR hbond_score with CSV H-bond data
         # Only flag "zero_hbond" if BOTH sources agree there are no H-bonds
@@ -254,18 +264,16 @@ class Scorer:
                     hbond_issues['incorrect_count'] = True
                     hbond_penalty += self.config.PENALTY_WEIGHTS['incorrect_hbond_count']
             
-            # Check each H-bond quality using edge-specific thresholds
+            # Check each H-bond using edge-specific thresholds
             # Collect flags first
             has_bad_distance = False
             has_bad_angles = False
             has_bad_dihedral = False
-            has_weak_quality = False
-            
+
             # Get edge-specific H-bond thresholds
             distance_min = hbond_thresh.get('DIST_MIN', self.config.HBOND_DISTANCE_MIN)
             distance_max = hbond_thresh.get('DIST_MAX', self.config.HBOND_DISTANCE_MAX)
             angle_min = hbond_thresh.get('ANGLE_MIN', 80.0)
-            quality_min = hbond_thresh.get('QUALITY_MIN', 0.70)
             
             # Dihedral uses GLOBAL thresholds (only flag forbidden zone)
             dihedral_cis_min = self.config.HBOND_DIHEDRAL_CIS_MIN
@@ -290,11 +298,6 @@ class Scorer:
                 is_trans = dihedral >= dihedral_trans_min or dihedral <= -dihedral_trans_min
                 if not (is_cis or is_trans):
                     has_bad_dihedral = True
-                
-                # Quality score check using edge-specific threshold
-                quality = hb.get('score', 1.0)
-                if quality < quality_min:
-                    has_weak_quality = True
             
             # Apply penalties ONCE per issue type
             if has_bad_distance:
@@ -308,10 +311,6 @@ class Scorer:
             if has_bad_dihedral:
                 hbond_issues['bad_dihedral'] = True
                 hbond_penalty += self.config.PENALTY_WEIGHTS['bad_hbond_dihedrals']
-            
-            if has_weak_quality:
-                hbond_issues['weak_quality'] = True
-                hbond_penalty += self.config.PENALTY_WEIGHTS['weak_hbond_quality']
         
         # Calculate base pair score
         total_penalty = geometry_penalty + hbond_penalty

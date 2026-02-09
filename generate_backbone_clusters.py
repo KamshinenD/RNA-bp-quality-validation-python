@@ -35,7 +35,7 @@ OUTPUT_JSON = DATA_DIR / "backbone_clusters.json"
 MIN_EDGE_COUNT = 1000
 MIN_PUCKER_GROUP = 100
 MIN_CHI_COUNT = 50
-MAX_GMM_K = 6
+MAX_GMM_K = 15
 MAHALANOBIS_PERCENTILE = 97.5
 PERCENTILE_LO = 2.5
 PERCENTILE_HI = 97.5
@@ -268,14 +268,13 @@ def compute_mahalanobis_threshold(
     return thresholds
 
 
-def serialize_gmm_clusters(
+def _serialize_global_clusters(
     gmm: GaussianMixture, thresholds: List[float], n_points: int
 ) -> Dict:
-    """Convert GMM parameters to JSON-serializable dict."""
+    """Convert GMM parameters to JSON-serializable dict (no weights — those are edge-specific)."""
     clusters = []
     for k in range(gmm.n_components):
         clusters.append({
-            "weight": round(float(gmm.weights_[k]), 6),
             "mean": [round(float(v), 6) for v in gmm.means_[k]],
             "covariance": [
                 [round(float(v), 8) for v in row]
@@ -371,66 +370,143 @@ def collect_backbone_data(
 # Cluster fitting orchestration
 # ---------------------------------------------------------------------------
 
-def _fit_abg_clusters(entries: List[Dict], pucker_split: bool = True) -> Dict:
+def _pool_angle_data(
+    all_data: Dict[str, List], angle_group: str
+) -> Dict[str, np.ndarray]:
     """
-    Fit GMM clusters for (alpha, beta, gamma) angles.
-    If pucker_split is True, split by sugar pucker first.
+    Pool angle triples across ALL edge types for a given angle group.
+
+    Args:
+        all_data: dict mapping edge_type -> list of torsion dicts
+        angle_group: "abg" or "dez"
+
+    Returns:
+        For "abg": {"c3_endo": Nx3 array, "c2_endo": Nx3 array}
+        For "dez": {"combined": Nx3 array}
     """
-    result = {}
-
-    # Collect entries that have all three angles
-    valid = [
-        e for e in entries
-        if all(k in e for k in ("alpha", "beta", "gamma"))
-    ]
-
-    if not valid:
+    if angle_group == "abg":
+        required = ("alpha", "beta", "gamma")
+        c3_rows, c2_rows = [], []
+        for entries in all_data.values():
+            for e in entries:
+                if all(k in e for k in required):
+                    pucker = get_sugar_pucker(e.get("delta"))
+                    triple = [e["alpha"], e["beta"], e["gamma"]]
+                    if pucker == "C3'-endo":
+                        c3_rows.append(triple)
+                    elif pucker == "C2'-endo":
+                        c2_rows.append(triple)
+        result = {}
+        if c3_rows:
+            result["c3_endo"] = np.array(c3_rows)
+        if c2_rows:
+            result["c2_endo"] = np.array(c2_rows)
         return result
-
-    if pucker_split:
-        c3_endo = [e for e in valid if get_sugar_pucker(e.get("delta")) == "C3'-endo"]
-        c2_endo = [e for e in valid if get_sugar_pucker(e.get("delta")) == "C2'-endo"]
-
-        for label, subset in [("abg_c3_endo", c3_endo), ("abg_c2_endo", c2_endo)]:
-            if len(subset) >= MIN_PUCKER_GROUP:
-                angles = np.array([[e["alpha"], e["beta"], e["gamma"]] for e in subset])
-                X = angles_to_sincos(angles)
-                gmm = fit_gmm_with_bic(X)
-                if gmm is not None:
-                    thresholds = compute_mahalanobis_threshold(gmm, X)
-                    result[label] = serialize_gmm_clusters(gmm, thresholds, len(subset))
-
-    # If either pucker group was too small or pucker_split is off, do combined
-    if "abg_c3_endo" not in result or "abg_c2_endo" not in result:
-        angles = np.array([[e["alpha"], e["beta"], e["gamma"]] for e in valid])
-        X = angles_to_sincos(angles)
-        gmm = fit_gmm_with_bic(X)
-        if gmm is not None:
-            thresholds = compute_mahalanobis_threshold(gmm, X)
-            result["abg_combined"] = serialize_gmm_clusters(gmm, thresholds, len(valid))
-
-    return result
+    else:  # dez
+        required = ("delta", "epsilon", "zeta")
+        rows = []
+        for entries in all_data.values():
+            for e in entries:
+                if all(k in e for k in required):
+                    rows.append([e["delta"], e["epsilon"], e["zeta"]])
+        if rows:
+            return {"combined": np.array(rows)}
+        return {}
 
 
-def _fit_dez_clusters(entries: List[Dict]) -> Optional[Dict]:
+def _fit_pooled_clusters(
+    pooled_angles: np.ndarray,
+) -> Tuple[Optional[GaussianMixture], Optional[np.ndarray], Optional[List[float]]]:
     """
-    Fit GMM clusters for (delta, epsilon, zeta) angles.
-    No pucker split — delta IS the pucker, clusters emerge naturally.
-    """
-    valid = [
-        e for e in entries
-        if all(k in e for k in ("delta", "epsilon", "zeta"))
-    ]
-    if not valid:
-        return None
+    Fit a single GMM on pooled angle data (across all edge types).
 
-    angles = np.array([[e["delta"], e["epsilon"], e["zeta"]] for e in valid])
-    X = angles_to_sincos(angles)
+    Args:
+        pooled_angles: Nx3 angle array
+
+    Returns:
+        (fitted GMM, sin/cos data X, global Mahalanobis thresholds)
+        or (None, None, None) if fitting fails
+    """
+    X = angles_to_sincos(pooled_angles)
     gmm = fit_gmm_with_bic(X)
     if gmm is None:
-        return None
+        return None, None, None
     thresholds = compute_mahalanobis_threshold(gmm, X)
-    return serialize_gmm_clusters(gmm, thresholds, len(valid))
+    return gmm, X, thresholds
+
+
+def _compute_edge_projection(
+    gmm: GaussianMixture,
+    edge_entries: List[Dict],
+    angle_group: str,
+) -> Optional[Dict]:
+    """
+    Project an edge type's data onto the global GMM clusters.
+
+    Computes weight vector (fraction of this edge's data per cluster)
+    and edge-specific Mahalanobis thresholds.
+
+    Args:
+        gmm: fitted global GMM
+        edge_entries: list of torsion dicts for this edge type
+        angle_group: one of "abg_c3_endo", "abg_c2_endo", "dez"
+
+    Returns:
+        {"n_points": N, "weights": [...], "mahalanobis_thresholds": [...]}
+        or None if no valid data
+    """
+    # Extract the right angle triple based on angle_group
+    if angle_group.startswith("abg"):
+        required = ("alpha", "beta", "gamma")
+        target_pucker = "C3'-endo" if "c3" in angle_group else "C2'-endo"
+        valid = [
+            e for e in edge_entries
+            if all(k in e for k in required)
+            and get_sugar_pucker(e.get("delta")) == target_pucker
+        ]
+        if not valid:
+            return None
+        angles = np.array([[e["alpha"], e["beta"], e["gamma"]] for e in valid])
+    else:  # dez
+        required = ("delta", "epsilon", "zeta")
+        valid = [e for e in edge_entries if all(k in e for k in required)]
+        if not valid:
+            return None
+        angles = np.array([[e["delta"], e["epsilon"], e["zeta"]] for e in valid])
+
+    X = angles_to_sincos(angles)
+    labels = gmm.predict(X)
+    n_components = gmm.n_components
+    n_points = len(valid)
+
+    # Weight vector: fraction of points in each cluster
+    weights = []
+    for k in range(n_components):
+        weights.append(round(float(np.sum(labels == k)) / n_points, 6))
+
+    # Edge-specific Mahalanobis thresholds
+    edge_thresholds = []
+    for k in range(n_components):
+        mask = labels == k
+        points = X[mask]
+        if len(points) == 0:
+            edge_thresholds.append(0.0)
+            continue
+        mean_k = gmm.means_[k]
+        cov_k = gmm.covariances_[k]
+        try:
+            cov_inv = np.linalg.inv(cov_k)
+        except np.linalg.LinAlgError:
+            cov_inv = np.linalg.pinv(cov_k)
+        dists = np.array([mahalanobis(p, mean_k, cov_inv) for p in points])
+        thr = float(np.percentile(dists, MAHALANOBIS_PERCENTILE))
+        edge_thresholds.append(round(thr, 4))
+
+    return {
+        "n_points": n_points,
+        "weights": weights,
+        "mahalanobis_thresholds": edge_thresholds,
+    }
 
 
 def _fit_chi(entries: List[Dict]) -> Optional[Dict]:
@@ -445,31 +521,60 @@ def build_cluster_results(
     data: Dict[str, List], counts: Dict[str, int]
 ) -> Dict:
     """
-    Orchestrator: fit clusters per edge type, handle _OTHER merging for
-    edge types with fewer than MIN_EDGE_COUNT observations.
+    Orchestrator: pool all data across edge types, fit global GMMs,
+    then compute per-edge-type weight profiles.
     """
-    edge_results = {}
+    # --- Step 1: Pool angle data across ALL edge types ---
+    print("  Pooling angle data across all edge types...")
+    abg_pooled = _pool_angle_data(data, "abg")
+    dez_pooled = _pool_angle_data(data, "dez")
+
+    # --- Step 2: Fit global GMMs ---
+    global_clusters = {}
+    global_gmms = {}  # keep fitted GMMs for projection step
+
+    for label, angles in [
+        ("abg_c3_endo", abg_pooled.get("c3_endo")),
+        ("abg_c2_endo", abg_pooled.get("c2_endo")),
+        ("dez", dez_pooled.get("combined")),
+    ]:
+        if angles is None or len(angles) < MIN_PUCKER_GROUP:
+            print(f"  Skipping {label}: insufficient data")
+            continue
+        print(f"  Fitting pooled GMM for {label} (n={len(angles):,})...")
+        gmm, X, thresholds = _fit_pooled_clusters(angles)
+        if gmm is not None:
+            global_clusters[label] = _serialize_global_clusters(gmm, thresholds, len(angles))
+            global_gmms[label] = gmm
+            print(f"    -> k={gmm.n_components}")
+
+    # --- Step 3: Determine qualifying edge types ---
+    qualifying = []
     other_entries = []
 
-    # Sort edge types for deterministic output
     for lw in sorted(data.keys()):
         edge_count = counts.get(lw, 0)
-
         if edge_count < MIN_EDGE_COUNT or "." in lw or lw == "--":
-            # Merge into _OTHER: low-count edges, partial annotations (.), and unclassified (--)
             other_entries.extend(data[lw])
-            continue
+        else:
+            qualifying.append(lw)
 
-        print(f"  Fitting clusters for {lw} (n={edge_count:,})...")
+    # --- Step 4: Compute per-edge-type projections ---
+    edge_results = {}
+
+    for lw in qualifying:
+        print(f"  Computing projections for {lw}...")
         entries = data[lw]
         entry_result = {}
 
-        abg = _fit_abg_clusters(entries, pucker_split=True)
-        entry_result.update(abg)
-
-        dez = _fit_dez_clusters(entries)
-        if dez is not None:
-            entry_result["dez"] = dez
+        for group_label in ("abg_c3_endo", "abg_c2_endo", "dez"):
+            if group_label not in global_gmms:
+                continue
+            proj = _compute_edge_projection(
+                global_gmms[group_label], entries, group_label
+            )
+            if proj is not None:
+                entry_result[group_label] = proj
 
         chi = _fit_chi(entries)
         if chi is not None:
@@ -478,17 +583,19 @@ def build_cluster_results(
         if entry_result:
             edge_results[lw] = entry_result
 
-    # Handle _OTHER bucket
+    # --- Step 5: Handle _OTHER bucket ---
     if other_entries:
-        print(f"  Fitting clusters for _OTHER (n={len(other_entries):,} residue observations)...")
+        print(f"  Computing projections for _OTHER (n={len(other_entries):,})...")
         other_result = {}
 
-        abg = _fit_abg_clusters(other_entries, pucker_split=True)
-        other_result.update(abg)
-
-        dez = _fit_dez_clusters(other_entries)
-        if dez is not None:
-            other_result["dez"] = dez
+        for group_label in ("abg_c3_endo", "abg_c2_endo", "dez"):
+            if group_label not in global_gmms:
+                continue
+            proj = _compute_edge_projection(
+                global_gmms[group_label], other_entries, group_label
+            )
+            if proj is not None:
+                other_result[group_label] = proj
 
         chi = _fit_chi(other_entries)
         if chi is not None:
@@ -497,7 +604,7 @@ def build_cluster_results(
         if other_result:
             edge_results["_OTHER"] = other_result
 
-    return edge_results
+    return {"global_clusters": global_clusters, "edge_types": edge_results}
 
 
 # ---------------------------------------------------------------------------
@@ -506,7 +613,7 @@ def build_cluster_results(
 
 def main():
     print("=" * 70)
-    print("BACKBONE TORSION CLUSTER GENERATION")
+    print("BACKBONE TORSION CLUSTER GENERATION (POOLED)")
     print("=" * 70)
 
     print("\nLoading unique PDB IDs from data/uniqueRNAS.csv...")
@@ -524,19 +631,21 @@ def main():
         marker = "" if counts[lw] >= MIN_EDGE_COUNT else " -> _OTHER"
         print(f"  {lw:6s}: {counts[lw]:>8,} base pairs{marker}")
 
-    print("\nFitting GMM clusters...")
-    edge_results = build_cluster_results(data, counts)
+    print("\nFitting pooled GMM clusters...")
+    results = build_cluster_results(data, counts)
 
     # Build output
     output = {
         "metadata": {
-            "description": "Backbone torsion cluster parameters by edge type",
+            "description": "Pooled backbone torsion clusters with per-edge-type weight profiles",
             "sin_cos_encoding": "Angles transformed to [sin,cos,...] before clustering",
             "mahalanobis_percentile": MAHALANOBIS_PERCENTILE,
             "min_edge_count": MIN_EDGE_COUNT,
             "min_cluster_group": MIN_PUCKER_GROUP,
+            "max_gmm_k": MAX_GMM_K,
         },
-        "edge_types": edge_results,
+        "global_clusters": results["global_clusters"],
+        "edge_types": results["edge_types"],
     }
 
     print(f"\nWriting results to {OUTPUT_JSON}...")
@@ -544,18 +653,22 @@ def main():
         json.dump(output, f, indent=2)
 
     # Summary
-    n_edges = len(edge_results)
-    print(f"\nDone. {n_edges} edge type entries (including _OTHER).")
-    for lw, result in sorted(edge_results.items()):
+    print(f"\nGlobal clusters:")
+    for label, gc in results["global_clusters"].items():
+        print(f"  {label}: k={gc['n_components']}, n={gc['n_points']:,}")
+
+    n_edges = len(results["edge_types"])
+    print(f"\n{n_edges} edge type entries (including _OTHER):")
+    for lw in sorted(results["edge_types"].keys()):
+        et = results["edge_types"][lw]
         parts = []
-        for key in ("abg_c3_endo", "abg_c2_endo", "abg_combined", "dez", "chi"):
-            if key in result:
-                if key == "chi":
-                    parts.append(f"chi({result[key]['modality']})")
-                elif key.startswith("abg"):
-                    parts.append(f"{key}(k={result[key]['n_components']})")
-                else:
-                    parts.append(f"{key}(k={result[key]['n_components']})")
+        for key in ("abg_c3_endo", "abg_c2_endo", "dez"):
+            if key in et:
+                n = et[key]["n_points"]
+                top_w = max(et[key]["weights"])
+                parts.append(f"{key}(n={n:,}, top_w={top_w:.2f})")
+        if "chi" in et:
+            parts.append(f"chi({et['chi']['modality']})")
         print(f"  {lw}: {', '.join(parts)}")
     print(f"\nOutput: {OUTPUT_JSON}")
 

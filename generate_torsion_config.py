@@ -22,7 +22,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 INPUT_JSON = SCRIPT_DIR / "torsion_thresholds_analysis.json"
 CONFIG_PY = SCRIPT_DIR / "config.py"
 MIN_COUNT = 1000
-TORSION_ANGLES = ["alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "chi", "v1", "v2", "v3", "v4"]
+TORSION_ANGLES = ["alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "chi"]
 
 
 def get_bp_count(bp_data: dict) -> int:

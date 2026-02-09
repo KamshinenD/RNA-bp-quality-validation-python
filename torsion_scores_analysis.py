@@ -29,7 +29,7 @@ from g_quads import g_quads
 
 # Torsion angles to extract
 TORSION_ANGLES = ['alpha', 'beta', 'gamma', 'delta', 'epsilon', 'zeta', 'chi',
-                  'eta', 'v1', 'v2', 'v3', 'v4']
+                  'eta']
 
 
 def normalize_bp_type(bp_type: str) -> str:
@@ -85,9 +85,9 @@ def get_sugar_pucker(delta: float) -> str:
     """Classify sugar pucker based on delta torsion angle."""
     if delta is None:
         return "unknown"
-    if 55 < delta < 95:
+    if 55 <= delta <= 110:
         return "C3'-endo"
-    elif 130 < delta < 165:
+    elif 120 <= delta <= 165:
         return "C2'-endo"
     else:
         return "intermediate"
@@ -99,10 +99,10 @@ def get_chi_conformation(chi: float) -> str:
     if chi is None:
         return "unknown"
     # anti: chi ~ -160° (range roughly -180 to -60)
-    # syn: chi ~ 60° (range roughly 30 to 90)
+    # syn: chi ~ 60° (range roughly 0 to 90)
     if -180 <= chi <= -60 or 120 <= chi <= 180:
         return "anti"
-    elif 30 <= chi <= 90:
+    elif 0 <= chi <= 90:
         return "syn"
     else:
         return "intermediate"
@@ -239,8 +239,18 @@ def analyze_basepairs(input_csv: str, n_em: int, n_xray: int,
             v1 = t1.get(angle)
             v2 = t2.get(angle)
             if v1 is not None and v2 is not None:
-                record[f'{angle}_diff'] = abs(v1 - v2)
-                record[f'{angle}_avg'] = (v1 + v2) / 2
+                diff = abs(v1 - v2)
+                if diff > 180:
+                    diff = 360 - diff
+                record[f'{angle}_diff'] = diff
+                # Circular mean via atan2
+                rad1, rad2 = np.radians(v1), np.radians(v2)
+                record[f'{angle}_avg'] = np.degrees(
+                    np.arctan2(
+                        np.sin(rad1) + np.sin(rad2),
+                        np.cos(rad1) + np.cos(rad2)
+                    )
+                )
             else:
                 record[f'{angle}_diff'] = None
                 record[f'{angle}_avg'] = None

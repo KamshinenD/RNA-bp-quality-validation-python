@@ -35,11 +35,14 @@ OUTPUT_JSON = DATA_DIR / "backbone_clusters.json"
 MIN_EDGE_COUNT = 1000
 MIN_PUCKER_GROUP = 100
 MIN_CHI_COUNT = 50
-MAX_GMM_K = 15
+MAX_GMM_K = 12
 MAHALANOBIS_PERCENTILE = 97.5
 PERCENTILE_LO = 2.5
 PERCENTILE_HI = 97.5
 MIN_SAMPLE_FOR_BIMODAL = 50
+# Merge GMM components whose means are this close in 6D sin/cos space (Euclidean).
+# Ensures "same place" clusters are identified as one unique cluster.
+MERGE_DISTANCE_THRESHOLD = 0.35
 
 
 # ---------------------------------------------------------------------------
@@ -213,20 +216,20 @@ def angles_to_sincos(angle_tuples: np.ndarray) -> np.ndarray:
     return result
 
 
-BIC_SUBSAMPLE = 100_000  # subsample for BIC model selection on large datasets
+BIC_SUBSAMPLE = 50_000  # subsample for BIC model selection (picking k)
 
 
 def fit_gmm_with_bic(X: np.ndarray, max_k: int = MAX_GMM_K) -> GaussianMixture:
     """
     Fit GMM with k=1..max_k, select best k by BIC (lower is better).
-    For large datasets, BIC selection is done on a subsample, then the
-    winning k is refit on the full data.
+    BIC selection uses a subsample with n_init=1 (fast).
+    Final refit uses ALL data with n_init=1 (stable since k is already chosen).
     """
-    # Subsample for BIC selection if dataset is large
+    rng = np.random.RandomState(42)
+
+    # Subsample for BIC selection
     if len(X) > BIC_SUBSAMPLE:
-        rng = np.random.RandomState(42)
-        idx = rng.choice(len(X), BIC_SUBSAMPLE, replace=False)
-        X_bic = X[idx]
+        X_bic = X[rng.choice(len(X), BIC_SUBSAMPLE, replace=False)]
     else:
         X_bic = X
 
@@ -239,7 +242,7 @@ def fit_gmm_with_bic(X: np.ndarray, max_k: int = MAX_GMM_K) -> GaussianMixture:
                 covariance_type="full",
                 random_state=42,
                 max_iter=200,
-                n_init=3,
+                n_init=1,  # single init for BIC search (fast)
             )
             gmm.fit(X_bic)
             bic = gmm.bic(X_bic)
@@ -249,14 +252,14 @@ def fit_gmm_with_bic(X: np.ndarray, max_k: int = MAX_GMM_K) -> GaussianMixture:
         except Exception:
             continue
 
-    # Refit winning k on full data
+    # Refit winning k on ALL data
     try:
         gmm = GaussianMixture(
             n_components=best_k,
             covariance_type="full",
             random_state=42,
             max_iter=200,
-            n_init=3,
+            n_init=1,  # single init on full data (k already chosen)
         )
         gmm.fit(X)
         return gmm
@@ -298,6 +301,117 @@ def compute_mahalanobis_threshold(
             thr = 0.0
         thresholds.append(thr)
     return thresholds
+
+
+def _merge_two_components(
+    mean_i: np.ndarray,
+    cov_i: np.ndarray,
+    w_i: float,
+    thr_i: float,
+    mean_j: np.ndarray,
+    cov_j: np.ndarray,
+    w_j: float,
+    thr_j: float,
+) -> Tuple[np.ndarray, np.ndarray, float, float]:
+    """
+    Merge two GMM components into one (weighted mean, merged covariance, max threshold).
+    """
+    w_tot = w_i + w_j
+    mean_new = (w_i * mean_i + w_j * mean_j) / w_tot
+    diff_i = mean_i - mean_new
+    diff_j = mean_j - mean_new
+    cov_new = (
+        w_i * (cov_i + np.outer(diff_i, diff_i))
+        + w_j * (cov_j + np.outer(diff_j, diff_j))
+    ) / w_tot
+    thr_new = max(thr_i, thr_j)
+    return mean_new, cov_new, w_tot, thr_new
+
+
+def _merge_duplicate_clusters(
+    gmm: GaussianMixture,
+    thresholds: List[float],
+    distance_threshold: float = MERGE_DISTANCE_THRESHOLD,
+) -> Tuple[GaussianMixture, List[float]]:
+    """
+    Merge GMM components whose means are within distance_threshold in sin/cos space,
+    so that clusters in the "same place" are identified as one unique cluster.
+    Returns a new GMM and updated thresholds (same length as n_components).
+    """
+    n = gmm.n_components
+    means = [gmm.means_[k].copy() for k in range(n)]
+    covs = [gmm.covariances_[k].copy() for k in range(n)]
+    weights = list(gmm.weights_.copy())
+    thrs = list(thresholds)
+
+    while True:
+        best_i, best_j, best_d = None, None, float("inf")
+        for i in range(len(means)):
+            for j in range(i + 1, len(means)):
+                d = float(np.linalg.norm(means[i] - means[j]))
+                if d < distance_threshold and d < best_d:
+                    best_d, best_i, best_j = d, i, j
+        if best_i is None:
+            break
+
+        mean_new, cov_new, w_new, thr_new = _merge_two_components(
+            means[best_i], covs[best_i], weights[best_i], thrs[best_i],
+            means[best_j], covs[best_j], weights[best_j], thrs[best_j],
+        )
+        means[best_i] = mean_new
+        covs[best_i] = cov_new
+        weights[best_i] = w_new
+        thrs[best_i] = thr_new
+        # Remove component best_j (higher index first so indices stay valid)
+        del means[best_j], covs[best_j], weights[best_j], thrs[best_j]
+
+    if len(means) == 0:
+        return gmm, thresholds
+
+    K = len(means)
+    weights_arr = np.array(weights, dtype=float)
+    weights_arr /= weights_arr.sum()
+
+    new_gmm = GaussianMixture(
+        n_components=K,
+        covariance_type="full",
+        random_state=42,
+    )
+    new_gmm.means_ = np.array(means)
+    new_gmm.covariances_ = np.array(covs)
+    new_gmm.weights_ = weights_arr
+    # precisions_cholesky_ required for predict(); Cholesky of precision = inv(cov).
+    # Robustify with jitter in case merged covariances are near-singular.
+    precisions_chol = []
+    n_features = new_gmm.means_.shape[1]
+    eye = np.eye(n_features)
+    for c in covs:
+        c = np.asarray(c, dtype=float)
+        # try increasing jitter until Cholesky succeeds
+        jitter = 1e-8
+        L = None
+        for _ in range(8):
+            try:
+                cov_j = c + jitter * eye
+                try:
+                    p = np.linalg.inv(cov_j)
+                except np.linalg.LinAlgError:
+                    p = np.linalg.pinv(cov_j)
+                L = np.linalg.cholesky(p)
+                break
+            except np.linalg.LinAlgError:
+                jitter *= 10.0
+        if L is None:
+            # Last-resort fallback: identity precision (very permissive / avoids crash)
+            L = np.linalg.cholesky(eye)
+        precisions_chol.append(L)
+    new_gmm.precisions_cholesky_ = np.array(precisions_chol)
+    # Mark as "fitted enough" for sklearn checks
+    new_gmm.converged_ = True
+    new_gmm.n_iter_ = 0
+    new_gmm.lower_bound_ = -np.inf
+    new_gmm.n_features_in_ = n_features
+    return new_gmm, thrs
 
 
 def _serialize_global_clusters(
@@ -451,6 +565,8 @@ def _fit_pooled_clusters(
 ) -> Tuple[Optional[GaussianMixture], Optional[np.ndarray], Optional[List[float]]]:
     """
     Fit a single GMM on pooled angle data (across all edge types).
+    Merges components whose means fall in the same place (see _merge_duplicate_clusters)
+    so that unique conformational clusters are identified.
 
     Args:
         pooled_angles: Nx3 angle array
@@ -464,6 +580,11 @@ def _fit_pooled_clusters(
     if gmm is None:
         return None, None, None
     thresholds = compute_mahalanobis_threshold(gmm, X)
+    k_before = gmm.n_components
+    gmm, thresholds = _merge_duplicate_clusters(gmm, thresholds, MERGE_DISTANCE_THRESHOLD)
+    k_after = gmm.n_components
+    if k_after < k_before:
+        print(f"    Merged duplicate clusters: k {k_before} -> {k_after} (unique)")
     return gmm, X, thresholds
 
 
@@ -675,6 +796,7 @@ def main():
             "min_edge_count": MIN_EDGE_COUNT,
             "min_cluster_group": MIN_PUCKER_GROUP,
             "max_gmm_k": MAX_GMM_K,
+            "merge_distance_threshold": MERGE_DISTANCE_THRESHOLD,
         },
         "global_clusters": results["global_clusters"],
         "edge_types": results["edge_types"],

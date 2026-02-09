@@ -21,7 +21,7 @@ from sklearn.mixture import GaussianMixture
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 from collections import defaultdict
-from scipy.spatial.distance import mahalanobis
+# scipy.spatial.distance.mahalanobis replaced by vectorized _vectorized_mahalanobis()
 from g_quads import g_quads
 
 # Paths
@@ -213,12 +213,24 @@ def angles_to_sincos(angle_tuples: np.ndarray) -> np.ndarray:
     return result
 
 
+BIC_SUBSAMPLE = 100_000  # subsample for BIC model selection on large datasets
+
+
 def fit_gmm_with_bic(X: np.ndarray, max_k: int = MAX_GMM_K) -> GaussianMixture:
     """
     Fit GMM with k=1..max_k, select best k by BIC (lower is better).
-    Returns fitted GaussianMixture model.
+    For large datasets, BIC selection is done on a subsample, then the
+    winning k is refit on the full data.
     """
-    best_gmm = None
+    # Subsample for BIC selection if dataset is large
+    if len(X) > BIC_SUBSAMPLE:
+        rng = np.random.RandomState(42)
+        idx = rng.choice(len(X), BIC_SUBSAMPLE, replace=False)
+        X_bic = X[idx]
+    else:
+        X_bic = X
+
+    best_k = 1
     best_bic = np.inf
     for k in range(1, max_k + 1):
         try:
@@ -229,14 +241,36 @@ def fit_gmm_with_bic(X: np.ndarray, max_k: int = MAX_GMM_K) -> GaussianMixture:
                 max_iter=200,
                 n_init=3,
             )
-            gmm.fit(X)
-            bic = gmm.bic(X)
+            gmm.fit(X_bic)
+            bic = gmm.bic(X_bic)
             if bic < best_bic:
                 best_bic = bic
-                best_gmm = gmm
+                best_k = k
         except Exception:
             continue
-    return best_gmm
+
+    # Refit winning k on full data
+    try:
+        gmm = GaussianMixture(
+            n_components=best_k,
+            covariance_type="full",
+            random_state=42,
+            max_iter=200,
+            n_init=3,
+        )
+        gmm.fit(X)
+        return gmm
+    except Exception:
+        return None
+
+
+def _vectorized_mahalanobis(points: np.ndarray, mean: np.ndarray, cov_inv: np.ndarray) -> np.ndarray:
+    """Compute Mahalanobis distances for all points at once (vectorized)."""
+    diff = points - mean  # (N, D)
+    # Mahalanobis: sqrt(diff @ cov_inv @ diff.T) per row
+    left = diff @ cov_inv  # (N, D)
+    dists_sq = np.sum(left * diff, axis=1)  # (N,)
+    return np.sqrt(np.maximum(dists_sq, 0.0))
 
 
 def compute_mahalanobis_threshold(
@@ -257,10 +291,8 @@ def compute_mahalanobis_threshold(
             cov_inv = np.linalg.inv(cov_k)
         except np.linalg.LinAlgError:
             cov_inv = np.linalg.pinv(cov_k)
-        dists = np.array([
-            mahalanobis(p, mean_k, cov_inv) for p in points
-        ])
-        if len(dists) > 0:
+        if len(points) > 0:
+            dists = _vectorized_mahalanobis(points, mean_k, cov_inv)
             thr = float(np.percentile(dists, MAHALANOBIS_PERCENTILE))
         else:
             thr = 0.0
@@ -484,7 +516,7 @@ def _compute_edge_projection(
     for k in range(n_components):
         weights.append(round(float(np.sum(labels == k)) / n_points, 6))
 
-    # Edge-specific Mahalanobis thresholds
+    # Edge-specific Mahalanobis thresholds (vectorized)
     edge_thresholds = []
     for k in range(n_components):
         mask = labels == k
@@ -498,7 +530,7 @@ def _compute_edge_projection(
             cov_inv = np.linalg.inv(cov_k)
         except np.linalg.LinAlgError:
             cov_inv = np.linalg.pinv(cov_k)
-        dists = np.array([mahalanobis(p, mean_k, cov_inv) for p in points])
+        dists = _vectorized_mahalanobis(points, mean_k, cov_inv)
         thr = float(np.percentile(dists, MAHALANOBIS_PERCENTILE))
         edge_thresholds.append(round(thr, 4))
 

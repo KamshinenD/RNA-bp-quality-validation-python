@@ -716,6 +716,9 @@ class ReportGenerator:
             'Geom_NonCoplanar',
             'Geom_ImproperOpening',
             'Geom_ZeroHBond',
+            'Geom_ConformationABG',
+            'Geom_ConformationDEZ',
+            'Geom_ConformationChi',
 
             # H-bond issues
             'HBond_LowDSSRScore',
@@ -742,8 +745,8 @@ class ReportGenerator:
             'Structure Determination Method'
         ]
         
-        # Add detailed issues column for motifs only
-        if is_motif and has_detailed_scores:
+        # Add detailed issues column when detailed scores are available
+        if has_detailed_scores:
             fieldnames.append('Detailed_Issues')
         
         # Note: Protein_Binding_Explanations only for motifs CSV, not full RNA CSV
@@ -760,8 +763,12 @@ class ReportGenerator:
                     for row in reader:
                         if row['PDB_ID'] != pdb_id:
                             # Ensure existing rows have new columns if we're adding them
-                            if 'Detailed_Issues' not in row and is_motif and has_detailed_scores:
+                            if 'Detailed_Issues' not in row and has_detailed_scores:
                                 row['Detailed_Issues'] = 'N/A'
+                            # Add conformation columns if missing
+                            for col in ['Geom_ConformationABG', 'Geom_ConformationDEZ', 'Geom_ConformationChi']:
+                                if col not in row:
+                                    row[col] = 0
                             # Add API metadata columns if missing
                             api_columns = [
                                 'EM Resolution (Å)', 'EM Diffraction Resolution (Å)', 'Experimental_method',
@@ -809,7 +816,10 @@ class ReportGenerator:
             'rotational_distortion': 0,  # was 'twisted' - matches scorer2.py
             'non_coplanar': 0,
             'improper_opening': 0,       # added - matches scorer2.py
-            'zero_hbond': 0
+            'zero_hbond': 0,
+            'conformation_abg_deviation': 0,
+            'conformation_dez_deviation': 0,
+            'conformation_chi_deviation': 0,
         }
         hbond_counts = {
             'low_dssr_score': 0,  # was 'poor_hbond' - matches scorer2.py
@@ -820,17 +830,18 @@ class ReportGenerator:
             'incorrect_count': 0
         }
         num_problematic = result_dict.get('num_problematic_bps', 0)
-        
+
         if basepair_scores:
             num_problematic = 0
             for bp_score in basepair_scores:
                 if bp_score.get('score', 100) < self.config.BASELINE:
                     num_problematic += 1
-                    
+
                     geom_bp = bp_score.get('geometry_issues', {})
                     hbond_bp = bp_score.get('hbond_issues', {})
-                    
-                    for issue in ['misaligned', 'rotational_distortion', 'non_coplanar', 'improper_opening', 'zero_hbond']:
+
+                    for issue in ['misaligned', 'rotational_distortion', 'non_coplanar', 'improper_opening', 'zero_hbond',
+                                  'conformation_abg_deviation', 'conformation_dez_deviation', 'conformation_chi_deviation']:
                         if geom_bp.get(issue, False):
                             geom_counts[issue] += 1
 
@@ -899,8 +910,11 @@ class ReportGenerator:
             'Geom_NonCoplanar': geom_counts.get('non_coplanar', 0),
             'Geom_ImproperOpening': geom_counts.get('improper_opening', 0),
             'Geom_ZeroHBond': geom_counts.get('zero_hbond', 0),
+            'Geom_ConformationABG': geom_counts.get('conformation_abg_deviation', 0),
+            'Geom_ConformationDEZ': geom_counts.get('conformation_dez_deviation', 0),
+            'Geom_ConformationChi': geom_counts.get('conformation_chi_deviation', 0),
             'HBond_LowDSSRScore': hbond_counts.get('low_dssr_score', 0),
-            
+
             # H-bond issues
             'HBond_BadDistance': hbond_counts.get('bad_distance', 0),
             'HBond_BadAngles': hbond_counts.get('bad_angles', 0),
@@ -926,9 +940,9 @@ class ReportGenerator:
             'Structure Determination Method': validation_metrics.get('Structure Determination Method', 'N/A') if validation_metrics else 'N/A'
         }
         
-        # Add detailed issues for motifs (for data analysis)
+        # Add detailed issues when detailed scores are available
         # Only include base pairs with score below baseline threshold
-        if is_motif and has_detailed_scores:
+        if has_detailed_scores:
             problematic_pairs = []
             basepair_scores = result_dict.get('basepair_scores', [])
             
@@ -953,7 +967,12 @@ class ReportGenerator:
                     for issue, is_present in hbond_issues_bp.items():
                         if is_present:
                             issues.append(f"hbond_{issue}")
-                    
+
+                    # Append per-residue backbone conformation details
+                    conf_details = bp_score.get('conformation_issues', [])
+                    if conf_details:
+                        issues.extend(conf_details)
+
                     if issues:
                         bp_id = f"{res_1}-{res_2}"
                         issues_str = ",".join(issues)
@@ -969,8 +988,8 @@ class ReportGenerator:
             
             # Join with pipe separator for CSV (easy to parse)
             row['Detailed_Issues'] = "|".join(detailed_issues_list) if detailed_issues_list else "none"
-        elif is_motif:
-            # Motif but no detailed scores available
+        else:
+            # No detailed scores available
             row['Detailed_Issues'] = "N/A"
         
         # Note: Protein_Binding_Explanations removed from full RNA CSV
@@ -1089,6 +1108,7 @@ class ReportGenerator:
             'Num_Paired_Nucleotides', 'Pairing_Percentage',
             'Geom_Misaligned', 'Geom_RotationalDistortion', 'Geom_NonCoplanar',
             'Geom_ImproperOpening', 'Geom_ZeroHBond',
+            'Geom_ConformationABG', 'Geom_ConformationDEZ', 'Geom_ConformationChi',
             'HBond_LowDSSRScore', 'HBond_BadDistance', 'HBond_BadAngles', 'HBond_BadDihedral',
             'HBond_WeakQuality', 'HBond_IncorrectCount',
             'Dominant_Issues',
@@ -1117,7 +1137,10 @@ class ReportGenerator:
             'rotational_distortion': 0,  # was 'twisted' - matches scorer2.py
             'non_coplanar': 0,
             'improper_opening': 0,       # added - matches scorer2.py
-            'zero_hbond': 0
+            'zero_hbond': 0,
+            'conformation_abg_deviation': 0,
+            'conformation_dez_deviation': 0,
+            'conformation_chi_deviation': 0,
         }
         hbond_counts = {
             'low_dssr_score': 0,  # was 'poor_hbond' - matches scorer2.py
@@ -1149,9 +1172,10 @@ class ReportGenerator:
                     hbond_issues_bp = bp_score.get('hbond_issues', {})
                     
                     # Track geometry issues
-                    for issue in ['misaligned', 'rotational_distortion', 'non_coplanar', 'improper_opening', 'zero_hbond']:
+                    for issue in ['misaligned', 'rotational_distortion', 'non_coplanar', 'improper_opening', 'zero_hbond',
+                                  'conformation_abg_deviation', 'conformation_dez_deviation', 'conformation_chi_deviation']:
                         if geom_issues_bp.get(issue, False):
-                            geom_counts[issue] += 1
+                            geom_counts[issue] = geom_counts.get(issue, 0) + 1
                             issues.append(f"geom_{issue}")
 
                     # Track low DSSR score (in hbond_issues)
@@ -1164,7 +1188,12 @@ class ReportGenerator:
                         if hbond_issues_bp.get(issue, False):
                             hbond_counts[issue] += 1
                             issues.append(f"hbond_{issue}")
-                    
+
+                    # Append per-residue backbone conformation details
+                    conf_details = bp_score.get('conformation_issues', [])
+                    if conf_details:
+                        issues.extend(conf_details)
+
                     if issues:
                         bp_id = f"{res_1}-{res_2}"
                         issues_str = ",".join(issues)
@@ -1227,6 +1256,9 @@ class ReportGenerator:
             'Geom_NonCoplanar': geom_counts.get('non_coplanar', 0),
             'Geom_ImproperOpening': geom_counts.get('improper_opening', 0),
             'Geom_ZeroHBond': geom_counts.get('zero_hbond', 0),
+            'Geom_ConformationABG': geom_counts.get('conformation_abg_deviation', 0),
+            'Geom_ConformationDEZ': geom_counts.get('conformation_dez_deviation', 0),
+            'Geom_ConformationChi': geom_counts.get('conformation_chi_deviation', 0),
             'HBond_LowDSSRScore': hbond_counts.get('low_dssr_score', 0),
             'HBond_BadDistance': hbond_counts.get('bad_distance', 0),
             'HBond_BadAngles': hbond_counts.get('bad_angles', 0),

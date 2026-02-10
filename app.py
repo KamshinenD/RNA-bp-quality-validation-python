@@ -10,8 +10,6 @@ sys.path.insert(0, str(Path(__file__).parent))
 from config import Config
 from utils.data_loader import DataLoader
 from utils.report_generator import ReportGenerator
-from analyzers.base_pair_analyzer_bc import BasePairAnalyzer
-from analyzers.hbond_analyzer_bc import HBondAnalyzer
 from scorer2 import Scorer
 import pandas as pd
 
@@ -396,11 +394,9 @@ Scoring:
     # Initialize components
     config = Config()
     data_loader = DataLoader(config)
-    bp_analyzer = BasePairAnalyzer(config)
-    hb_analyzer = HBondAnalyzer(config)
     report_gen = ReportGenerator(config)
     
-    scorer = Scorer(config, bp_analyzer, hb_analyzer)
+    scorer = Scorer(config)
     
     # Run analysis
     try:
@@ -737,7 +733,7 @@ Scoring:
             # Score each base pair individually
             bp_results = []
             for bp in matching_bps:
-                bp_score_dict = scorer._score_base_pair(bp, filtered_hbonds)
+                bp_score_dict = scorer._score_base_pair(bp, filtered_hbonds, torsion_data)
 
                 # Add full geometry parameters for detailed report
                 bp_score_dict['geometry_params'] = {

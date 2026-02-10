@@ -222,6 +222,7 @@ def export_motif_basepairs(
             basepairs = data_loader.load_basepairs(pdb_id, quiet=True)
             hbonds = data_loader.load_hbonds(pdb_id, quiet=True)
             all_hbonds = data_loader.load_all_hbonds(pdb_id, quiet=True)
+            torsion_data = data_loader.load_torsions(pdb_id, quiet=True)
 
             if basepairs is None or hbonds is None:
                 print(f"  ✗ Missing data for {pdb_id}, skipping")
@@ -263,7 +264,7 @@ def export_motif_basepairs(
 
             for bp in motif_bps:
                 try:
-                    bp_score = scorer._score_base_pair(bp, motif_hbonds)  # reuse scoring logic
+                    bp_score = scorer._score_base_pair(bp, motif_hbonds, torsion_data)  # reuse scoring logic
                 except Exception:
                     continue  # skip problematic base pair
                 bp_info = bp_score.get("bp_info", {})
@@ -283,6 +284,10 @@ def export_motif_basepairs(
                 for issue, present in bp_score.get("hbond_issues", {}).items():
                     if present:
                         issues.append(f"hbond_{issue}")
+                # Append per-residue backbone conformation details
+                conf_details = bp_score.get("conformation_issues", [])
+                if conf_details:
+                    issues.extend(conf_details)
 
                 has_binding = has_protein_binding(all_hbonds, res1, res2)
 

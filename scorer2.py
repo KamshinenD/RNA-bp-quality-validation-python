@@ -43,12 +43,10 @@ class Scorer:
     3. No hotspot detection - pure base pair quality assessment
     """
     
-    def __init__(self, config, bp_analyzer=None, hb_analyzer=None):
+    def __init__(self, config):
         """
         Args:
             config: Configuration with thresholds and weights
-            bp_analyzer: Not used in this version (kept for compatibility)
-            hb_analyzer: Not used in this version (kept for compatibility)
         """
         self.config = config
         self._load_backbone_clusters()
@@ -146,9 +144,9 @@ class Scorer:
         if torsion_data is None or self.backbone_clusters is None:
             return geometry_issues, penalty, conformation_issues
 
-        abg_failed = False
-        dez_failed = False
-        chi_failed = False
+        abg_fail_count = 0
+        dez_fail_count = 0
+        chi_fail_count = 0
 
         for res_id in [res_1, res_2]:
             torsions = torsion_data.get(res_id, {})
@@ -163,7 +161,7 @@ class Scorer:
             zeta = torsions.get('zeta')
             chi = torsions.get('chi')
 
-            # ABG check
+            # ABG check (requires delta for sugar pucker classification)
             if alpha is not None and beta is not None and gamma is not None and delta is not None:
                 pucker = self._get_sugar_pucker(delta)
                 if pucker != "intermediate":
@@ -175,7 +173,7 @@ class Scorer:
                         math.sin(g_r), math.cos(g_r),
                     ])
                     if not self._check_angle_group_cluster(point, group, edge_type):
-                        abg_failed = True
+                        abg_fail_count += 1
                         conformation_issues.append(
                             f"{res_id}: ABG conformation deviation ({pucker}, no matching cluster)"
                         )
@@ -189,7 +187,7 @@ class Scorer:
                     math.sin(z_r), math.cos(z_r),
                 ])
                 if not self._check_angle_group_cluster(point, 'dez', edge_type):
-                    dez_failed = True
+                    dez_fail_count += 1
                     conformation_issues.append(
                         f"{res_id}: DEZ conformation deviation (no matching cluster)"
                     )
@@ -197,7 +195,7 @@ class Scorer:
             # CHI check
             if chi is not None:
                 if not self._check_chi_range(chi, edge_type):
-                    chi_failed = True
+                    chi_fail_count += 1
                     # Build range string for the message
                     et_data = (self.backbone_clusters['edge_types'].get(edge_type) or
                                self.backbone_clusters['edge_types'].get('_OTHER', {}))
@@ -207,16 +205,16 @@ class Scorer:
                         f"{res_id}: chi outside allowed range ({chi:.1f}\u00b0 not in {range_str})"
                     )
 
-        # Apply penalties once per base pair
-        if abg_failed:
+        # Each residue contributes half the penalty; both failing = full penalty
+        if abg_fail_count > 0:
             geometry_issues['conformation_abg_deviation'] = True
-            penalty += self.config.PENALTY_WEIGHTS['conformation_abg_deviation']
-        if dez_failed:
+            penalty += self.config.PENALTY_WEIGHTS['conformation_abg_deviation'] * (abg_fail_count / 2)
+        if dez_fail_count > 0:
             geometry_issues['conformation_dez_deviation'] = True
-            penalty += self.config.PENALTY_WEIGHTS['conformation_dez_deviation']
-        if chi_failed:
+            penalty += self.config.PENALTY_WEIGHTS['conformation_dez_deviation'] * (dez_fail_count / 2)
+        if chi_fail_count > 0:
             geometry_issues['conformation_chi_deviation'] = True
-            penalty += self.config.PENALTY_WEIGHTS['conformation_chi_deviation']
+            penalty += self.config.PENALTY_WEIGHTS['conformation_chi_deviation'] * (chi_fail_count / 2)
 
         return geometry_issues, penalty, conformation_issues
 

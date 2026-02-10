@@ -141,6 +141,31 @@ class DataLoader:
                 print(f"Error loading H-bonds: {e}")
             return None
         
+    def load_torsions(self, pdb_id: str, quiet: bool = False) -> dict:
+        """Load per-residue torsion angles from JSON file.
+
+        Returns:
+            Dict keyed by residue ID (e.g. 'A-C-1-') with torsion angle values,
+            or None if file not found.
+        """
+        file_path = Path('data/torsions') / f"{pdb_id.upper()}.json"
+
+        if not file_path.exists():
+            if not quiet:
+                print(f"Warning: Torsion file not found: {file_path}")
+            return None
+
+        try:
+            with open(file_path, 'r') as f:
+                data = json.load(f)
+            if not quiet:
+                print(f"✓ Loaded torsion data for {len(data)} residues from {file_path.name}")
+            return data
+        except Exception as e:
+            if not quiet:
+                print(f"Error loading torsion data: {e}")
+            return None
+
     def download_cif(self, pdb_id: str, output_path: str = "temp_structure.cif") -> bool:
         """
         Download CIF file from RCSB PDB.

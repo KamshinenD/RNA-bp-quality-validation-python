@@ -409,6 +409,7 @@ Scoring:
         basepair_data = data_loader.load_basepairs(args.pdb_id)
         hbond_data = data_loader.load_hbonds(args.pdb_id)  # RNA-RNA only for scoring
         all_hbond_data = data_loader.load_all_hbonds(args.pdb_id)  # All H-bonds for protein binding analysis
+        torsion_data = data_loader.load_torsions(args.pdb_id)  # Backbone torsion angles
         
         if basepair_data is None or hbond_data is None:
             print(f"Error: Could not load data for {args.pdb_id}")
@@ -472,7 +473,7 @@ Scoring:
                 print("STEP 1: Scoring ENTIRE structure for comparison...")
                 print(f"{'='*60}")
                 
-                full_result = scorer.score_structure(basepair_data, hbond_data)
+                full_result = scorer.score_structure(basepair_data, hbond_data, torsion_data=torsion_data)
                 full_score = full_result.overall_score
                 full_grade = full_result.grade
                 
@@ -533,7 +534,7 @@ Scoring:
                 sys.exit(1)
             
             # Score the motif
-            motif_result = scorer.score_structure(motif_basepairs, motif_hbonds)
+            motif_result = scorer.score_structure(motif_basepairs, motif_hbonds, torsion_data=torsion_data)
             motif_score = motif_result.overall_score
             motif_grade = motif_result.grade
             
@@ -844,7 +845,7 @@ Scoring:
             print("Scoring ENTIRE structure...")
             print(f"{'='*60}")
             
-            result = scorer.score_structure(basepair_data, hbond_data)
+            result = scorer.score_structure(basepair_data, hbond_data, torsion_data=torsion_data)
             
             # Convert result to dictionary for JSON export
             result_dict = scorer.export_to_dict(result)

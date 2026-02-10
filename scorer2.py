@@ -1,6 +1,10 @@
 """Baseline RNA structure quality scorer - Base pairs only, no hotspots."""
 
+import json
+import math
 import pandas as pd
+import numpy as np
+from pathlib import Path
 from typing import Dict, List, Tuple
 from dataclasses import dataclass
 
@@ -47,15 +51,185 @@ class Scorer:
             hb_analyzer: Not used in this version (kept for compatibility)
         """
         self.config = config
-    
-    def score_structure(self, basepair_data: list, hbond_data: pd.DataFrame) -> BaselineResult:
+        self._load_backbone_clusters()
+
+    def _load_backbone_clusters(self):
+        """Load backbone cluster definitions and pre-compute inverse covariance matrices."""
+        cluster_path = Path(__file__).parent / 'data' / 'backbone_clusters.json'
+        if not cluster_path.exists():
+            self.backbone_clusters = None
+            self.cluster_cov_invs = {}
+            return
+
+        with open(cluster_path, 'r') as f:
+            self.backbone_clusters = json.load(f)
+
+        # Pre-compute inverse covariance matrices for each cluster group
+        self.cluster_cov_invs = {}
+        for group_name in ['abg_c3_endo', 'abg_c2_endo', 'dez']:
+            group = self.backbone_clusters['global_clusters'][group_name]
+            invs = []
+            for cluster in group['clusters']:
+                cov = np.array(cluster['covariance'])
+                invs.append(np.linalg.inv(cov))
+            self.cluster_cov_invs[group_name] = invs
+
+    def _get_sugar_pucker(self, delta: float) -> str:
+        """Determine sugar pucker from delta torsion angle."""
+        if 60 <= delta <= 110:
+            return "C3'-endo"
+        elif 125 <= delta <= 165:
+            return "C2'-endo"
+        return "intermediate"
+
+    def _check_angle_group_cluster(self, point_sincos: np.ndarray, group_name: str,
+                                    edge_type: str) -> bool:
+        """Check if a sin/cos-transformed point matches any cluster in the group.
+
+        Returns True if point is within the Mahalanobis threshold of any cluster.
+        """
+        if self.backbone_clusters is None:
+            return True  # No clusters loaded, skip check
+
+        edge_types = self.backbone_clusters['edge_types']
+        et_data = edge_types.get(edge_type) or edge_types.get('_OTHER', {})
+        group_et = et_data.get(group_name, {})
+        thresholds = group_et.get('mahalanobis_thresholds')
+
+        if thresholds is None:
+            return True  # No thresholds for this edge type, skip
+
+        group = self.backbone_clusters['global_clusters'][group_name]
+        cov_invs = self.cluster_cov_invs[group_name]
+
+        for k, cluster in enumerate(group['clusters']):
+            mean = np.array(cluster['mean'])
+            diff = point_sincos - mean
+            mahal_dist = math.sqrt(float(diff @ cov_invs[k] @ diff))
+            if mahal_dist <= thresholds[k]:
+                return True
+
+        return False
+
+    def _check_chi_range(self, chi: float, edge_type: str) -> bool:
+        """Check if chi angle falls within allowed ranges for the edge type.
+
+        Returns True if chi is within any allowed range.
+        """
+        if self.backbone_clusters is None:
+            return True
+
+        edge_types = self.backbone_clusters['edge_types']
+        et_data = edge_types.get(edge_type) or edge_types.get('_OTHER', {})
+        chi_info = et_data.get('chi', {})
+        ranges = chi_info.get('ranges', [])
+
+        if not ranges:
+            return True  # No ranges defined, skip
+
+        for rng in ranges:
+            if rng[0] <= chi <= rng[1]:
+                return True
+        return False
+
+    def _check_backbone_conformation(self, res_1: str, res_2: str, edge_type: str,
+                                      torsion_data: dict) -> Tuple[dict, float, list]:
+        """Check backbone torsion conformations for both residues in a base pair.
+
+        Returns:
+            (geometry_issues dict, total penalty, list of issue description strings)
+        """
+        geometry_issues = {}
+        penalty = 0.0
+        conformation_issues = []
+
+        if torsion_data is None or self.backbone_clusters is None:
+            return geometry_issues, penalty, conformation_issues
+
+        abg_failed = False
+        dez_failed = False
+        chi_failed = False
+
+        for res_id in [res_1, res_2]:
+            torsions = torsion_data.get(res_id, {})
+            if not torsions:
+                continue
+
+            alpha = torsions.get('alpha')
+            beta = torsions.get('beta')
+            gamma = torsions.get('gamma')
+            delta = torsions.get('delta')
+            epsilon = torsions.get('epsilon')
+            zeta = torsions.get('zeta')
+            chi = torsions.get('chi')
+
+            # ABG check
+            if alpha is not None and beta is not None and gamma is not None and delta is not None:
+                pucker = self._get_sugar_pucker(delta)
+                if pucker != "intermediate":
+                    group = 'abg_c3_endo' if pucker == "C3'-endo" else 'abg_c2_endo'
+                    a_r, b_r, g_r = math.radians(alpha), math.radians(beta), math.radians(gamma)
+                    point = np.array([
+                        math.sin(a_r), math.cos(a_r),
+                        math.sin(b_r), math.cos(b_r),
+                        math.sin(g_r), math.cos(g_r),
+                    ])
+                    if not self._check_angle_group_cluster(point, group, edge_type):
+                        abg_failed = True
+                        conformation_issues.append(
+                            f"{res_id}: ABG conformation deviation ({pucker}, no matching cluster)"
+                        )
+
+            # DEZ check
+            if delta is not None and epsilon is not None and zeta is not None:
+                d_r, e_r, z_r = math.radians(delta), math.radians(epsilon), math.radians(zeta)
+                point = np.array([
+                    math.sin(d_r), math.cos(d_r),
+                    math.sin(e_r), math.cos(e_r),
+                    math.sin(z_r), math.cos(z_r),
+                ])
+                if not self._check_angle_group_cluster(point, 'dez', edge_type):
+                    dez_failed = True
+                    conformation_issues.append(
+                        f"{res_id}: DEZ conformation deviation (no matching cluster)"
+                    )
+
+            # CHI check
+            if chi is not None:
+                if not self._check_chi_range(chi, edge_type):
+                    chi_failed = True
+                    # Build range string for the message
+                    et_data = (self.backbone_clusters['edge_types'].get(edge_type) or
+                               self.backbone_clusters['edge_types'].get('_OTHER', {}))
+                    ranges = et_data.get('chi', {}).get('ranges', [])
+                    range_str = ', '.join(f"[{r[0]:.2f}, {r[1]:.2f}]" for r in ranges)
+                    conformation_issues.append(
+                        f"{res_id}: chi outside allowed range ({chi:.1f}\u00b0 not in {range_str})"
+                    )
+
+        # Apply penalties once per base pair
+        if abg_failed:
+            geometry_issues['conformation_abg_deviation'] = True
+            penalty += self.config.PENALTY_WEIGHTS['conformation_abg_deviation']
+        if dez_failed:
+            geometry_issues['conformation_dez_deviation'] = True
+            penalty += self.config.PENALTY_WEIGHTS['conformation_dez_deviation']
+        if chi_failed:
+            geometry_issues['conformation_chi_deviation'] = True
+            penalty += self.config.PENALTY_WEIGHTS['conformation_chi_deviation']
+
+        return geometry_issues, penalty, conformation_issues
+
+    def score_structure(self, basepair_data: list, hbond_data: pd.DataFrame,
+                        torsion_data: dict = None) -> BaselineResult:
         """
         Score the entire structure based on base pair quality.
-        
+
         Args:
             basepair_data: List of base pair dictionaries
             hbond_data: DataFrame of hydrogen bonds
-            
+            torsion_data: Optional dict of per-residue torsion angles (keyed by residue ID)
+
         Returns:
             Result with overall quality score and breakdown
         """
@@ -72,7 +246,9 @@ class Scorer:
         basepair_scores = []
         geometry_stats = {
             'misaligned': 0, 'non_coplanar': 0, 'rotational_distortion': 0,
-            'zero_hbond': 0
+            'zero_hbond': 0,
+            'conformation_abg_deviation': 0, 'conformation_dez_deviation': 0,
+            'conformation_chi_deviation': 0,
         }
         hbond_stats = {
             'poor_hbond_score': 0, 'bad_distance': 0, 'bad_angles': 0, 'bad_dihedral': 0,
@@ -80,7 +256,7 @@ class Scorer:
         }
         
         for bp in basepair_data:
-            bp_score = self._score_base_pair(bp, hbond_data)
+            bp_score = self._score_base_pair(bp, hbond_data, torsion_data)
             basepair_scores.append(bp_score)
             
             # Accumulate statistics
@@ -138,15 +314,17 @@ class Scorer:
         
         return result
     
-    def _score_base_pair(self, bp: Dict, hbond_data: pd.DataFrame) -> Dict:
+    def _score_base_pair(self, bp: Dict, hbond_data: pd.DataFrame,
+                         torsion_data: dict = None) -> Dict:
         """
-        Score a single base pair based on geometry and its H-bonds.
+        Score a single base pair based on geometry, H-bonds, and backbone conformation.
         Uses edge-specific thresholds for geometry and H-bonds, global for dihedrals.
-        
+
         Args:
             bp: Base pair dictionary with geometry info
             hbond_data: DataFrame of all hydrogen bonds
-            
+            torsion_data: Optional dict of per-residue torsion angles
+
         Returns:
             Dictionary with:
                 - score: 0-100 quality score
@@ -154,6 +332,7 @@ class Scorer:
                 - hbond_penalty: penalty from H-bond issues
                 - geometry_issues: dict of boolean flags
                 - hbond_issues: dict of boolean flags
+                - conformation_issues: list of descriptive strings
                 - bp_info: identifier info
         """
         nt1_id = bp.get('res_1', '')
@@ -235,7 +414,14 @@ class Scorer:
         if rot_distorted:
             geometry_issues['rotational_distortion'] = True
             geometry_penalty += self.config.PENALTY_WEIGHTS['rotational_distortion_pairs']
-        
+
+        # Check backbone torsion conformations
+        conf_issues, conf_penalty, conformation_issues = self._check_backbone_conformation(
+            nt1_id, nt2_id, edge_type, torsion_data
+        )
+        geometry_issues.update(conf_issues)
+        geometry_penalty += conf_penalty
+
         # Check DSSR quality score (hbond_score in the JSON)
         dssr_quality = bp.get('hbond_score', 0.0)
         has_dssr_hbonds = dssr_quality > 0.0  # DSSR detected H-bonds if score > 0.0
@@ -348,6 +534,7 @@ class Scorer:
             'hbond_penalty': hbond_penalty,
             'geometry_issues': geometry_issues,
             'hbond_issues': hbond_issues,
+            'conformation_issues': conformation_issues,
             'bp_info': {
                 'res_1': nt1_id,
                 'res_2': nt2_id,

@@ -33,8 +33,13 @@ class Config:
 
         # MINOR - Rotational distortion (propeller or opening outside thresholds)
         'rotational_distortion_pairs': 5.0,
+
+        # MINOR - Backbone conformation deviations
+        'conformation_abg_deviation': 5.0,
+        'conformation_dez_deviation': 5.0,
+        'conformation_chi_deviation': 5.0,
     }
-    # Total: 100.0
+    # Total: 115.0
     
     # ===== EXPECTED H-BOND COUNTS BY BASE PAIR TYPE =====
     # Format: (min_expected, max_expected, ideal_count)

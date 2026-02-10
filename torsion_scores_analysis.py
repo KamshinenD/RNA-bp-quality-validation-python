@@ -85,9 +85,9 @@ def get_sugar_pucker(delta: float) -> str:
     """Classify sugar pucker based on delta torsion angle."""
     if delta is None:
         return "unknown"
-    if 55 <= delta <= 110:
+    if 60 <= delta <= 110:
         return "C3'-endo"
-    elif 120 <= delta <= 165:
+    elif 125 <= delta <= 165:
         return "C2'-endo"
     else:
         return "intermediate"

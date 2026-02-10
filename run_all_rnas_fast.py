@@ -116,23 +116,24 @@ def process_single_rna_fast(pdb_id: str, config, data_loader, scorer, report_gen
         # Load data (local files only - fast)
         basepair_data = data_loader.load_basepairs(pdb_id)
         hbond_data = data_loader.load_hbonds(pdb_id)
-        
+        torsion_data = data_loader.load_torsions(pdb_id, quiet=True)
+
         if basepair_data is None or hbond_data is None:
             print(f"  ✗ Could not load data for {pdb_id}")
             return False
-        
+
         if len(basepair_data) == 0:
             print(f"  ✗ No base pairs found for {pdb_id}")
             return False
-        
+
         # Get nucleotide count from cache (or download if not cached)
         num_nucleotides = get_nucleotide_count(pdb_id, cache, data_loader)
-        
+
         # Get validation metrics from cache (or download if not cached)
         validation_metrics = get_validation_metrics(pdb_id, cache)
-        
+
         # Score the structure
-        result = scorer.score_structure(basepair_data, hbond_data)
+        result = scorer.score_structure(basepair_data, hbond_data, torsion_data=torsion_data)
         
         # Convert result to dictionary for CSV export
         result_dict = scorer.export_to_dict(result)

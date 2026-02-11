@@ -41,8 +41,10 @@ class Config:
     # MINOR ISSUES (common even in good structures)
     'bad_hbond_angles': 5.0,            # One angle < 80° is very common
     'incorrect_hbond_count': 5.0,       # With tolerant ranges, less critical
+
+    # MODERATE - Chi glycosidic bond angle in unexpected conformation
+    'chi_conformation': 10.0,
 }
-# Total: 100.0 points
     
     # ===== EXPECTED H-BOND COUNTS BY BASE PAIR TYPE =====
     # Format: (min_expected, max_expected, ideal_count)
@@ -904,12 +906,6 @@ class Config:
     
     
     
-    
-    # ===== QUALITY GRADE THRESHOLDS =====
-    GRADE_EXCELLENT = 85
-    GRADE_GOOD = 70
-    GRADE_FAIR = 50
-    GRADE_POOR = 0
     
     # ===== DETAILED ISSUES THRESHOLD =====
     BASELINE = 75 

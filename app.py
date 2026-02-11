@@ -449,18 +449,16 @@ Scoring:
             # ========================================
             cache_file = Path('full_structure_cache') / f"{args.pdb_id}.json"
             full_score = None
-            full_grade = None
-            
+
             if cache_file.exists():
                 try:
                     with open(cache_file, 'r') as f:
                         cache_data = json.load(f)
                         full_score = cache_data.get('full_structure_score')
-                        full_grade = cache_data.get('full_structure_grade', 'N/A')
                     print(f"\n{'='*60}")
                     print("STEP 1: Using CACHED full structure score")
                     print(f"{'='*60}")
-                    print(f"→ Full structure score: {full_score}/100 ({full_grade}) [from cache]")
+                    print(f"→ Full structure score: {full_score}/100 [from cache]")
                 except Exception as e:
                     print(f"⚠ Error reading cache: {e}, computing...")
             
@@ -471,17 +469,15 @@ Scoring:
                 
                 full_result = scorer.score_structure(basepair_data, hbond_data, torsion_data=torsion_data)
                 full_score = full_result.overall_score
-                full_grade = full_result.grade
-                
-                print(f"\n→ Full structure score: {full_score}/100 ({full_grade})")
-                
+
+                print(f"\n→ Full structure score: {full_score}/100")
+
                 # Save to cache for future use
                 cache_dir = Path('full_structure_cache')
                 cache_dir.mkdir(exist_ok=True)
                 cache_data = {
                     'pdb_id': args.pdb_id,
                     'full_structure_score': full_score,
-                    'full_structure_grade': full_grade,
                     'total_base_pairs': full_result.total_base_pairs,
                     'num_nucleotides': num_nucleotides
                 }
@@ -532,8 +528,7 @@ Scoring:
             # Score the motif
             motif_result = scorer.score_structure(motif_basepairs, motif_hbonds, torsion_data=torsion_data)
             motif_score = motif_result.overall_score
-            motif_grade = motif_result.grade
-            
+
             # Convert motif result to dictionary
             temp_motif_dict = scorer.export_to_dict(motif_result)
             
@@ -573,9 +568,7 @@ Scoring:
                 
                 # COMPARISON METRICS
                 'motif_score': motif_score,
-                #'motif_grade': motif_grade,
                 'full_structure_score': full_score,
-                #'full_structure_grade': full_grade,
                 'full_structure_num_nucleotides': num_nucleotides,
                 # Motif length: actual number of unique residues in motif (handles non-contiguous)
                 'motif_num_nucleotides': len(actual_motif_residues),
@@ -589,7 +582,6 @@ Scoring:
                 
                 # DETAILED ANALYSIS BELOW
                 'overall_score': motif_result.overall_score,
-                #'grade': motif_result.grade,
                 'avg_basepair_score': motif_result.avg_basepair_score,
                 
                 # Issue counts and fractions
@@ -601,7 +593,10 @@ Scoring:
                 
                 # Individual base pair details
                 'basepair_scores': temp_motif_dict['basepair_scores'],
-                
+
+                # Backbone suiteness
+                'avg_suiteness': temp_motif_dict.get('avg_suiteness', None),
+
                 # Structure-level metadata
             }
             
@@ -643,8 +638,8 @@ Scoring:
             print(f"\n{'='*60}")
             print("COMPARISON SUMMARY")
             print(f"{'='*60}")
-            print(f"Full Structure: {full_score}/100 ({full_grade})")
-            print(f"Motif Score:    {motif_score}/100 ({motif_grade})")
+            print(f"Full Structure: {full_score}/100")
+            print(f"Motif Score:    {motif_score}/100")
             print(f"Difference:     {motif_score - full_score:+.1f} points")
             
             if motif_score < full_score:
@@ -770,16 +765,6 @@ Scoring:
             total_score = sum(bp['score'] for bp in bp_results)
             avg_score = total_score / len(bp_results) if bp_results else 0
 
-            # Determine grade
-            if avg_score >= config.GRADE_EXCELLENT:
-                grade = "EXCELLENT"
-            elif avg_score >= config.GRADE_GOOD:
-                grade = "GOOD"
-            elif avg_score >= config.GRADE_FAIR:
-                grade = "FAIR"
-            else:
-                grade = "POOR"
-
             # Build the report
             report = {
                 'pdb_id': args.pdb_id,
@@ -789,7 +774,6 @@ Scoring:
 
                 # Summary
                 'num_base_pairs': len(bp_results),
-                'grade': grade,
 
                 # Individual base pair scores
                 'base_pairs': bp_results,
@@ -815,7 +799,7 @@ Scoring:
             print(f"{'='*60}")
             print(f"Query: Residue {residue_num}" + (f" (Chain {args.chain})" if args.chain else ""))
             print(f"Base pairs found: {len(bp_results)}")
-            print(f"Average score: {avg_score:.1f}/100 ({grade})")
+            print(f"Average score: {avg_score:.1f}/100")
             print(f"\nIndividual base pairs:")
             for bp in bp_results:
                 info = bp['bp_info']
@@ -852,7 +836,6 @@ Scoring:
             # If no base pairs, mark scores as N/A instead of treating as failure
             if result.total_base_pairs == 0:
                 result_dict['overall_score'] = 'N/A'
-                result_dict['grade'] = 'N/A'
                 result_dict['avg_basepair_score'] = 'N/A'
             
             # Analyze protein/ligand bindings and add directly to base pair objects in JSON

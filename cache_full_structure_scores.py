@@ -62,7 +62,6 @@ def cache_full_structure_score(pdb_id, cache_dir='full_structure_cache'):
                         cache_data = {
                             'pdb_id': pdb_id,
                             'full_structure_score': full_score,
-                            'full_structure_grade': data.get('grade', 'N/A'),
                             'total_base_pairs': data.get('total_base_pairs', 0),
                             'num_nucleotides': data.get('num_nucleotides', 0)
                         }

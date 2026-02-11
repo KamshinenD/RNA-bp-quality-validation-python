@@ -1,6 +1,5 @@
 {
   "overall_score": 85.1,
-  "grade": "EXCELLENT",
   "total_base_pairs": 2475,
   "avg_basepair_score": 85.1,
   "geometry_issues": {
@@ -31,7 +30,7 @@
     "bad_dihedral": 0.06303030303030303,
     "incorrect_count": 0.10828282828282829
   },
-  "summary": "Overall Quality: 85.1/100 (EXCELLENT)\nBase Pairs Analyzed: 2475\n\nGeometry Issues:\n  - 15.6% misaligned\n  - 14.1% non coplanar\n  - 14.0% rotational distortion\n  - 7.1% zero hbond\n  - 31.8% backbone outlier\n\nH-bond Issues:\n  - 2.5% poor hbond score\n  - 2.2% bad distance\n  - 1.8% bad angles\n  - 6.3% bad dihedral\n  - 10.8% incorrect count",
+  "summary": "Overall Quality: 85.1/100\nBase Pairs Analyzed: 2475\n\nGeometry Issues:\n  - 15.6% misaligned\n  - 14.1% non coplanar\n  - 14.0% rotational distortion\n  - 7.1% zero hbond\n  - 31.8% backbone outlier\n\nH-bond Issues:\n  - 2.5% poor hbond score\n  - 2.2% bad distance\n  - 1.8% bad angles\n  - 6.3% bad dihedral\n  - 10.8% incorrect count",
   "num_problematic_bps": 520,
   "basepair_scores": [
     {
@@ -91712,6 +91711,7 @@
       "ligand_bindings": []
     }
   ],
+  "avg_suiteness": 0.547,
   "pdb_id": "8IFE",
   "analysis_type": "baseline",
   "num_nucleotides": 4660,

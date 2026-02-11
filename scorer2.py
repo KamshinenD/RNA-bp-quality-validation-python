@@ -26,7 +26,6 @@ class BaselineResult:
     hbond_fractions: Dict[str, float]
     
     # Detailed breakdown
-    grade: str  # EXCELLENT, GOOD, FAIR, POOR
     summary: str
     detailed_issues: List[Dict]
     avg_suiteness: float = None  # Average suiteness across all scored residues
@@ -51,6 +50,7 @@ class Scorer:
         """
         self.config = config
         self._load_richardson_suites()
+        self._load_chi_expectations()
         self._build_predecessor_map_cache = {}
 
     def _load_richardson_suites(self):
@@ -72,6 +72,98 @@ class Scorer:
             self._conformers_by_bin[bin_key].append(conf)
 
         self._normal_widths = np.array(self.richardson_suites['widths']['normal'], dtype=float)
+
+    def _load_chi_expectations(self):
+        """Load expected chi conformations per (edge_type, bp_type)."""
+        chi_file = Path(__file__).parent / 'data' / 'chi_expectations.json'
+        if chi_file.exists():
+            with open(chi_file, 'r') as f:
+                self.chi_expectations = json.load(f)
+        else:
+            self.chi_expectations = {}
+
+    @staticmethod
+    def _classify_chi(chi: float) -> str:
+        """Classify chi angle as anti, syn, or intermediate."""
+        if (-180 <= chi <= -60) or (120 <= chi <= 180):
+            return 'anti'
+        elif 0 <= chi <= 90:
+            return 'syn'
+        else:
+            return 'intermediate'
+
+    def _check_chi_conformation(self, res_1: str, res_2: str,
+                                 edge_type: str, bp_type: str,
+                                 torsion_data: dict) -> Tuple[bool, float, dict]:
+        """Check chi glycosidic bond angle for both residues.
+
+        Returns:
+            (has_issue: bool, penalty: float, details: dict)
+        """
+        if torsion_data is None or not self.chi_expectations:
+            return False, 0.0, {}
+
+        # Lookup expected conformation with fallback chain
+        expected = (self.chi_expectations.get(edge_type, {}).get(bp_type) or
+                    self.chi_expectations.get(edge_type, {}).get('_OTHER') or
+                    self.chi_expectations.get('_OTHER', {}))
+        expected_conf = expected.get('expected', 'anti') if expected else 'anti'
+
+        bad_count = 0
+        chi_details = {}
+
+        for i, res_id in enumerate([res_1, res_2], 1):
+            torsions = torsion_data.get(res_id, {})
+            chi = torsions.get('chi')
+            if chi is None:
+                continue
+
+            conf = self._classify_chi(chi)
+            chi_details[f'res{i}_chi'] = round(chi, 1)
+            chi_details[f'res{i}_chi_conf'] = conf
+
+            # Check if conformation matches expected
+            if expected_conf == 'both':
+                is_ok = conf in ('anti', 'syn')
+            elif expected_conf == 'anti':
+                is_ok = conf == 'anti'
+            elif expected_conf == 'syn':
+                is_ok = conf == 'syn'
+            else:
+                is_ok = True  # unknown expected, don't penalize
+
+            if not is_ok:
+                bad_count += 1
+                chi_details[f'res{i}_chi_outlier'] = True
+
+        if bad_count == 0:
+            return False, 0.0, chi_details
+
+        # Half penalty for 1 bad, full penalty for 2 bad
+        weight = self.config.PENALTY_WEIGHTS.get('chi_conformation', 10.0)
+        penalty = weight if bad_count >= 2 else weight * 0.5
+        chi_details['chi_outlier'] = True
+
+        return True, penalty, chi_details
+
+    @staticmethod
+    def _is_adjacent_pair(res_1: str, res_2: str) -> bool:
+        """Return True if two residues are adjacent in sequence (same chain, resnum diff=1).
+        These are stacking interactions, not real base pairs."""
+        if not res_1 or not res_2:
+            return False
+        parts1 = res_1.split('-')
+        parts2 = res_2.split('-')
+        if len(parts1) < 3 or len(parts2) < 3:
+            return False
+        try:
+            chain1, num1 = parts1[0], int(parts1[2])
+            chain2, num2 = parts2[0], int(parts2[2])
+        except (ValueError, IndexError):
+            return False
+        if chain1 != chain2:
+            return False
+        return abs(num1 - num2) == 1
 
     def _find_predecessor(self, res_id: str, torsion_data: dict) -> str:
         """Find the preceding residue in the chain (same chain, resnum - 1).
@@ -338,14 +430,22 @@ class Scorer:
         
         if not basepair_data:
             return self._empty_result()
-        
+
+        # Filter out adjacent base pairs (same chain, residue numbers differ by 1)
+        # These are stacking interactions, not real base pairs
+        basepair_data = [bp for bp in basepair_data if not self._is_adjacent_pair(
+            bp.get('res_1', ''), bp.get('res_2', ''))]
+
+        if not basepair_data:
+            return self._empty_result()
+
         print(f"\nAnalyzing {len(basepair_data)} base pairs...")
         
         # Score each base pair individually
         basepair_scores = []
         geometry_stats = {
             'misaligned': 0, 'non_coplanar': 0, 'rotational_distortion': 0,
-            'zero_hbond': 0, 'backbone_outlier': 0,
+            'zero_hbond': 0, 'backbone_outlier': 0, 'chi_outlier': 0,
         }
         hbond_stats = {
             'poor_hbond_score': 0, 'bad_distance': 0, 'bad_angles': 0, 'bad_dihedral': 0,
@@ -382,12 +482,9 @@ class Scorer:
         geometry_fractions = {k: v/total_pairs for k, v in geometry_stats.items()}
         hbond_fractions = {k: v/total_pairs for k, v in hbond_stats.items()}
         
-        # Determine grade
-        grade = self._assign_grade(avg_score)
-        
         # Create summary
         summary = self._create_summary(
-            avg_score, grade, total_pairs,
+            avg_score, total_pairs,
             geometry_stats, geometry_fractions,
             hbond_stats, hbond_fractions
         )
@@ -410,7 +507,6 @@ class Scorer:
             geometry_fractions=geometry_fractions,
             hbond_issues=hbond_stats,
             hbond_fractions=hbond_fractions,
-            grade=grade,
             summary=summary,
             detailed_issues=detailed_issues,
             avg_suiteness=struct_avg_suiteness,
@@ -528,6 +624,13 @@ class Scorer:
         geometry_issues.update(backbone_issues)
         geometry_penalty += backbone_penalty
 
+        # Check chi glycosidic bond conformation
+        chi_issue, chi_penalty, chi_details = self._check_chi_conformation(
+            nt1_id, nt2_id, edge_type, bp_type, torsion_data)
+        if chi_issue:
+            geometry_issues['chi_outlier'] = True
+            geometry_penalty += chi_penalty
+
         # Check DSSR quality score (hbond_score in the JSON)
         dssr_quality = bp.get('hbond_score', 0.0)
         has_dssr_hbonds = dssr_quality > 0.0  # DSSR detected H-bonds if score > 0.0
@@ -641,6 +744,7 @@ class Scorer:
             'geometry_issues': geometry_issues,
             'hbond_issues': hbond_issues,
             'backbone': backbone_details,
+            'chi_details': chi_details,
             'bp_info': {
                 'res_1': nt1_id,
                 'res_2': nt2_id,
@@ -744,23 +848,12 @@ class Scorer:
         return atom_name not in backbone_sugar_atoms
     
     
-    def _assign_grade(self, score: float) -> str:
-        """Assign letter grade based on score."""
-        if score >= self.config.GRADE_EXCELLENT:
-            return "EXCELLENT"
-        elif score >= self.config.GRADE_GOOD:
-            return "GOOD"
-        elif score >= self.config.GRADE_FAIR:
-            return "FAIR"
-        else:
-            return "POOR"
-    
-    def _create_summary(self, score: float, grade: str, total_pairs: int,
+    def _create_summary(self, score: float, total_pairs: int,
                        geometry_stats: Dict, geometry_fractions: Dict,
                        hbond_stats: Dict, hbond_fractions: Dict) -> str:
         """Create human-readable summary of results."""
         lines = []
-        lines.append(f"Overall Quality: {score:.1f}/100 ({grade})")
+        lines.append(f"Overall Quality: {score:.1f}/100")
         lines.append(f"Base Pairs Analyzed: {total_pairs}")
         lines.append("")
         
@@ -793,7 +886,7 @@ class Scorer:
         print("\n" + "="*60)
         print("RESULTS")
         print("="*60)
-        print(f"\nOverall Score: {result.overall_score}/100 ({result.grade})")
+        print(f"\nOverall Score: {result.overall_score}/100")
         print(f"Base Pairs: {result.total_base_pairs}")
         
         print("\n" + "-"*60)
@@ -829,7 +922,6 @@ class Scorer:
             geometry_fractions={},
             hbond_issues={},
             hbond_fractions={},
-            grade="N/A",
             summary="No base pairs found for analysis",
             detailed_issues=[]
         )
@@ -838,7 +930,6 @@ class Scorer:
         """Export result to dictionary for JSON/CSV export."""
         return {
             'overall_score': result.overall_score,
-            'grade': result.grade,
             'total_base_pairs': result.total_base_pairs,
             'avg_basepair_score': result.avg_basepair_score,
             'geometry_issues': result.geometry_issues,

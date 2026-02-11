@@ -33,8 +33,11 @@ class Config:
 
         # MINOR - Rotational distortion (propeller or opening outside thresholds)
         'rotational_distortion_pairs': 5.0,
+
+        # MODERATE - Chi glycosidic bond angle in unexpected conformation
+        # Full penalty if both residues wrong; half if only one
+        'chi_conformation': 10.0,
     }
-    # Total: 100.0
     
     # ===== EXPECTED H-BOND COUNTS BY BASE PAIR TYPE =====
     # Format: (min_expected, max_expected, ideal_count)
@@ -291,12 +294,6 @@ class Config:
     
     
     
-    
-    # ===== QUALITY GRADE THRESHOLDS =====
-    GRADE_EXCELLENT = 85
-    GRADE_GOOD = 70
-    GRADE_FAIR = 50
-    GRADE_POOR = 0
     
     # ===== DETAILED ISSUES THRESHOLD =====
     BASELINE = 75 

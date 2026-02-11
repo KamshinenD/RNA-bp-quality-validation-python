@@ -4,7 +4,6 @@
   "query_residue": 2104,
   "query_chain": "AN1",
   "num_base_pairs": 1,
-  "grade": "FAIR",
   "base_pairs": [
     {
       "score": 67.795,

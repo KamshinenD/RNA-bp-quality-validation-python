@@ -120,42 +120,25 @@ def print_statistics(rows):
     print("-"*70)
     
     # Score distribution
-    grades = {'EXCELLENT': 0, 'GOOD': 0, 'FAIR': 0, 'POOR': 0}
     total_score = 0
     total_bps = 0
-    
+
     for row in rows:
         try:
             score = float(row.get('Overall_Score', 0))
             total_score += score
-            
+
             bps = int(row.get('Total_Base_Pairs', 0))
             total_bps += bps
-            
-            # Assign grade
-            if score >= 85:
-                grades['EXCELLENT'] += 1
-            elif score >= 70:
-                grades['GOOD'] += 1
-            elif score >= 50:
-                grades['FAIR'] += 1
-            else:
-                grades['POOR'] += 1
         except:
             pass
-    
+
     total = len(rows)
     avg_score = total_score / total if total > 0 else 0
     avg_bps = total_bps / total if total > 0 else 0
-    
+
     print(f"Average score: {avg_score:.1f}/100")
     print(f"Average base pairs per structure: {avg_bps:.1f}")
-    print(f"\nGrade Distribution:")
-    
-    for grade in ['EXCELLENT', 'GOOD', 'FAIR', 'POOR']:
-        count = grades[grade]
-        pct = (count / total * 100) if total > 0 else 0
-        print(f"  {grade:12s}: {count:5d} ({pct:5.1f}%)")
 
 
 def main():

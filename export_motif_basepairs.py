@@ -205,6 +205,9 @@ def export_motif_basepairs(
         "res2_conformer",
         "res2_suiteness",
         "backbone_outlier",
+        "chi_outlier",
+        "res1_chi_conf",
+        "res2_chi_conf",
         "issues",
     ]
     total_basepairs_written = 0
@@ -338,6 +341,9 @@ def export_motif_basepairs(
                     "res2_conformer": "",
                     "res2_suiteness": "",
                     "backbone_outlier": False,
+                    "chi_outlier": False,
+                    "res1_chi_conf": "",
+                    "res2_chi_conf": "",
                     "issues": ",".join(issues) if issues else "",
                 }
 
@@ -352,6 +358,14 @@ def export_motif_basepairs(
                     if len(backbone) >= 2:
                         row["res2_conformer"] = backbone[1].get('conformer', '')
                         row["res2_suiteness"] = backbone[1].get('suiteness', '')
+
+                # Populate chi conformation columns
+                chi_details = bp_score.get('chi_details', {})
+                if chi_details:
+                    row["chi_outlier"] = chi_details.get('chi_outlier', False)
+                    row["res1_chi_conf"] = chi_details.get('res1_chi_conf', '')
+                    row["res2_chi_conf"] = chi_details.get('res2_chi_conf', '')
+
                 if shard_by_pdb:
                     key = (row["res1"], row["res2"], row["bp_type"], row["lw_notation"])
                     existing_rows[key] = row  # overwrite if already present
@@ -441,6 +455,9 @@ def merge_sharded_csvs(shard_dir: Path, output_csv: Path):
         "res2_conformer",
         "res2_suiteness",
         "backbone_outlier",
+        "chi_outlier",
+        "res1_chi_conf",
+        "res2_chi_conf",
         "issues",
     ]
 

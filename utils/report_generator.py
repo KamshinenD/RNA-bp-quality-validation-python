@@ -28,7 +28,6 @@ class ReportGenerator:
         print(f"Base Score: {results['base_score']}")
         print(f"Total Penalty: -{results['total_penalty']}")
         print(f"FINAL SCORE: {results['final_score']}/100")
-        print(f"Quality Grade: {results['grade']}")
         
         # Base pair analysis - Summary only
         if 'base_pairs' in results['analyses']:
@@ -122,8 +121,7 @@ class ReportGenerator:
     
         # Generate recommendation based on score and critical/severe count
         recommendation = self._generate_recommendation(
-            results['final_score'], 
-            results['grade'],
+            results['final_score'],
             critical_severe_count,
             critical_count
         )
@@ -151,7 +149,6 @@ class ReportGenerator:
         summary = {
             'pdb_id': results['pdb_id'],
             'overall_score': results['final_score'],
-            'overall_grade': results['grade'],
             'total_base_pairs': total_base_pairs,
             'hotspot_count': len(results['hotspots']),
             #'critical_severe_count': critical_severe_count,
@@ -174,35 +171,31 @@ class ReportGenerator:
         except Exception as e:
             print(f"Error saving hotspot summary: {e}")
 
-    def _generate_recommendation(self, score: float, grade: str, critical_severe_count: int, critical_count: int) -> str:
+    def _generate_recommendation(self, score: float, critical_severe_count: int, critical_count: int) -> str:
         """Generate recommendation text based on score and hotspot counts."""
-    
+
         # Critical issues present
         if critical_count > 0:
             if critical_count == 1:
                 return f"Structure has {critical_severe_count} problematic region{'s' if critical_severe_count > 1 else ''} including 1 critical area requiring immediate attention"
             else:
                 return f"Structure has {critical_severe_count} problematic regions including {critical_count} critical areas requiring immediate attention"
-    
+
         # Severe issues only
         elif critical_severe_count > 0:
-            if grade == "EXCELLENT QUALITY":
-                return f"Excellent structure with {critical_severe_count} minor localized region{'s' if critical_severe_count > 1 else ''} that could benefit from refinement"
-            elif grade == "GOOD QUALITY":
+            if score >= 85:
+                return f"Well-refined structure with {critical_severe_count} minor localized region{'s' if critical_severe_count > 1 else ''} that could benefit from refinement"
+            elif score >= 70:
                 return f"Generally well-refined structure with {critical_severe_count} localized region{'s' if critical_severe_count > 1 else ''} requiring attention"
-            elif grade == "FAIR QUALITY":
-                return f"Fair quality structure with {critical_severe_count} problematic region{'s' if critical_severe_count > 1 else ''} needing refinement"
             else:
-                return f"Poorly refined structure with {critical_severe_count} severe region{'s' if critical_severe_count > 1 else ''} requiring significant work"
-    
+                return f"Structure with {critical_severe_count} problematic region{'s' if critical_severe_count > 1 else ''} needing refinement"
+
         # No critical or severe issues
         else:
-            if grade == "EXCELLENT QUALITY":
-                return "Excellent quality structure with no significant structural issues"
-            elif grade == "GOOD QUALITY":
-                return "Good quality structure with only minor issues distributed throughout"
-            elif grade == "FAIR QUALITY":
-                return "Fair quality structure with distributed minor issues"
+            if score >= 85:
+                return "Well-refined structure with no significant structural issues"
+            elif score >= 70:
+                return "Structure with only minor issues distributed throughout"
             else:
                 return "Structure quality could be improved with additional refinement"
             
@@ -350,7 +343,6 @@ class ReportGenerator:
             'Has_Count_Issues',
             'Avg_DSSR_Score',
             'Overall_Structure_Score',
-            'Overall_Grade',
             'Looks_Bad',
             'Notes'
         ]
@@ -391,7 +383,6 @@ class ReportGenerator:
         # Prepare new rows for current PDB
         new_rows = []
         overall_score = results.get('final_score', 0)
-        overall_grade = results.get('grade', 'UNKNOWN')
         
         # CRITICAL FIX: Filter out None hotspots and re-index
         #valid_hotspots = [h for h in valid_hotspots['hotspots'] if h is not None]
@@ -457,7 +448,6 @@ class ReportGenerator:
                 'Has_Count_Issues': has_count,
                 'Avg_DSSR_Score': avg_dssr_score,
                 'Overall_Structure_Score': overall_score,
-                'Overall_Grade': overall_grade,
                 'Looks_Bad': annotations['Looks_Bad'],
                 'Notes': annotations['Notes']
             }
@@ -586,7 +576,6 @@ class ReportGenerator:
                 report = json.load(f)
                 pdb_id = report.get('pdb_id', 'UNKNOWN')
                 overall_structure_score = report.get('final_score', 0.0)
-                overall_structure_quality = report.get('grade', 'UNKNOWN')                
         except:
             pass
         
@@ -599,7 +588,6 @@ class ReportGenerator:
             'Base_Pair',
             'Issues',
             'overall_structure_score',
-            'overall_structure_quality',
             'Comments'
         ]
         
@@ -654,7 +642,6 @@ class ReportGenerator:
                 'Base_Pair': base_pair,
                 'Issues': issues_str,
                 'overall_structure_score': overall_structure_score,
-                'overall_structure_quality': overall_structure_quality,
                 'Comments': comments
             }
             
@@ -697,7 +684,6 @@ class ReportGenerator:
         fieldnames = [
             'PDB_ID',
             'Overall_Score',
-            #'Grade',
             'Num_Nucleotides',
             'clashscore',
             'rnasuiteness',
@@ -717,6 +703,7 @@ class ReportGenerator:
             'Geom_ImproperOpening',
             'Geom_ZeroHBond',
             'Geom_BackboneOutlier',
+            'Geom_ChiOutlier',
             'Avg_Suiteness',
 
             # H-bond issues
@@ -818,6 +805,7 @@ class ReportGenerator:
             'improper_opening': 0,
             'zero_hbond': 0,
             'backbone_outlier': 0,
+            'chi_outlier': 0,
         }
         hbond_counts = {
             'low_dssr_score': 0,
@@ -839,7 +827,7 @@ class ReportGenerator:
                     hbond_bp = bp_score.get('hbond_issues', {})
 
                     for issue in ['misaligned', 'rotational_distortion', 'non_coplanar', 'improper_opening', 'zero_hbond',
-                                  'backbone_outlier']:
+                                  'backbone_outlier', 'chi_outlier']:
                         if geom_bp.get(issue, False):
                             geom_counts[issue] += 1
 
@@ -889,7 +877,6 @@ class ReportGenerator:
         row = {
             'PDB_ID': pdb_id,
             'Overall_Score': result_dict.get('overall_score', 0),
-            #'Grade': result_dict.get('grade', 'N/A'),
             'Num_Nucleotides': num_nucleotides,
             'clashscore': clashscore,
             'rnasuiteness': rnasuiteness,
@@ -909,7 +896,8 @@ class ReportGenerator:
             'Geom_ImproperOpening': geom_counts.get('improper_opening', 0),
             'Geom_ZeroHBond': geom_counts.get('zero_hbond', 0),
             'Geom_BackboneOutlier': geom_counts.get('backbone_outlier', 0),
-            'Avg_Suiteness': results.get('avg_suiteness', ''),
+            'Geom_ChiOutlier': geom_counts.get('chi_outlier', 0),
+            'Avg_Suiteness': result_dict.get('avg_suiteness', ''),
             'HBond_LowDSSRScore': hbond_counts.get('low_dssr_score', 0),
 
             # H-bond issues
@@ -1108,7 +1096,7 @@ class ReportGenerator:
             'Num_Paired_Nucleotides', 'Pairing_Percentage',
             'Geom_Misaligned', 'Geom_RotationalDistortion', 'Geom_NonCoplanar',
             'Geom_ImproperOpening', 'Geom_ZeroHBond',
-            'Geom_BackboneOutlier',
+            'Geom_BackboneOutlier', 'Geom_ChiOutlier',
             'Avg_Suiteness',
             'HBond_LowDSSRScore', 'HBond_BadDistance', 'HBond_BadAngles', 'HBond_BadDihedral',
             'HBond_WeakQuality', 'HBond_IncorrectCount',
@@ -1140,6 +1128,7 @@ class ReportGenerator:
             'improper_opening': 0,
             'zero_hbond': 0,
             'backbone_outlier': 0,
+            'chi_outlier': 0,
         }
         hbond_counts = {
             'low_dssr_score': 0,
@@ -1172,7 +1161,7 @@ class ReportGenerator:
 
                     # Track geometry issues
                     for issue in ['misaligned', 'rotational_distortion', 'non_coplanar', 'improper_opening', 'zero_hbond',
-                                  'backbone_outlier']:
+                                  'backbone_outlier', 'chi_outlier']:
                         if geom_issues_bp.get(issue, False):
                             geom_counts[issue] = geom_counts.get(issue, 0) + 1
                             issues.append(f"geom_{issue}")
@@ -1259,6 +1248,7 @@ class ReportGenerator:
             'Geom_ImproperOpening': geom_counts.get('improper_opening', 0),
             'Geom_ZeroHBond': geom_counts.get('zero_hbond', 0),
             'Geom_BackboneOutlier': geom_counts.get('backbone_outlier', 0),
+            'Geom_ChiOutlier': geom_counts.get('chi_outlier', 0),
             'Avg_Suiteness': motif_data.get('avg_suiteness', ''),
             'HBond_LowDSSRScore': hbond_counts.get('low_dssr_score', 0),
             'HBond_BadDistance': hbond_counts.get('bad_distance', 0),

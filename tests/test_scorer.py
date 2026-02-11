@@ -20,7 +20,6 @@ class TestScorer:
 
         assert result.overall_score == "N/A"
         assert result.total_base_pairs == 0
-        assert result.grade == "N/A"
         assert result.summary == "No base pairs found for analysis"
 
     def test_score_perfect_base_pair(self, config, sample_base_pair, sample_hbond_data):
@@ -100,21 +99,7 @@ class TestScorer:
         assert isinstance(result, BaselineResult)
         assert result.total_base_pairs == 3
         assert result.overall_score > 0
-        assert result.grade in ['EXCELLENT', 'GOOD', 'FAIR', 'POOR']
         assert len(result.basepair_scores) == 3
-
-    def test_grade_assignment(self, config):
-        """Test that grades are assigned correctly based on scores."""
-        scorer = Scorer(config)
-
-        # Test grade thresholds (EXCELLENT=85, GOOD=70, FAIR=50)
-        assert scorer._assign_grade(95) == "EXCELLENT"
-        assert scorer._assign_grade(85) == "EXCELLENT"
-        assert scorer._assign_grade(75) == "GOOD"
-        assert scorer._assign_grade(70) == "GOOD"
-        assert scorer._assign_grade(60) == "FAIR"
-        assert scorer._assign_grade(50) == "FAIR"
-        assert scorer._assign_grade(30) == "POOR"
 
     def test_is_base_atom(self, config):
         """Test base atom detection."""
@@ -190,7 +175,6 @@ class TestScorer:
         export_dict = scorer.export_to_dict(result)
 
         assert 'overall_score' in export_dict
-        assert 'grade' in export_dict
         assert 'total_base_pairs' in export_dict
         assert 'geometry_issues' in export_dict
         assert 'hbond_issues' in export_dict

@@ -1,68 +1,85 @@
 {
-  "pdb_id": "3J6B",
+  "pdb_id": "7AM2",
   "analysis_type": "motif",
-  "motif_range": "1075-1078",
-  "motif_chain": "A",
-  "motif_score": 85.0,
-  "full_structure_score": 80.6,
+  "motif_range": "157-168",
+  "motif_chain": "1",
+  "motif_score": 85.3,
+  "full_structure_score": 58.9,
   "full_structure_num_nucleotides": 0,
-  "motif_num_nucleotides": 4,
+  "motif_num_nucleotides": 8,
   "num_paired_nucleotides": 2,
-  "score_difference": 4.4,
+  "score_difference": 26.4,
   "total_base_pairs": 1,
   "num_problematic_bps": 0,
-  "overall_score": 85.0,
-  "avg_basepair_score": 85.0,
+  "overall_score": 85.3,
+  "avg_basepair_score": 85.3,
   "geometry_issues": {
     "misaligned": 0,
-    "twisted": 1,
     "non_coplanar": 0,
-    "zero_hbond": 0
+    "rotational_distortion": 0,
+    "zero_hbond": 0,
+    "backbone_outlier": 1
   },
   "geometry_fractions": {
     "misaligned": 0.0,
-    "twisted": 1.0,
     "non_coplanar": 0.0,
-    "zero_hbond": 0.0
+    "rotational_distortion": 0.0,
+    "zero_hbond": 0.0,
+    "backbone_outlier": 1.0
   },
   "hbond_issues": {
-    "poor_hbond": 1,
+    "poor_hbond_score": 0,
     "bad_distance": 0,
     "bad_angles": 0,
     "bad_dihedral": 0,
-    "weak_quality": 0,
     "incorrect_count": 0
   },
   "hbond_fractions": {
-    "poor_hbond": 1.0,
+    "poor_hbond_score": 0.0,
     "bad_distance": 0.0,
     "bad_angles": 0.0,
     "bad_dihedral": 0.0,
-    "weak_quality": 0.0,
     "incorrect_count": 0.0
   },
-  "summary": "Overall Quality: 85.0/100 (EXCELLENT)\nBase Pairs Analyzed: 1\n\nGeometry Issues:\n  - 100.0% twisted\n\nH-bond Issues:\n  - 100.0% poor hbond",
+  "summary": "Overall Quality: 85.3/100 (EXCELLENT)\nBase Pairs Analyzed: 1\n\nGeometry Issues:\n  - 100.0% backbone outlier\n\nH-bond Issues:\n  - No significant H-bond issues",
   "basepair_scores": [
     {
-      "score": 85.0,
-      "geometry_penalty": 10.0,
-      "hbond_penalty": 5.0,
+      "score": 85.27,
+      "geometry_penalty": 14.73,
+      "hbond_penalty": 0.0,
       "geometry_issues": {
-        "twisted": true
+        "backbone_outlier": true
       },
-      "hbond_issues": {
-        "poor_hbond": true
-      },
+      "hbond_issues": {},
+      "backbone": [
+        {
+          "residue": "1-A-157-",
+          "conformer": "1a",
+          "suiteness": 0.036,
+          "bin": "33p",
+          "is_outlier": false,
+          "distance": 0.879
+        },
+        {
+          "residue": "1-U-168-",
+          "conformer": "!!",
+          "suiteness": 0.0,
+          "bin": null,
+          "is_outlier": true,
+          "issue": "sieve fail: puckerdm=2, puckerd=3, gamma="
+        }
+      ],
       "bp_info": {
-        "res_1": "A-A-1075-",
-        "res_2": "A-U-1078-",
+        "res_1": "1-A-157-",
+        "res_2": "1-U-168-",
         "bp_type": "A-U",
         "edge_type": "cWW",
         "num_hbonds": 2,
-        "dssr_score": 1.9290194208
+        "dssr_score": 1.3417217492
       }
     }
   ],
+  "avg_suiteness": 0.018,
   "protein_binding_explanations": {},
   "ligand_binding_explanations": {}
 }

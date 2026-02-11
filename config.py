@@ -36,6 +36,10 @@ class Config:
         # MODERATE - Backbone suiteness penalty (Richardson suite conformer scoring)
         # Penalty = (1 - avg_suiteness) * this weight; outlier (suiteness=0) gets full penalty
         'backbone_suiteness': 15.0,
+
+        # MODERATE - Chi glycosidic bond angle in unexpected conformation
+        # Full penalty if both residues wrong; half if only one
+        'chi_conformation': 10.0,
     }
     
     # ===== EXPECTED H-BOND COUNTS BY BASE PAIR TYPE =====
@@ -299,12 +303,6 @@ class Config:
     
     
     
-    
-    # ===== QUALITY GRADE THRESHOLDS =====
-    GRADE_EXCELLENT = 85
-    GRADE_GOOD = 70
-    GRADE_FAIR = 50
-    GRADE_POOR = 0
     
     # ===== DETAILED ISSUES THRESHOLD =====
     BASELINE = 75 

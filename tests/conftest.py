@@ -55,17 +55,17 @@ def sample_misaligned_base_pair():
 
 @pytest.fixture
 def sample_twisted_base_pair():
-    """Sample base pair with twist issues."""
+    """Sample base pair with rotational distortion (propeller/opening out of range)."""
     return {
         'res_1': 'A-G-10-',
         'res_2': 'A-C-20-',
-        'bp_type': 'G-C',
+        'bp_type': 'C-G',
         'lw': 'cWW',
         'shear': 0.1,
         'stretch': 0.05,
         'stagger': 0.15,
-        'buckle': 25.0,  # Exceeds threshold (16.1)
-        'propeller': -3.0,
+        'buckle': 5.0,
+        'propeller': -30.0,  # Below C-G cWW PROPELLER_MIN (-25.48)
         'opening': 2.0,
         'hbond_score': 3.5
     }

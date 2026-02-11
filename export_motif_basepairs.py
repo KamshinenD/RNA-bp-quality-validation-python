@@ -199,6 +199,12 @@ def export_motif_basepairs(
         "HasProtein_binding",
         "geometry_penalty",
         "hbond_penalty",
+        "avg_suiteness",
+        "res1_conformer",
+        "res1_suiteness",
+        "res2_conformer",
+        "res2_suiteness",
+        "backbone_outlier",
         "issues",
     ]
     total_basepairs_written = 0
@@ -284,10 +290,13 @@ def export_motif_basepairs(
                 for issue, present in bp_score.get("hbond_issues", {}).items():
                     if present:
                         issues.append(f"hbond_{issue}")
-                # Append per-residue backbone conformation details
-                conf_details = bp_score.get("conformation_issues", [])
-                if conf_details:
-                    issues.extend(conf_details)
+                # Append backbone suiteness details
+                backbone = bp_score.get("backbone", [])
+                for bd in backbone:
+                    if bd.get('is_outlier', False):
+                        issues.append(f"backbone_outlier({bd.get('residue','?')})")
+                    elif bd.get('suiteness', 1.0) < 0.5:
+                        issues.append(f"low_suiteness({bd.get('residue','?')},s={bd.get('suiteness',0):.2f})")
 
                 has_binding = has_protein_binding(all_hbonds, res1, res2)
 
@@ -323,8 +332,26 @@ def export_motif_basepairs(
                     "HasProtein_binding": has_binding,
                     "geometry_penalty": bp_score.get("geometry_penalty", ""),
                     "hbond_penalty": bp_score.get("hbond_penalty", ""),
+                    "avg_suiteness": "",
+                    "res1_conformer": "",
+                    "res1_suiteness": "",
+                    "res2_conformer": "",
+                    "res2_suiteness": "",
+                    "backbone_outlier": False,
                     "issues": ",".join(issues) if issues else "",
                 }
+
+                # Populate backbone suiteness columns
+                if backbone:
+                    suiteness_vals = [bd.get('suiteness', 0.0) for bd in backbone]
+                    row["avg_suiteness"] = round(sum(suiteness_vals) / len(suiteness_vals), 3) if suiteness_vals else ""
+                    row["backbone_outlier"] = any(bd.get('is_outlier', False) for bd in backbone)
+                    if len(backbone) >= 1:
+                        row["res1_conformer"] = backbone[0].get('conformer', '')
+                        row["res1_suiteness"] = backbone[0].get('suiteness', '')
+                    if len(backbone) >= 2:
+                        row["res2_conformer"] = backbone[1].get('conformer', '')
+                        row["res2_suiteness"] = backbone[1].get('suiteness', '')
                 if shard_by_pdb:
                     key = (row["res1"], row["res2"], row["bp_type"], row["lw_notation"])
                     existing_rows[key] = row  # overwrite if already present
@@ -408,6 +435,12 @@ def merge_sharded_csvs(shard_dir: Path, output_csv: Path):
         "Ligand_HBond_Count",
         "geometry_penalty",
         "hbond_penalty",
+        "avg_suiteness",
+        "res1_conformer",
+        "res1_suiteness",
+        "res2_conformer",
+        "res2_suiteness",
+        "backbone_outlier",
         "issues",
     ]
 

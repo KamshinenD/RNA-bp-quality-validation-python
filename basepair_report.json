@@ -1,38 +1,75 @@
 {
-  "pdb_id": "7YGA",
+  "pdb_id": "6V3A",
   "analysis_type": "single_residue",
-  "query_residue": 151,
-  "query_chain": "N",
+  "query_residue": 2104,
+  "query_chain": "AN1",
   "num_base_pairs": 1,
-  "grade": "EXCELLENT",
+  "grade": "FAIR",
   "base_pairs": [
     {
-      "score": 95.0,
-      "geometry_penalty": 5.0,
-      "hbond_penalty": 0.0,
+      "score": 67.795,
+      "geometry_penalty": 14.205,
+      "hbond_penalty": 18.0,
       "geometry_issues": {
-        "rotational_distortion": true
+        "backbone_outlier": true
       },
       "hbond_issues": {
-        "low_dssr_score": true
+        "bad_distance": true
       },
+      "backbone": [
+        {
+          "residue": "AN1-G-2177-",
+          "conformer": "7a",
+          "suiteness": 0.106,
+          "bin": "33p",
+          "is_outlier": false,
+          "distance": 0.789
+        },
+        {
+          "residue": "AN1-U-2104-",
+          "conformer": "!!",
+          "suiteness": 0.0,
+          "bin": null,
+          "is_outlier": true,
+          "issue": "sieve fail: puckerdm=3, puckerd=3, gamma="
+        }
+      ],
       "bp_info": {
-        "res_1": "N-A-151-",
-        "res_2": "N-A-248-",
-        "bp_type": "A-A",
-        "edge_type": "tWW",
-        "num_hbonds": 0,
-        "dssr_score": 1.915241643
+        "res_1": "AN1-G-2177-",
+        "res_2": "AN1-U-2104-",
+        "bp_type": "G-U",
+        "edge_type": "cWW",
+        "num_hbonds": 2,
+        "dssr_score": 1.7046755985
       },
       "geometry_params": {
-        "shear": -1.357,
-        "stretch": -1.226,
-        "stagger": 0.332,
-        "buckle": 20.849,
-        "propeller": 1.665,
-        "opening": 179.583
+        "shear": 1.356,
+        "stretch": -0.589,
+        "stagger": -0.604,
+        "buckle": -2.051,
+        "propeller": 3.851,
+        "opening": 10.562
       },
-      "hbond_details": []
+      "hbond_details": [
+        {
+          "atom_1": "O6",
+          "atom_2": "N3",
+          "distance": 3.0,
+          "angle_1": 96.4,
+          "angle_2": 127.8,
+          "dihedral_angle": 14.8,
+          "quality_score": 0.943
+        },
+        {
+          "atom_1": "O2",
+          "atom_2": "N2",
+          "distance": 2.27,
+          "angle_1": 162.7,
+          "angle_2": 97.0,
+          "dihedral_angle": -34.8,
+          "quality_score": 0.548
+        }
+      ]
     }
   ],
   "protein_binding_explanations": {},

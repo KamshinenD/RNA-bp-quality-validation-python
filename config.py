@@ -33,12 +33,10 @@ class Config:
         # MINOR - Rotational distortion (propeller or opening outside thresholds)
         'rotational_distortion_pairs': 5.0,
 
-        # MINOR - Backbone conformation deviations
-        'conformation_abg_deviation': 5.0,
-        'conformation_dez_deviation': 5.0,
-        'conformation_chi_deviation': 5.0,
+        # MODERATE - Backbone suiteness penalty (Richardson suite conformer scoring)
+        # Penalty = (1 - avg_suiteness) * this weight; outlier (suiteness=0) gets full penalty
+        'backbone_suiteness': 15.0,
     }
-    # Total: 115.0
     
     # ===== EXPECTED H-BOND COUNTS BY BASE PAIR TYPE =====
     # Format: (min_expected, max_expected, ideal_count)

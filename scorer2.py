@@ -29,6 +29,7 @@ class BaselineResult:
     grade: str  # EXCELLENT, GOOD, FAIR, POOR
     summary: str
     detailed_issues: List[Dict]
+    avg_suiteness: float = None  # Average suiteness across all scored residues
 
 
 class Scorer:
@@ -49,174 +50,274 @@ class Scorer:
             config: Configuration with thresholds and weights
         """
         self.config = config
-        self._load_backbone_clusters()
+        self._load_richardson_suites()
+        self._build_predecessor_map_cache = {}
 
-    def _load_backbone_clusters(self):
-        """Load backbone cluster definitions and pre-compute inverse covariance matrices."""
-        cluster_path = Path(__file__).parent / 'data' / 'backbone_clusters.json'
-        if not cluster_path.exists():
-            self.backbone_clusters = None
-            self.cluster_cov_invs = {}
+    def _load_richardson_suites(self):
+        """Load Richardson suite conformer definitions for backbone scoring."""
+        suite_path = Path(__file__).parent / 'data' / 'richardson_suites.json'
+        if not suite_path.exists():
+            self.richardson_suites = None
             return
 
-        with open(cluster_path, 'r') as f:
-            self.backbone_clusters = json.load(f)
+        with open(suite_path, 'r') as f:
+            self.richardson_suites = json.load(f)
 
-        # Pre-compute inverse covariance matrices for each cluster group
-        self.cluster_cov_invs = {}
-        for group_name in ['abg_c3_endo', 'abg_c2_endo', 'dez']:
-            group = self.backbone_clusters['global_clusters'][group_name]
-            invs = []
-            for cluster in group['clusters']:
-                cov = np.array(cluster['covariance'])
-                invs.append(np.linalg.inv(cov))
-            self.cluster_cov_invs[group_name] = invs
+        # Pre-index conformers by bin for fast lookup
+        self._conformers_by_bin = {}
+        for conf in self.richardson_suites['conformers']:
+            bin_key = conf['bin']
+            if bin_key not in self._conformers_by_bin:
+                self._conformers_by_bin[bin_key] = []
+            self._conformers_by_bin[bin_key].append(conf)
 
-    def _get_sugar_pucker(self, delta: float) -> str:
-        """Determine sugar pucker from delta torsion angle."""
-        if 60 <= delta <= 110:
-            return "C3'-endo"
-        elif 125 <= delta <= 165:
-            return "C2'-endo"
-        return "intermediate"
+        self._normal_widths = np.array(self.richardson_suites['widths']['normal'], dtype=float)
 
-    def _check_angle_group_cluster(self, point_sincos: np.ndarray, group_name: str,
-                                    edge_type: str) -> bool:
-        """Check if a sin/cos-transformed point matches any cluster in the group.
+    def _find_predecessor(self, res_id: str, torsion_data: dict) -> str:
+        """Find the preceding residue in the chain (same chain, resnum - 1).
 
-        Returns True if point is within the Mahalanobis threshold of any cluster.
+        Returns the predecessor residue ID or None if not found.
         """
-        if self.backbone_clusters is None:
-            return True  # No clusters loaded, skip check
+        parts = res_id.split('-')
+        if len(parts) < 3:
+            return None
+        try:
+            chain = parts[0]
+            resnum = int(parts[2])
+        except (ValueError, IndexError):
+            return None
 
-        edge_types = self.backbone_clusters['edge_types']
-        et_data = edge_types.get(edge_type) or edge_types.get('_OTHER', {})
-        group_et = et_data.get(group_name, {})
-        thresholds = group_et.get('mahalanobis_thresholds')
+        # Search for chain-X-(resnum-1)- in torsion_data
+        prev_num = resnum - 1
+        for key in torsion_data:
+            kparts = key.split('-')
+            if len(kparts) >= 3 and kparts[0] == chain:
+                try:
+                    if int(kparts[2]) == prev_num:
+                        return key
+                except ValueError:
+                    continue
+        return None
 
-        if thresholds is None:
-            return True  # No thresholds for this edge type, skip
+    @staticmethod
+    def _angle_diff(a: float, b: float) -> float:
+        """Compute angular difference handling wraparound (0-360 space)."""
+        d = abs(a - b)
+        return min(d, 360.0 - d)
 
-        group = self.backbone_clusters['global_clusters'][group_name]
-        cov_invs = self.cluster_cov_invs[group_name]
+    def _l3_distance(self, suite_angles: np.ndarray, cluster_angles: np.ndarray,
+                     widths: np.ndarray, indices: range) -> float:
+        """Compute L3 (Minkowski p=3) hyperellipsoid distance.
 
-        for k, cluster in enumerate(group['clusters']):
-            mean = np.array(cluster['mean'])
-            diff = point_sincos - mean
-            mahal_dist = math.sqrt(float(diff @ cov_invs[k] @ diff))
-            if mahal_dist <= thresholds[k]:
-                return True
-
-        return False
-
-    def _check_chi_range(self, chi: float, edge_type: str) -> bool:
-        """Check if chi angle falls within allowed ranges for the edge type.
-
-        Returns True if chi is within any allowed range.
+        Args:
+            suite_angles: 7-element array of suite angles [dM, eps, zeta, alpha, beta, gamma, delta]
+            cluster_angles: 7-element cluster center
+            widths: 7-element width array
+            indices: range of indices to use (e.g., range(7) for 7D, range(1,5) for 4D eps-beta)
         """
-        if self.backbone_clusters is None:
-            return True
+        total = 0.0
+        for k in indices:
+            d = self._angle_diff(suite_angles[k], cluster_angles[k])
+            total += (d / widths[k]) ** 3
+        return total ** (1.0 / 3.0)
 
-        edge_types = self.backbone_clusters['edge_types']
-        et_data = edge_types.get(edge_type) or edge_types.get('_OTHER', {})
-        chi_info = et_data.get('chi', {})
-        ranges = chi_info.get('ranges', [])
+    def _classify_pucker(self, delta: float) -> int:
+        """Classify sugar pucker: 3 = C3'-endo, 2 = C2'-endo, 0 = unclassified."""
+        sieve = self.richardson_suites['sieve']
+        c3 = sieve['delta']['C3_endo']
+        c2 = sieve['delta']['C2_endo']
+        if c3[0] <= delta <= c3[1]:
+            return 3
+        elif c2[0] <= delta <= c2[1]:
+            return 2
+        return 0
 
-        if not ranges:
-            return True  # No ranges defined, skip
+    def _classify_gamma(self, gamma: float) -> str:
+        """Classify gamma angle: 'p', 't', 'm', or '' for unclassified."""
+        sieve = self.richardson_suites['sieve']
+        for name, rng in sieve['gamma'].items():
+            if rng[0] <= gamma <= rng[1]:
+                return name
+        return ''
 
-        for rng in ranges:
-            if rng[0] <= chi <= rng[1]:
-                return True
-        return False
+    def _score_single_suite(self, suite_angles: np.ndarray) -> dict:
+        """Score a single suite (7 angles) against Richardson conformers.
 
-    def _check_backbone_conformation(self, res_1: str, res_2: str, edge_type: str,
-                                      torsion_data: dict) -> Tuple[dict, float, list]:
-        """Check backbone torsion conformations for both residues in a base pair.
+        Args:
+            suite_angles: [deltaMinus, epsilon, zeta, alpha, beta, gamma, delta] in 0-360 range
 
         Returns:
-            (geometry_issues dict, total penalty, list of issue description strings)
+            dict with conformer, suiteness, bin, is_outlier, distance, issue
+        """
+        if self.richardson_suites is None:
+            return None
+
+        result = {
+            'conformer': '!!', 'suiteness': 0.0, 'bin': None,
+            'is_outlier': True, 'distance': None, 'issue': None
+        }
+
+        triage = self.richardson_suites['triage']
+
+        # Triage checks
+        eps = suite_angles[1]
+        if not (triage['epsilon'][0] <= eps <= triage['epsilon'][1]):
+            result['issue'] = f'epsilon={eps:.1f} outside [{triage["epsilon"][0]}, {triage["epsilon"][1]}]'
+            return result
+
+        alpha = suite_angles[3]
+        if not (triage['alpha'][0] <= alpha <= triage['alpha'][1]):
+            result['issue'] = f'alpha={alpha:.1f} outside [{triage["alpha"][0]}, {triage["alpha"][1]}]'
+            return result
+
+        beta = suite_angles[4]
+        if not (triage['beta'][0] <= beta <= triage['beta'][1]):
+            result['issue'] = f'beta={beta:.1f} outside [{triage["beta"][0]}, {triage["beta"][1]}]'
+            return result
+
+        zeta = suite_angles[2]
+        if not (triage['zeta'][0] <= zeta <= triage['zeta'][1]):
+            result['issue'] = f'zeta={zeta:.1f} outside [{triage["zeta"][0]}, {triage["zeta"][1]}]'
+            return result
+
+        # Sieve: classify sugar puckers and gamma
+        puckerdm = self._classify_pucker(suite_angles[0])  # deltaMinus
+        puckerd = self._classify_pucker(suite_angles[6])   # delta
+        gamma_class = self._classify_gamma(suite_angles[5]) # gamma
+
+        if puckerdm == 0 or puckerd == 0 or gamma_class == '':
+            result['issue'] = f'sieve fail: puckerdm={puckerdm}, puckerd={puckerd}, gamma={gamma_class}'
+            return result
+
+        bin_key = f'{puckerdm}{puckerd}{gamma_class}'
+        result['bin'] = bin_key
+
+        conformers = self._conformers_by_bin.get(bin_key, [])
+        if not conformers:
+            result['issue'] = f'no conformers in bin {bin_key}'
+            return result
+
+        # 4D screening (epsilon, zeta, alpha, beta = indices 1-4)
+        best_4d_dist = float('inf')
+        best_4d_conf = None
+        for conf in conformers:
+            center = np.array(conf['angles'])
+            d4 = self._l3_distance(suite_angles, center, self._normal_widths, range(1, 5))
+            if d4 < best_4d_dist:
+                best_4d_dist = d4
+                best_4d_conf = conf
+
+        if best_4d_conf is None or best_4d_dist >= 1.0:
+            # No 4D match — outlier
+            result['issue'] = f'no 4D match (best={best_4d_dist:.2f})'
+            return result
+
+        # 7D distance for suiteness
+        center = np.array(best_4d_conf['angles'])
+        d7 = self._l3_distance(suite_angles, center, self._normal_widths, range(7))
+
+        if d7 > 1.0:
+            # 4D matched but 7D didn't — outlier
+            result['issue'] = f'7D reject {best_4d_conf["name"]} (d7={d7:.2f})'
+            return result
+
+        # Suiteness: raised cosine
+        suiteness = (math.cos(math.pi * d7) + 1.0) / 2.0
+        if suiteness < 0.01:
+            suiteness = 0.01
+
+        result['conformer'] = best_4d_conf['name']
+        result['suiteness'] = round(suiteness, 3)
+        result['is_outlier'] = False
+        result['distance'] = round(d7, 3)
+        return result
+
+    def _score_backbone_suiteness(self, res_1: str, res_2: str,
+                                   torsion_data: dict) -> Tuple[dict, float, list]:
+        """Score backbone suiteness for both residues in a base pair.
+
+        Uses Richardson suite classification (7 backbone torsion angles spanning
+        two adjacent residues) to assess backbone quality.
+
+        Returns:
+            (geometry_issues dict, total penalty, backbone_details list of dicts)
         """
         geometry_issues = {}
         penalty = 0.0
-        conformation_issues = []
+        backbone_details = []
 
-        if torsion_data is None or self.backbone_clusters is None:
-            return geometry_issues, penalty, conformation_issues
+        if torsion_data is None or self.richardson_suites is None:
+            return geometry_issues, penalty, backbone_details
 
-        abg_fail_count = 0
-        dez_fail_count = 0
-        chi_fail_count = 0
+        suiteness_scores = []
 
         for res_id in [res_1, res_2]:
             torsions = torsion_data.get(res_id, {})
             if not torsions:
                 continue
 
+            # Current residue needs: alpha, beta, gamma, delta
             alpha = torsions.get('alpha')
             beta = torsions.get('beta')
             gamma = torsions.get('gamma')
             delta = torsions.get('delta')
-            epsilon = torsions.get('epsilon')
-            zeta = torsions.get('zeta')
-            chi = torsions.get('chi')
 
-            # ABG check (requires delta for sugar pucker classification)
-            if alpha is not None and beta is not None and gamma is not None and delta is not None:
-                pucker = self._get_sugar_pucker(delta)
-                if pucker != "intermediate":
-                    group = 'abg_c3_endo' if pucker == "C3'-endo" else 'abg_c2_endo'
-                    a_r, b_r, g_r = math.radians(alpha), math.radians(beta), math.radians(gamma)
-                    point = np.array([
-                        math.sin(a_r), math.cos(a_r),
-                        math.sin(b_r), math.cos(b_r),
-                        math.sin(g_r), math.cos(g_r),
-                    ])
-                    if not self._check_angle_group_cluster(point, group, edge_type):
-                        abg_fail_count += 1
-                        conformation_issues.append(
-                            f"{res_id}: ABG conformation deviation ({pucker}, no matching cluster)"
-                        )
+            if any(v is None for v in [alpha, beta, gamma, delta]):
+                continue
 
-            # DEZ check
-            if delta is not None and epsilon is not None and zeta is not None:
-                d_r, e_r, z_r = math.radians(delta), math.radians(epsilon), math.radians(zeta)
-                point = np.array([
-                    math.sin(d_r), math.cos(d_r),
-                    math.sin(e_r), math.cos(e_r),
-                    math.sin(z_r), math.cos(z_r),
-                ])
-                if not self._check_angle_group_cluster(point, 'dez', edge_type):
-                    dez_fail_count += 1
-                    conformation_issues.append(
-                        f"{res_id}: DEZ conformation deviation (no matching cluster)"
-                    )
+            # Find predecessor to get deltaMinus, epsilon_prev, zeta_prev
+            pred_id = self._find_predecessor(res_id, torsion_data)
+            if pred_id is None:
+                continue
 
-            # CHI check
-            if chi is not None:
-                if not self._check_chi_range(chi, edge_type):
-                    chi_fail_count += 1
-                    # Build range string for the message
-                    et_data = (self.backbone_clusters['edge_types'].get(edge_type) or
-                               self.backbone_clusters['edge_types'].get('_OTHER', {}))
-                    ranges = et_data.get('chi', {}).get('ranges', [])
-                    range_str = ', '.join(f"[{r[0]:.2f}, {r[1]:.2f}]" for r in ranges)
-                    conformation_issues.append(
-                        f"{res_id}: chi outside allowed range ({chi:.1f}\u00b0 not in {range_str})"
-                    )
+            pred_torsions = torsion_data.get(pred_id, {})
+            delta_prev = pred_torsions.get('delta')
+            epsilon_prev = pred_torsions.get('epsilon')
+            zeta_prev = pred_torsions.get('zeta')
 
-        # Each residue contributes half the penalty; both failing = full penalty
-        if abg_fail_count > 0:
-            geometry_issues['conformation_abg_deviation'] = True
-            penalty += self.config.PENALTY_WEIGHTS['conformation_abg_deviation'] * (abg_fail_count / 2)
-        if dez_fail_count > 0:
-            geometry_issues['conformation_dez_deviation'] = True
-            penalty += self.config.PENALTY_WEIGHTS['conformation_dez_deviation'] * (dez_fail_count / 2)
-        if chi_fail_count > 0:
-            geometry_issues['conformation_chi_deviation'] = True
-            penalty += self.config.PENALTY_WEIGHTS['conformation_chi_deviation'] * (chi_fail_count / 2)
+            if any(v is None for v in [delta_prev, epsilon_prev, zeta_prev]):
+                continue
 
-        return geometry_issues, penalty, conformation_issues
+            # Build 7-angle suite, converting from [-180,180] to [0,360]
+            suite_angles = np.array([
+                delta_prev % 360,
+                epsilon_prev % 360,
+                zeta_prev % 360,
+                alpha % 360,
+                beta % 360,
+                gamma % 360,
+                delta % 360,
+            ])
+
+            suite_result = self._score_single_suite(suite_angles)
+            if suite_result is None:
+                continue
+
+            detail = {
+                'residue': res_id,
+                'conformer': suite_result['conformer'],
+                'suiteness': suite_result['suiteness'],
+                'bin': suite_result['bin'],
+                'is_outlier': suite_result['is_outlier'],
+            }
+            if suite_result['distance'] is not None:
+                detail['distance'] = suite_result['distance']
+            if suite_result['issue'] is not None:
+                detail['issue'] = suite_result['issue']
+
+            backbone_details.append(detail)
+            suiteness_scores.append(suite_result['suiteness'])
+
+        # Calculate penalty from average suiteness
+        if suiteness_scores:
+            avg_suiteness = sum(suiteness_scores) / len(suiteness_scores)
+            penalty = (1.0 - avg_suiteness) * self.config.PENALTY_WEIGHTS['backbone_suiteness']
+
+            # Flag if any residue is an outlier
+            if any(d['is_outlier'] for d in backbone_details):
+                geometry_issues['backbone_outlier'] = True
+
+        return geometry_issues, penalty, backbone_details
 
     def score_structure(self, basepair_data: list, hbond_data: pd.DataFrame,
                         torsion_data: dict = None) -> BaselineResult:
@@ -244,24 +345,28 @@ class Scorer:
         basepair_scores = []
         geometry_stats = {
             'misaligned': 0, 'non_coplanar': 0, 'rotational_distortion': 0,
-            'zero_hbond': 0,
-            'conformation_abg_deviation': 0, 'conformation_dez_deviation': 0,
-            'conformation_chi_deviation': 0,
+            'zero_hbond': 0, 'backbone_outlier': 0,
         }
         hbond_stats = {
             'poor_hbond_score': 0, 'bad_distance': 0, 'bad_angles': 0, 'bad_dihedral': 0,
             'incorrect_count': 0
         }
         
+        all_suiteness = []
         for bp in basepair_data:
             bp_score = self._score_base_pair(bp, hbond_data, torsion_data)
             basepair_scores.append(bp_score)
-            
+
+            # Collect suiteness scores from backbone details
+            for bd in bp_score.get('backbone', []):
+                if bd.get('suiteness') is not None:
+                    all_suiteness.append(bd['suiteness'])
+
             # Accumulate statistics
             for issue in geometry_stats:
                 if bp_score['geometry_issues'].get(issue, False):
                     geometry_stats[issue] += 1
-            
+
             for issue in hbond_stats:
                 if bp_score['hbond_issues'].get(issue, False):
                     hbond_stats[issue] += 1
@@ -294,6 +399,8 @@ class Scorer:
             if bp['score'] < self.config.BASELINE
         ]
         
+        struct_avg_suiteness = round(sum(all_suiteness) / len(all_suiteness), 3) if all_suiteness else None
+
         result = BaselineResult(
             overall_score=round(avg_score, 1),
             total_base_pairs=total_pairs,
@@ -305,7 +412,8 @@ class Scorer:
             hbond_fractions=hbond_fractions,
             grade=grade,
             summary=summary,
-            detailed_issues=detailed_issues
+            detailed_issues=detailed_issues,
+            avg_suiteness=struct_avg_suiteness,
         )
         
         self._print_results(result)
@@ -330,7 +438,7 @@ class Scorer:
                 - hbond_penalty: penalty from H-bond issues
                 - geometry_issues: dict of boolean flags
                 - hbond_issues: dict of boolean flags
-                - conformation_issues: list of descriptive strings
+                - backbone: list of per-residue suiteness dicts
                 - bp_info: identifier info
         """
         nt1_id = bp.get('res_1', '')
@@ -413,12 +521,12 @@ class Scorer:
             geometry_issues['rotational_distortion'] = True
             geometry_penalty += self.config.PENALTY_WEIGHTS['rotational_distortion_pairs']
 
-        # Check backbone torsion conformations
-        conf_issues, conf_penalty, conformation_issues = self._check_backbone_conformation(
-            nt1_id, nt2_id, edge_type, torsion_data
+        # Score backbone suiteness (Richardson suite classification)
+        backbone_issues, backbone_penalty, backbone_details = self._score_backbone_suiteness(
+            nt1_id, nt2_id, torsion_data
         )
-        geometry_issues.update(conf_issues)
-        geometry_penalty += conf_penalty
+        geometry_issues.update(backbone_issues)
+        geometry_penalty += backbone_penalty
 
         # Check DSSR quality score (hbond_score in the JSON)
         dssr_quality = bp.get('hbond_score', 0.0)
@@ -532,7 +640,7 @@ class Scorer:
             'hbond_penalty': hbond_penalty,
             'geometry_issues': geometry_issues,
             'hbond_issues': hbond_issues,
-            'conformation_issues': conformation_issues,
+            'backbone': backbone_details,
             'bp_info': {
                 'res_1': nt1_id,
                 'res_2': nt2_id,
@@ -739,5 +847,6 @@ class Scorer:
             'hbond_fractions': result.hbond_fractions,
             'summary': result.summary,
             'num_problematic_bps': len(result.detailed_issues),
-            'basepair_scores': result.basepair_scores
+            'basepair_scores': result.basepair_scores,
+            'avg_suiteness': result.avg_suiteness,
         }

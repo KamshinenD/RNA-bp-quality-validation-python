@@ -4,7 +4,8 @@
       "Bash(python3:*)",
       "Bash(python app.py:*)",
       "Bash(python torsion_scores_analysis.py:*)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "WebFetch(domain:raw.githubusercontent.com)"
     ]
   }
 }

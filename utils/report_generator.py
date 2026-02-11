@@ -716,9 +716,8 @@ class ReportGenerator:
             'Geom_NonCoplanar',
             'Geom_ImproperOpening',
             'Geom_ZeroHBond',
-            'Geom_ConformationABG',
-            'Geom_ConformationDEZ',
-            'Geom_ConformationChi',
+            'Geom_BackboneOutlier',
+            'Avg_Suiteness',
 
             # H-bond issues
             'HBond_LowDSSRScore',
@@ -765,10 +764,11 @@ class ReportGenerator:
                             # Ensure existing rows have new columns if we're adding them
                             if 'Detailed_Issues' not in row and has_detailed_scores:
                                 row['Detailed_Issues'] = 'N/A'
-                            # Add conformation columns if missing
-                            for col in ['Geom_ConformationABG', 'Geom_ConformationDEZ', 'Geom_ConformationChi']:
-                                if col not in row:
-                                    row[col] = 0
+                            # Migrate old conformation columns to new backbone column
+                            if 'Geom_BackboneOutlier' not in row:
+                                row['Geom_BackboneOutlier'] = 0
+                            for old_col in ['Geom_ConformationABG', 'Geom_ConformationDEZ', 'Geom_ConformationChi']:
+                                row.pop(old_col, None)
                             # Add API metadata columns if missing
                             api_columns = [
                                 'EM Resolution (Å)', 'EM Diffraction Resolution (Å)', 'Experimental_method',
@@ -813,16 +813,14 @@ class ReportGenerator:
         basepair_scores = result_dict.get('basepair_scores', [])
         geom_counts = {
             'misaligned': 0,
-            'rotational_distortion': 0,  # was 'twisted' - matches scorer2.py
+            'rotational_distortion': 0,
             'non_coplanar': 0,
-            'improper_opening': 0,       # added - matches scorer2.py
+            'improper_opening': 0,
             'zero_hbond': 0,
-            'conformation_abg_deviation': 0,
-            'conformation_dez_deviation': 0,
-            'conformation_chi_deviation': 0,
+            'backbone_outlier': 0,
         }
         hbond_counts = {
-            'low_dssr_score': 0,  # was 'poor_hbond' - matches scorer2.py
+            'low_dssr_score': 0,
             'bad_distance': 0,
             'bad_angles': 0,
             'bad_dihedral': 0,
@@ -841,7 +839,7 @@ class ReportGenerator:
                     hbond_bp = bp_score.get('hbond_issues', {})
 
                     for issue in ['misaligned', 'rotational_distortion', 'non_coplanar', 'improper_opening', 'zero_hbond',
-                                  'conformation_abg_deviation', 'conformation_dez_deviation', 'conformation_chi_deviation']:
+                                  'backbone_outlier']:
                         if geom_bp.get(issue, False):
                             geom_counts[issue] += 1
 
@@ -910,9 +908,8 @@ class ReportGenerator:
             'Geom_NonCoplanar': geom_counts.get('non_coplanar', 0),
             'Geom_ImproperOpening': geom_counts.get('improper_opening', 0),
             'Geom_ZeroHBond': geom_counts.get('zero_hbond', 0),
-            'Geom_ConformationABG': geom_counts.get('conformation_abg_deviation', 0),
-            'Geom_ConformationDEZ': geom_counts.get('conformation_dez_deviation', 0),
-            'Geom_ConformationChi': geom_counts.get('conformation_chi_deviation', 0),
+            'Geom_BackboneOutlier': geom_counts.get('backbone_outlier', 0),
+            'Avg_Suiteness': results.get('avg_suiteness', ''),
             'HBond_LowDSSRScore': hbond_counts.get('low_dssr_score', 0),
 
             # H-bond issues
@@ -968,10 +965,13 @@ class ReportGenerator:
                         if is_present:
                             issues.append(f"hbond_{issue}")
 
-                    # Append per-residue backbone conformation details
-                    conf_details = bp_score.get('conformation_issues', [])
-                    if conf_details:
-                        issues.extend(conf_details)
+                    # Append backbone suiteness details
+                    backbone = bp_score.get('backbone', [])
+                    for bd in backbone:
+                        if bd.get('is_outlier', False):
+                            issues.append(f"backbone_outlier({bd.get('residue','?')},conf={bd.get('conformer','!!')})")
+                        elif bd.get('suiteness', 1.0) < 0.5:
+                            issues.append(f"low_suiteness({bd.get('residue','?')},s={bd.get('suiteness',0):.2f})")
 
                     if issues:
                         bp_id = f"{res_1}-{res_2}"
@@ -1108,7 +1108,8 @@ class ReportGenerator:
             'Num_Paired_Nucleotides', 'Pairing_Percentage',
             'Geom_Misaligned', 'Geom_RotationalDistortion', 'Geom_NonCoplanar',
             'Geom_ImproperOpening', 'Geom_ZeroHBond',
-            'Geom_ConformationABG', 'Geom_ConformationDEZ', 'Geom_ConformationChi',
+            'Geom_BackboneOutlier',
+            'Avg_Suiteness',
             'HBond_LowDSSRScore', 'HBond_BadDistance', 'HBond_BadAngles', 'HBond_BadDihedral',
             'HBond_WeakQuality', 'HBond_IncorrectCount',
             'Dominant_Issues',
@@ -1134,16 +1135,14 @@ class ReportGenerator:
         basepair_scores = motif_data.get('basepair_scores', [])
         geom_counts = {
             'misaligned': 0,
-            'rotational_distortion': 0,  # was 'twisted' - matches scorer2.py
+            'rotational_distortion': 0,
             'non_coplanar': 0,
-            'improper_opening': 0,       # added - matches scorer2.py
+            'improper_opening': 0,
             'zero_hbond': 0,
-            'conformation_abg_deviation': 0,
-            'conformation_dez_deviation': 0,
-            'conformation_chi_deviation': 0,
+            'backbone_outlier': 0,
         }
         hbond_counts = {
-            'low_dssr_score': 0,  # was 'poor_hbond' - matches scorer2.py
+            'low_dssr_score': 0,
             'bad_distance': 0,
             'bad_angles': 0,
             'bad_dihedral': 0,
@@ -1151,29 +1150,29 @@ class ReportGenerator:
             'incorrect_count': 0
         }
         num_problematic_bps = motif_data.get('num_problematic_bps', 0)
-        
+
         detailed_issues = "none"
         if basepair_scores:
             problematic_pairs = []
             num_problematic_bps = 0
-            
+
             for bp_score in basepair_scores:
                 if bp_score.get('score', 100) < self.config.BASELINE:
                     num_problematic_bps += 1
-                    
+
                     bp_info = bp_score.get('bp_info', {})
                     res_1 = bp_info.get('res_1', '?')
                     res_2 = bp_info.get('res_2', '?')
                     bp_type = bp_info.get('bp_type', '?')
                     score = bp_score.get('score', 100)
-                    
+
                     issues = []
                     geom_issues_bp = bp_score.get('geometry_issues', {})
                     hbond_issues_bp = bp_score.get('hbond_issues', {})
-                    
+
                     # Track geometry issues
                     for issue in ['misaligned', 'rotational_distortion', 'non_coplanar', 'improper_opening', 'zero_hbond',
-                                  'conformation_abg_deviation', 'conformation_dez_deviation', 'conformation_chi_deviation']:
+                                  'backbone_outlier']:
                         if geom_issues_bp.get(issue, False):
                             geom_counts[issue] = geom_counts.get(issue, 0) + 1
                             issues.append(f"geom_{issue}")
@@ -1189,10 +1188,13 @@ class ReportGenerator:
                             hbond_counts[issue] += 1
                             issues.append(f"hbond_{issue}")
 
-                    # Append per-residue backbone conformation details
-                    conf_details = bp_score.get('conformation_issues', [])
-                    if conf_details:
-                        issues.extend(conf_details)
+                    # Append backbone suiteness details
+                    backbone = bp_score.get('backbone', [])
+                    for bd in backbone:
+                        if bd.get('is_outlier', False):
+                            issues.append(f"backbone_outlier({bd.get('residue','?')},conf={bd.get('conformer','!!')})")
+                        elif bd.get('suiteness', 1.0) < 0.5:
+                            issues.append(f"low_suiteness({bd.get('residue','?')},s={bd.get('suiteness',0):.2f})")
 
                     if issues:
                         bp_id = f"{res_1}-{res_2}"
@@ -1256,9 +1258,8 @@ class ReportGenerator:
             'Geom_NonCoplanar': geom_counts.get('non_coplanar', 0),
             'Geom_ImproperOpening': geom_counts.get('improper_opening', 0),
             'Geom_ZeroHBond': geom_counts.get('zero_hbond', 0),
-            'Geom_ConformationABG': geom_counts.get('conformation_abg_deviation', 0),
-            'Geom_ConformationDEZ': geom_counts.get('conformation_dez_deviation', 0),
-            'Geom_ConformationChi': geom_counts.get('conformation_chi_deviation', 0),
+            'Geom_BackboneOutlier': geom_counts.get('backbone_outlier', 0),
+            'Avg_Suiteness': motif_data.get('avg_suiteness', ''),
             'HBond_LowDSSRScore': hbond_counts.get('low_dssr_score', 0),
             'HBond_BadDistance': hbond_counts.get('bad_distance', 0),
             'HBond_BadAngles': hbond_counts.get('bad_angles', 0),

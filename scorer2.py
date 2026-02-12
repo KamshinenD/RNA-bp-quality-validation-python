@@ -84,13 +84,16 @@ class Scorer:
 
     @staticmethod
     def _classify_chi(chi: float) -> str:
-        """Classify chi angle as anti, syn, or intermediate."""
-        if (-180 <= chi <= -60) or (120 <= chi <= 180):
+        """Classify chi glycosidic torsion as anti, syn, or intermediate.
+
+        Chi characterizes base/sugar relative orientation, defined by O4′-C1′-N1-C2
+        (pyrimidines) or O4′-C1′-N9-C4 (purines). Ranges match X3DNA-DSSR.
+        https://x3dna.org/highlights/the-chi-x-torsion-angle-characterizes-base-sugar-relative-orientation
+        """
+        if chi <= -90 or chi >= 90:
             return 'anti'
-        elif 0 <= chi <= 90:
-            return 'syn'
         else:
-            return 'intermediate'
+            return 'syn'
 
     def _check_chi_conformation(self, res_1: str, res_2: str,
                                  edge_type: str, bp_type: str,

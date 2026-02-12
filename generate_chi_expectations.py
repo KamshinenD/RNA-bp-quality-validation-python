@@ -6,26 +6,32 @@ Analyzes all torsion + basepair data to determine whether each (edge, bp_type)
 combination expects anti, syn, or both conformations. Output is saved to
 data/chi_expectations.json and consumed by scorer2.py at runtime.
 
+Uncommon edge types (containing '.' or '--' or empty) are folded into _OTHER.
+
 Usage:
     python generate_chi_expectations.py
 """
 
+import csv
 import json
 from collections import defaultdict
 from pathlib import Path
 
+from g_quads import g_quads
 
-# Chi conformation boundaries (same as torsion_scores_analysis.py)
+
+# Chi conformation boundaries (must match scorer2._classify_chi)
+# Chi = base/sugar orientation (O4′-C1′-N1-C2 pyrimidines, O4′-C1′-N9-C4 purines)
+# Ranges match X3DNA-DSSR: anti = [-180,-90]∪[90,180], syn = (-90,90)
+# https://x3dna.org/highlights/the-chi-x-torsion-angle-characterizes-base-sugar-relative-orientation
 def classify_chi(chi: float) -> str:
-    """Classify chi angle as anti, syn, or intermediate."""
+    """Classify chi angle as anti or syn."""
     if chi is None:
         return "unknown"
-    if -180 <= chi <= -60 or 120 <= chi <= 180:
+    if chi <= -90 or chi >= 90:
         return "anti"
-    elif 0 <= chi <= 90:
-        return "syn"
     else:
-        return "intermediate"
+        return "syn"
 
 
 # Canonical base mapping (modified bases -> parent)
@@ -53,23 +59,64 @@ def map_to_canonical(bp_type: str) -> str:
     return '-'.join(mapped)
 
 
+def is_main_edge(edge_type: str) -> bool:
+    """Return True for well-defined 3-char Leontis-Westhof edges (e.g. cWW, tSH)."""
+    if not edge_type or edge_type == '--':
+        return False
+    if '.' in edge_type:
+        return False
+    return True
+
+
+def format_json_compact(expectations: dict) -> str:
+    """Format JSON so each bp_type entry is on a single line."""
+    lines = ['{']
+    edge_keys = list(expectations.keys())
+    for ei, edge_type in enumerate(edge_keys):
+        val = expectations[edge_type]
+        edge_comma = ',' if ei < len(edge_keys) - 1 else ''
+
+        if isinstance(val, dict) and 'expected' in val:
+            # Top-level _OTHER is itself a single entry
+            lines.append(f'  "{edge_type}": {json.dumps(val)}{edge_comma}')
+        else:
+            # Edge type with bp_type children
+            lines.append(f'  "{edge_type}": {{')
+            bp_keys = list(val.keys())
+            for bi, bp_type in enumerate(bp_keys):
+                bp_comma = ',' if bi < len(bp_keys) - 1 else ''
+                lines.append(f'    "{bp_type}": {json.dumps(val[bp_type])}{bp_comma}')
+            lines.append(f'  }}{edge_comma}')
+    lines.append('}')
+    return '\n'.join(lines)
+
+
 def main():
     torsion_dir = Path('data/torsions')
     basepair_dir = Path('data/basepairs')
+    unique_csv = Path('data/uniqueRNAS.csv')
     output_file = Path('data/chi_expectations.json')
 
-    if not torsion_dir.exists():
-        print(f"Error: {torsion_dir} not found")
-        return
-    if not basepair_dir.exists():
-        print(f"Error: {basepair_dir} not found")
-        return
+    for p in [torsion_dir, basepair_dir, unique_csv]:
+        if not p.exists():
+            print(f"Error: {p} not found")
+            return
 
-    # Collect chi conformations per (edge_type, bp_type, residue_position)
+    # Load unique PDB IDs and exclude g-quadruplexes
+    g_quad_set = {p.upper() for p in g_quads}
+    unique_pdb_ids = set()
+    with open(unique_csv) as f:
+        for row in csv.DictReader(f):
+            pdb_id = row['unique_pdb_id'].strip().upper()
+            if pdb_id not in g_quad_set:
+                unique_pdb_ids.add(pdb_id)
+    print(f"Using {len(unique_pdb_ids)} unique PDB IDs (excluded {len(g_quad_set)} g-quadruplexes)")
+
+    # Collect chi conformations per (edge_type, bp_type)
     # Structure: counts[edge_type][bp_type] = {'anti': N, 'syn': N, 'intermediate': N, 'count': N}
     counts = defaultdict(lambda: defaultdict(lambda: {'anti': 0, 'syn': 0, 'intermediate': 0, 'count': 0}))
 
-    torsion_files = sorted(torsion_dir.glob('*.json'))
+    torsion_files = sorted(tf for tf in torsion_dir.glob('*.json') if tf.stem.upper() in unique_pdb_ids)
     print(f"Processing {len(torsion_files)} torsion files...")
 
     processed = 0
@@ -88,7 +135,11 @@ def main():
             continue
 
         for bp in basepairs:
-            edge_type = bp.get('lw', '') or '_OTHER'
+            raw_edge = bp.get('lw', '') or ''
+
+            # Route uncommon edges into _OTHER
+            edge_type = raw_edge if is_main_edge(raw_edge) else '_OTHER'
+
             bp_type_raw = bp.get('bp_type', '')
             bp_type = map_to_canonical(bp_type_raw)
 
@@ -121,12 +172,9 @@ def main():
 
     print(f"Processed {processed} structures total.")
 
-    # Build expectations: for each (edge_type, bp_type) with >= 100 observations
-    MIN_OBSERVATIONS = 100
+    # Build expectations: for each (edge_type, bp_type) with >= 1000 observations
+    MIN_OBSERVATIONS = 1000
     expectations = {}
-
-    # Also compute global stats for _OTHER fallback
-    global_counts = {'anti': 0, 'syn': 0, 'intermediate': 0, 'count': 0}
 
     for edge_type, bp_types in sorted(counts.items()):
         edge_dict = {}
@@ -159,42 +207,28 @@ def main():
                 'count': total,
             }
 
-            # Accumulate global stats
-            for k in ['anti', 'syn', 'intermediate', 'count']:
-                global_counts[k] += bucket[k]
-
         if edge_dict:
             expectations[edge_type] = edge_dict
 
-    # Add global fallback _OTHER
-    if global_counts['count'] > 0:
-        total = global_counts['count']
-        anti_pct = global_counts['anti'] / total * 100
-        syn_pct = global_counts['syn'] / total * 100
-        expectations['_OTHER'] = {
-            'expected': 'anti',  # anti is overwhelmingly dominant globally
-            'anti_pct': round(anti_pct, 1),
-            'syn_pct': round(syn_pct, 1),
-            'count': total,
-        }
-
-    # Save
+    # Save with compact formatting (one bp per line)
     output_file.parent.mkdir(parents=True, exist_ok=True)
     with open(output_file, 'w') as f:
-        json.dump(expectations, f, indent=2)
+        f.write(format_json_compact(expectations))
 
     print(f"\nSaved chi expectations to {output_file}")
-    print(f"Edge types: {len(expectations) - 1} + _OTHER fallback")
+    edge_count = len([k for k in expectations if k != '_OTHER'])
+    print(f"Edge types: {edge_count} named + _OTHER fallback")
 
     # Print summary
     for edge_type in sorted(expectations.keys()):
-        if edge_type == '_OTHER':
-            continue
         bp_types = expectations[edge_type]
-        print(f"\n  {edge_type}: {len(bp_types)} bp types")
-        for bp_type, info in sorted(bp_types.items()):
-            print(f"    {bp_type}: expected={info['expected']} "
-                  f"(anti={info['anti_pct']}%, syn={info['syn_pct']}%, n={info['count']})")
+        if isinstance(bp_types, dict) and 'expected' not in bp_types:
+            print(f"\n  {edge_type}: {len(bp_types)} bp types")
+            for bp_type, info in sorted(bp_types.items()):
+                print(f"    {bp_type}: expected={info['expected']} "
+                      f"(anti={info['anti_pct']}%, syn={info['syn_pct']}%, n={info['count']})")
+        else:
+            print(f"\n  {edge_type}: expected={bp_types.get('expected','?')} (n={bp_types.get('count','?')})")
 
 
 if __name__ == '__main__':

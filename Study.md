@@ -75,4 +75,8 @@ Usage:
 //for config geom and hbon thresholds generation
   python analyze_by_edge_type.py
   python generate_threshold_config.py 
+
+
+#To generate chi torsion data
+python3 generate_chi_expectations.py
       

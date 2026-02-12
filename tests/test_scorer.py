@@ -72,10 +72,10 @@ class TestScorer:
         assert bp_score['hbond_penalty'] > 0
         assert bp_score['score'] < 100
         # Check for specific H-bond issues
-        assert (bp_score['hbond_issues']['bad_distance'] or
-                bp_score['hbond_issues']['bad_angles'] or
-                bp_score['hbond_issues']['bad_dihedral'] or
-                bp_score['hbond_issues']['weak_quality'])
+        assert (bp_score['hbond_issues'].get('bad_distance') or
+                bp_score['hbond_issues'].get('bad_angles') or
+                bp_score['hbond_issues'].get('bad_dihedral') or
+                bp_score['hbond_issues'].get('weak_quality'))
 
     def test_score_base_pair_with_no_hbonds(self, config, sample_base_pair, empty_hbond_data):
         """Test that base pair with no H-bonds is heavily penalized."""
